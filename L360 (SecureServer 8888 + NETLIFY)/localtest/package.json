@@ -1,0 +1,15 @@
+{
+  "name": "logistix360-local-test",
+  "private": true,
+  "version": "3.7.2-local",
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev --port 8888"
+  },
+  "dependencies": {
+    "@netlify/blobs": "latest"
+  },
+  "devDependencies": {
+    "netlify-cli": "^23.0.0"
+  }
+}
