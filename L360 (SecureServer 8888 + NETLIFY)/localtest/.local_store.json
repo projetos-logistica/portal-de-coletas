@@ -1,0 +1,410 @@
+{
+  "users": [
+    {
+      "id": "admin01",
+      "nome": "Administrador Master",
+      "tipo": "admin",
+      "email": "raony.borges@usereserva.com",
+      "cobertura": [
+        "TODAS"
+      ],
+      "createdAt": "2026-10-20T17:15:02.739Z",
+      "senhaHash": "Z6TclV0k/gomTdXf0DuTfrNzOPxXNDeoImakcrKfjIY=",
+      "senhaSalt": "jObHUN+Pc0xXdu+DF5CmdA==",
+      "aprovadoEm": "2026-10-20T18:12:38.775Z",
+      "aprovadoPor": "admin01",
+      "dadosColeta": {},
+      "passwordHash": "70nEdod9JosUV-mLcFiNOQ7uiD2vzYf4TDSFuvuSwnA",
+      "passwordSalt": "ldJyLNycn2ZkXCaRuqZIpg",
+      "customPassword": false,
+      "emailVinculado": true,
+      "statusAprovacao": "aprovado",
+      "passwordIterations": 210000,
+      "managedPasswordFingerprint": "kL0muNY8RHZJHp3pRbK2BRoxzyCHmR96TFz3H8KDix4"
+    },
+    {
+      "id": "forn01",
+      "nome": "Indústria ABC",
+      "tipo": "fornecedor",
+      "email": "raony.borges@usereserva.com",
+      "cobertura": [],
+      "createdAt": "2026-10-20T17:15:02.842Z",
+      "senhaHash": "dK2Q4RSVKMxFqcecSvSgx3AQrA2kZ+qVqsaqCBpdiMs=",
+      "senhaSalt": "wqgfxSDSkhVfPhutIAkxNg==",
+      "dadosColeta": {},
+      "passwordHash": "Ep6Sj0oI_-_cSBPE2uTjL2cHCdt32_AvXnYWmboKkPs",
+      "passwordSalt": "ih4nGgweRSX4YH_uJ_XtRA",
+      "customPassword": false,
+      "emailVinculado": true,
+      "passwordIterations": 210000,
+      "managedPasswordFingerprint": "2DM93v_-U4gl8o7SUGYXOe4dAUYM5sQfFykYAsffgPM"
+    },
+    {
+      "id": "brasspress01",
+      "nome": "Brasspress",
+      "tipo": "transportadora",
+      "email": "raony.borges@usereserva.com",
+      "cobertura": [
+        "TODAS"
+      ],
+      "createdAt": "2026-10-20T17:15:02.943Z",
+      "senhaHash": "Kz2Y5UrC07uRZFPFet7A33N48uiihFXcz5NA9o7yCGg=",
+      "senhaSalt": "pxpL3JC1zbrwB0BKbX70vg==",
+      "dadosColeta": {},
+      "passwordHash": "bYDZpYtMqv5g6h0HbNWvf73vop0Uj15eprhmm9PyMDE",
+      "passwordSalt": "_KYtVRmOXTaqJPtDPwMT6w",
+      "customPassword": false,
+      "emailVinculado": true,
+      "statusAprovacao": "aprovado",
+      "passwordIterations": 210000,
+      "managedPasswordFingerprint": "nMp5ux-TUa673VWx5b1TC5A2dK9xy9-yurB-j56lYYw"
+    }
+  ],
+  "session:C8Rg51fC9XxNNBtCabgX-2VG-DJnrvgknko65AROy1A": {
+    "userId": "admin01",
+    "exp": 1793754860164
+  },
+  "session:OH5CR_eakGbhG9-EoTU9HApu5JlIbm-QfTVszu9u9Kk": {
+    "userId": "brasspress01",
+    "exp": 1793754868262
+  },
+  "session:2XpBtlG01ASLgkvzkkILYymt3J-8mmdpKeRnbtjWBMY": {
+    "userId": "brasspress01",
+    "exp": 1793755068917
+  },
+  "session:_aiUyxlDeelIb4zyp4_Tw_CqftElo1EbdbF14IFvD1o": {
+    "userId": "brasspress01",
+    "exp": 1793755085331
+  },
+  "orders": [
+    {
+      "id": "COL-9809",
+      "cep": "25585-085",
+      "cnpj": "16.590.234/0064-50",
+      "peso": 0.1,
+      "frete": "CIF",
+      "modal": "Rodoviário",
+      "altura": 34,
+      "origem": "ARTHUR ANTONIO SENDAS, 999 - GALPAO300 MODULOS A E B - RJ",
+      "status": "Cancelado",
+      "anexoNF": null,
+      "contato": {
+        "nome": "Juliano Moura",
+        "email": "JulianoMoura@azzas.br",
+        "telefone": "21978638987"
+      },
+      "destino": "ZZAB COMÉRCIO DE CALÇADOS LTDA — Rod. Governador Mario Covas, 3255 - ES",
+      "horaFim": "18:00",
+      "largura": 23,
+      "reversa": false,
+      "volumes": 1,
+      "anexoXML": "NFe_42260411042387000165550010000302801011631222.xml",
+      "anexosNF": [],
+      "ufOrigem": "RJ",
+      "anexosXML": [
+        {
+          "nome": "NFe_42260411042387000165550010000302801011631222.xml",
+          "dados": "data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPG5mZVByb2MgdmVyc2FvPSI0LjAwIiB4bWxucz0iaHR0cDovL3d3dy5wb3J0YWxmaXNjYWwuaW5mLmJyL25mZSI+PHByb3RORmU+PGluZlByb3Q+PG5Qcm90PjI0MjI2MDE4OTUzNTIxNzwvblByb3Q+PGRpZ1ZhbD44MXJrc01LU1ZCTzA4V3dVREtmaFZHdFhHeFk9PC9kaWdWYWw+PGRoUmVjYnRvPjIwMjYtMDQtMjhUMTE6MDI6MjMtMDM6MDA8L2RoUmVjYnRvPjxjaE5GZT40MjI2MDQxMTA0MjM4NzAwMDE2NTU1MDAxMDAwMDMwMjgwMTAxMTYzMTIyMjwvY2hORmU+PHhNb3Rpdm8+QXV0b3JpemFkbyBvIHVzbyBkYSBORi1lPC94TW90aXZvPjxjU3RhdD4xMDA8L2NTdGF0PjwvaW5mUHJvdD48L3Byb3RORmU+PE5GZT48aW5mTkZlIElkPSJORmU0MjI2MDQxMTA0MjM4NzAwMDE2NTU1MDAxMDAwMDMwMjgwMTAxMTYzMTIyMiI+PGluZkFkaWM+PGluZkFkRmlzY28+UkVGRVJFTlRFIFJFVE9STk8gTk9UQSBGSVNDQUwgIDIyNjcwMSAgUkVGIE9QIE82MzUwNDQ5IENBTkNFTEFEQSAgW108L2luZkFkRmlzY28+PC9pbmZBZGljPjxpbmZSZXNwVGVjPjxmb25lPjQ0OTk5OTk5OTk8L2ZvbmU+PENOUEo+MDc1MDQ1MDUwMDAxMzI8L0NOUEo+PHhDb250YXRvPkRlc2Vudm9sdmVkb3IgUmVzcG9uc2F2ZWw8L3hDb250YXRvPjxlbWFpbD5lbWFpbC50ZXN0ZUB0ZWNub3NwZWVkLmNvbS5icjwvZW1haWw+PC9pbmZSZXNwVGVjPjxkZXQ+PG5JdGVtPjE8L25JdGVtPjxwcm9kPjxjRUFOPlNFTSBHVElOPC9jRUFOPjxjUHJvZD4wMi4wMi4wNTQ5PC9jUHJvZD48cUNvbT4xMTI8L3FDb20+PGNFQU5UcmliPlNFTSBHVElOPC9jRUFOVHJpYj48dlVuVHJpYj4wLjAzPC92VW5UcmliPjxjQmVuZWY+U0M4NDAwMDg8L2NCZW5lZj48cVRyaWI+MTEyPC9xVHJpYj48dlByb2Q+My4zNjwvdlByb2Q+PHhQcm9kPkVUUSBDT0QgQkFSUkFTIERPVUJMRSBSU1Y8L3hQcm9kPjx2VW5Db20+MC4wMzwvdlVuQ29tPjxpbmRUb3Q+MTwvaW5kVG90Pjx1VHJpYj5VTjwvdVRyaWI+PE5DTT40ODIxMTAwMDwvTkNNPjx1Q29tPlVOPC91Q29tPjxDRk9QPjY5MDM8L0NGT1A+PC9wcm9kPjxpbXBvc3RvPjxJQlNDQlM+PENTVD40MTA8L0NTVD48Y0NsYXNzVHJpYj40MTAwMjk8L2NDbGFzc1RyaWI+PC9JQlNDQlM+PElDTVM+PElDTVM0MD48b3JpZz4wPC9vcmlnPjxDU1Q+NTA8L0NTVD48L0lDTVM0MD48L0lDTVM+PENPRklOUz48Q09GSU5TT3V0cj48dkNPRklOUz4wLjAwPC92Q09GSU5TPjxDU1Q+NDk8L0NTVD48dkJDPjAuMDA8L3ZCQz48cENPRklOUz4wPC9wQ09GSU5TPjwvQ09GSU5TT3V0cj48L0NPRklOUz48UElTPjxQSVNPdXRyPjx2UElTPjAuMDA8L3ZQSVM+PENTVD40OTwvQ1NUPjx2QkM+MC4wMDwvdkJDPjxwUElTPjA8L3BQSVM+PC9QSVNPdXRyPjwvUElTPjwvaW1wb3N0bz48dkl0ZW0+My4zNjwvdkl0ZW0+PC9kZXQ+PGRldD48bkl0ZW0+Mjwvbkl0ZW0+PHByb2Q+PGNFQU4+U0VNIEdUSU48L2NFQU4+PGNQcm9kPjAyLjEyLjAzMTM8L2NQcm9kPjxxQ29tPjExMjwvcUNvbT48Y0VBTlRyaWI+U0VNIEdUSU48L2NFQU5UcmliPjx2VW5UcmliPjAuMDkyPC92VW5UcmliPjxjQmVuZWY+U0M4NDAwMDg8L2NCZW5lZj48cVRyaWI+MTEyPC9xVHJpYj48dlByb2Q+MTAuMzA8L3ZQcm9kPjx4UHJvZD5UQUcgUlNWIFJFQ0lDTEFETyAyNDAgMVA1UCA2ODYyNjggMTJYNCA3PC94UHJvZD48dlVuQ29tPjAuMDkyPC92VW5Db20+PGluZFRvdD4xPC9pbmRUb3Q+PHVUcmliPlVOPC91VHJpYj48TkNNPjQ4MjExMDAwPC9OQ00+PHVDb20+VU48L3VDb20+PENGT1A+NjkwMzwvQ0ZPUD48L3Byb2Q+PGltcG9zdG8+PElCU0NCUz48Q1NUPjQxMDwvQ1NUPjxjQ2xhc3NUcmliPjQxMDAyOTwvY0NsYXNzVHJpYj48L0lCU0NCUz48SUNNUz48SUNNUzQwPjxvcmlnPjA8L29yaWc+PENTVD41MDwvQ1NUPjwvSUNNUzQwPjwvSUNNUz48Q09GSU5TPjxDT0ZJTlNPdXRyPjx2Q09GSU5TPjAuMDA8L3ZDT0ZJTlM+PENTVD40OTwvQ1NUPjx2QkM+MC4wMDwvdkJDPjxwQ09GSU5TPjA8L3BDT0ZJTlM+PC9DT0ZJTlNPdXRyPjwvQ09GSU5TPjxQSVM+PFBJU091dHI+PHZQSVM+MC4wMDwvdlBJUz48Q1NUPjQ5PC9DU1Q+PHZCQz4wLjAwPC92QkM+PHBQSVM+MDwvcFBJUz48L1BJU091dHI+PC9QSVM+PC9pbXBvc3RvPjx2SXRlbT4xMC4zMDwvdkl0ZW0+PC9kZXQ+PGRldD48bkl0ZW0+Mzwvbkl0ZW0+PHByb2Q+PGNFQU4+U0VNIEdUSU48L2NFQU4+PGNQcm9kPjA1LjAzLjAwMzE8L2NQcm9kPjxxQ29tPjExMjwvcUNvbT48Y0VBTlRyaWI+U0VNIEdUSU48L2NFQU5UcmliPjx2VW5UcmliPjAuMTIyPC92VW5UcmliPjxjQmVuZWY+U0M4NDAwMDg8L2NCZW5lZj48cVRyaWI+MTEyPC9xVHJpYj48dlByb2Q+MTMuNjY8L3ZQcm9kPjx4UHJvZD5MQUNSRSBSRVNFUlZBIDE4IDIyIDE1MDA8L3hQcm9kPjx2VW5Db20+MC4xMjI8L3ZVbkNvbT48aW5kVG90PjE8L2luZFRvdD48dVRyaWI+VU48L3VUcmliPjxOQ00+NjIxNzkwMDA8L05DTT48dUNvbT5VTjwvdUNvbT48Q0ZPUD42OTAzPC9DRk9QPjwvcHJvZD48aW1wb3N0bz48SUJTQ0JTPjxDU1Q+NDEwPC9DU1Q+PGNDbGFzc1RyaWI+NDEwMDI5PC9jQ2xhc3NUcmliPjwvSUJTQ0JTPjxJQ01TPjxJQ01TNDA+PG9yaWc+MDwvb3JpZz48Q1NUPjUwPC9DU1Q+PC9JQ01TNDA+PC9JQ01TPjxDT0ZJTlM+PENPRklOU091dHI+PHZDT0ZJTlM+MC4wMDwvdkNPRklOUz48Q1NUPjQ5PC9DU1Q+PHZCQz4wLjAwPC92QkM+PHBDT0ZJTlM+MDwvcENPRklOUz48L0NPRklOU091dHI+PC9DT0ZJTlM+PFBJUz48UElTT3V0cj48dlBJUz4wLjAwPC92UElTPjxDU1Q+NDk8L0NTVD48dkJDPjAuMDA8L3ZCQz48cFBJUz4wPC9wUElTPjwvUElTT3V0cj48L1BJUz48L2ltcG9zdG8+PHZJdGVtPjEzLjY2PC92SXRlbT48L2RldD48dG90YWw+PHZORlRvdD4yNy4zMjwvdk5GVG90PjxJQ01TVG90Pjx2Q09GSU5TPjAuMDA8L3ZDT0ZJTlM+PHZCQ1NUPjAuMDA8L3ZCQ1NUPjxxQkNNb25vUmV0PjAuMDA8L3FCQ01vbm9SZXQ+PHZJQ01TRGVzb24+MC4wMDwvdklDTVNEZXNvbj48dlByb2Q+MjcuMzI8L3ZQcm9kPjx2U2VnPjAuMDA8L3ZTZWc+PHZGQ1A+MC4wMDwvdkZDUD48dkZDUFNUPjAuMDA8L3ZGQ1BTVD48cUJDTW9ub1JldGVuPjAuMDA8L3FCQ01vbm9SZXRlbj48dlNUPjAuMDA8L3ZTVD48dklDTVM+MC4wMDwvdklDTVM+PHZJST4wLjAwPC92SUk+PHZPdXRybz4wLjAwPC92T3V0cm8+PHZGcmV0ZT4wLjAwPC92RnJldGU+PHZJQ01TTW9ub1JldGVuPjAuMDA8L3ZJQ01TTW9ub1JldGVuPjxxQkNNb25vPjAuMDA8L3FCQ01vbm8+PHZJQ01TTW9ubz4wLjAwPC92SUNNU01vbm8+PHZORj4yNy4zMjwvdk5GPjx2UElTPjAuMDA8L3ZQSVM+PHZJUElEZXZvbD4wLjAwPC92SVBJRGV2b2w+PHZCQz4wLjAwPC92QkM+PHZGQ1BTVFJldD4wLjAwPC92RkNQU1RSZXQ+PHZEZXNjPjAuMDA8L3ZEZXNjPjx2SVBJPjAuMDA8L3ZJUEk+PHZJQ01TTW9ub1JldD4wLjAwPC92SUNNU01vbm9SZXQ+PC9JQ01TVG90PjxJQlNDQlNUb3Q+PGdDQlM+PHZEZXZUcmliPjAuMDA8L3ZEZXZUcmliPjx2Q3JlZFByZXM+MC4wMDwvdkNyZWRQcmVzPjx2Q3JlZFByZXNDb25kU3VzPjAuMDA8L3ZDcmVkUHJlc0NvbmRTdXM+PHZDQlM+MC4wMDwvdkNCUz48dkRpZj4wLjAwPC92RGlmPjwvZ0NCUz48dkJDSUJTQ0JTPjAuMDA8L3ZCQ0lCU0NCUz48Z0lCUz48dklCUz4wLjAwPC92SUJTPjxnSUJTVUY+PHZEZXZUcmliPjAuMDA8L3ZEZXZUcmliPjx2SUJTVUY+MC4wMDwvdklCU1VGPjx2RGlmPjAuMDA8L3ZEaWY+PC9nSUJTVUY+PHZDcmVkUHJlcz4wLjAwPC92Q3JlZFByZXM+PHZDcmVkUHJlc0NvbmRTdXM+MC4wMDwvdkNyZWRQcmVzQ29uZFN1cz48Z0lCU011bj48dkRldlRyaWI+MC4wMDwvdkRldlRyaWI+PHZJQlNNdW4+MC4wMDwvdklCU011bj48dkRpZj4wLjAwPC92RGlmPjwvZ0lCU011bj48L2dJQlM+PC9JQlNDQlNUb3Q+PC90b3RhbD48cGFnPjxkZXRQYWc+PHZQYWc+MC4wMDwvdlBhZz48dFBhZz45MDwvdFBhZz48aW5kUGFnPjA8L2luZFBhZz48L2RldFBhZz48L3BhZz48SWQ+TkZlNDIyNjA0MTEwNDIzODcwMDAxNjU1NTAwMTAwMDAzMDI4MDEwMTE2MzEyMjI8L0lkPjxpZGU+PHRwTkY+MTwvdHBORj48bW9kPjU1PC9tb2Q+PGluZFByZXM+MTwvaW5kUHJlcz48dHBJbXA+MTwvdHBJbXA+PG5ORj4zMDI4MDwvbk5GPjxjTXVuRkc+NDIwMDIwMDwvY011bkZHPjxwcm9jRW1pPjA8L3Byb2NFbWk+PGZpbk5GZT4xPC9maW5ORmU+PGRoRW1pPjIwMjYtMDQtMjhUMTA6NTc6MjEtMDM6MDA8L2RoRW1pPjx0cEFtYj4xPC90cEFtYj48aW5kRmluYWw+MTwvaW5kRmluYWw+PGRoU2FpRW50PjIwMjYtMDQtMjhUMTE6MDI6MjAtMDM6MDA8L2RoU2FpRW50PjxpZERlc3Q+MjwvaWREZXN0Pjx0cEVtaXM+MTwvdHBFbWlzPjxjRFY+MjwvY0RWPjxjVUY+NDI8L2NVRj48c2VyaWU+MTwvc2VyaWU+PG5hdE9wPlJFVC4gREUgTUVSQ0FET1JJQSBSRUMuIFBBUkEgSU5ELiBFIE5BTyBBUExJQ0FEQSBOTyBQUk9DRVNTTzwvbmF0T3A+PGNORj4wMTE2MzEyMjwvY05GPjx2ZXJQcm9jPlBOXzQuMDA8L3ZlclByb2M+PGluZEludGVybWVkPjA8L2luZEludGVybWVkPjwvaWRlPjxlbWl0Pjx4Tm9tZT5KQUNFIENPTkZFQ0NPRVMgTFREQTwveE5vbWU+PENSVD4zPC9DUlQ+PHhGYW50PkNJQSBGQVNISU9OPC94RmFudD48Q05QSj4xMTA0MjM4NzAwMDE2NTwvQ05QSj48ZW5kZXJFbWl0Pjxmb25lPjQ3OTkyNzkyODQzPC9mb25lPjxVRj5TQzwvVUY+PHhQYWlzPkJyYXNpbDwveFBhaXM+PGNQYWlzPjEwNTg8L2NQYWlzPjx4TGdyPlIgUklDQVJETyBCRVRUQTwveExncj48eE11bj5BR1JPTEFORElBPC94TXVuPjxucm8+MjMxPC9ucm8+PGNNdW4+NDIwMDIwMDwvY011bj48eEJhaXJybz5DRU5UUk88L3hCYWlycm8+PENFUD44ODQyMDAwMDwvQ0VQPjwvZW5kZXJFbWl0PjxJRT4yNTU5MTU5NTA8L0lFPjwvZW1pdD48ZGVzdD48eE5vbWU+QVpaQVMgMjE1NCBTLkE8L3hOb21lPjxDTlBKPjE2NTkwMjM0MDEwOTk2PC9DTlBKPjxlbmRlckRlc3Q+PHhDcGw+R0xQMzAwIEM8L3hDcGw+PGZvbmU+MjEyMTI5NTAwMDwvZm9uZT48VUY+Uko8L1VGPjx4UGFpcz5CcmFzaWw8L3hQYWlzPjxjUGFpcz4xMDU4PC9jUGFpcz48eExncj5BViBBUlRIVVIgQU5UT05JTyBTRU5EQVM8L3hMZ3I+PHhNdW4+U0FPIEpPQU8gREUgTUVSSVRJPC94TXVuPjxucm8+OTk5PC9ucm8+PGNNdW4+MzMwNTEwOTwvY011bj48eEJhaXJybz5QQVJRVUUgSlVSSVRJPC94QmFpcnJvPjxDRVA+MjU1ODUwODU8L0NFUD48L2VuZGVyRGVzdD48SUU+MTIzMjM2ODk8L0lFPjxpbmRJRURlc3Q+MTwvaW5kSUVEZXN0PjxlbWFpbD5PQlJJR0FDT0VTRklTQ0FJU0BBUkVaWk8uQ09NLkJSPC9lbWFpbD48L2Rlc3Q+PHRyYW5zcD48bW9kRnJldGU+MTwvbW9kRnJldGU+PHZvbD48cGVzb0w+MC4xMDA8L3Blc29MPjxlc3A+Vk9MVU1FPC9lc3A+PHFWb2w+MTwvcVZvbD48blZvbD4wPC9uVm9sPjxwZXNvQj4wLjEwMDwvcGVzb0I+PC92b2w+PHRyYW5zcG9ydGE+PHhOb21lPk1PVlZJIExPR0lTVElDQSBMVERBPC94Tm9tZT48VUY+U0M8L1VGPjx4RW5kZXI+Ui4gMSBERSBKQU5FSVJPPC94RW5kZXI+PHhNdW4+QkxVTUVOQVU8L3hNdW4+PENOUEo+MjM4NjQ4MzgwMDEzNjI8L0NOUEo+PElFPjI1NjA1OTIwOTwvSUU+PC90cmFuc3BvcnRhPjwvdHJhbnNwPjwvaW5mTkZlPjwvTkZlPjx2ZXJzYW8+NC4wMDwvdmVyc2FvPjwvbmZlUHJvYz4="
+        }
+      ],
+      "cubagemM3": 0.017986,
+      "nfNumeros": [
+        "30280"
+      ],
+      "tipoFrete": "CIF",
+      "ufDestino": "ES",
+      "cepDestino": "29168-074",
+      "fornecedor": "AZZAS 2154 S.A",
+      "horaInicio": "08:00",
+      "pesoCubado": 5.3957999999999995,
+      "cnpjDestino": "09.611.669/0005-18",
+      "comprimento": 23,
+      "criadoPorId": "forn01",
+      "dataCriacao": "27/10/2026",
+      "ocorrencias": [],
+      "anexoNFDados": null,
+      "cancelamento": {
+        "causa": "Destinatário",
+        "motivo": "Pedido cancelado internamente.",
+        "status": "aceito",
+        "ocorrido": "Pedido cancelado internamente.",
+        "solicitante": "Indústria ABC",
+        "confirmadoPor": "Indústria ABC",
+        "dataConclusao": "03/11/2026 às 14:55",
+        "solicitanteId": "forn01",
+        "dataSolicitacao": "03/11/2026 às 14:55",
+        "responsabilidade": "Destinatário",
+        "solicitantePerfil": "fornecedor"
+      },
+      "cidadeOrigem": "São João de Meriti",
+      "razaoDestino": "ZZAB COMÉRCIO DE CALÇADOS LTDA",
+      "anexoXMLDados": "data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPG5mZVByb2MgdmVyc2FvPSI0LjAwIiB4bWxucz0iaHR0cDovL3d3dy5wb3J0YWxmaXNjYWwuaW5mLmJyL25mZSI+PHByb3RORmU+PGluZlByb3Q+PG5Qcm90PjI0MjI2MDE4OTUzNTIxNzwvblByb3Q+PGRpZ1ZhbD44MXJrc01LU1ZCTzA4V3dVREtmaFZHdFhHeFk9PC9kaWdWYWw+PGRoUmVjYnRvPjIwMjYtMDQtMjhUMTE6MDI6MjMtMDM6MDA8L2RoUmVjYnRvPjxjaE5GZT40MjI2MDQxMTA0MjM4NzAwMDE2NTU1MDAxMDAwMDMwMjgwMTAxMTYzMTIyMjwvY2hORmU+PHhNb3Rpdm8+QXV0b3JpemFkbyBvIHVzbyBkYSBORi1lPC94TW90aXZvPjxjU3RhdD4xMDA8L2NTdGF0PjwvaW5mUHJvdD48L3Byb3RORmU+PE5GZT48aW5mTkZlIElkPSJORmU0MjI2MDQxMTA0MjM4NzAwMDE2NTU1MDAxMDAwMDMwMjgwMTAxMTYzMTIyMiI+PGluZkFkaWM+PGluZkFkRmlzY28+UkVGRVJFTlRFIFJFVE9STk8gTk9UQSBGSVNDQUwgIDIyNjcwMSAgUkVGIE9QIE82MzUwNDQ5IENBTkNFTEFEQSAgW108L2luZkFkRmlzY28+PC9pbmZBZGljPjxpbmZSZXNwVGVjPjxmb25lPjQ0OTk5OTk5OTk8L2ZvbmU+PENOUEo+MDc1MDQ1MDUwMDAxMzI8L0NOUEo+PHhDb250YXRvPkRlc2Vudm9sdmVkb3IgUmVzcG9uc2F2ZWw8L3hDb250YXRvPjxlbWFpbD5lbWFpbC50ZXN0ZUB0ZWNub3NwZWVkLmNvbS5icjwvZW1haWw+PC9pbmZSZXNwVGVjPjxkZXQ+PG5JdGVtPjE8L25JdGVtPjxwcm9kPjxjRUFOPlNFTSBHVElOPC9jRUFOPjxjUHJvZD4wMi4wMi4wNTQ5PC9jUHJvZD48cUNvbT4xMTI8L3FDb20+PGNFQU5UcmliPlNFTSBHVElOPC9jRUFOVHJpYj48dlVuVHJpYj4wLjAzPC92VW5UcmliPjxjQmVuZWY+U0M4NDAwMDg8L2NCZW5lZj48cVRyaWI+MTEyPC9xVHJpYj48dlByb2Q+My4zNjwvdlByb2Q+PHhQcm9kPkVUUSBDT0QgQkFSUkFTIERPVUJMRSBSU1Y8L3hQcm9kPjx2VW5Db20+MC4wMzwvdlVuQ29tPjxpbmRUb3Q+MTwvaW5kVG90Pjx1VHJpYj5VTjwvdVRyaWI+PE5DTT40ODIxMTAwMDwvTkNNPjx1Q29tPlVOPC91Q29tPjxDRk9QPjY5MDM8L0NGT1A+PC9wcm9kPjxpbXBvc3RvPjxJQlNDQlM+PENTVD40MTA8L0NTVD48Y0NsYXNzVHJpYj40MTAwMjk8L2NDbGFzc1RyaWI+PC9JQlNDQlM+PElDTVM+PElDTVM0MD48b3JpZz4wPC9vcmlnPjxDU1Q+NTA8L0NTVD48L0lDTVM0MD48L0lDTVM+PENPRklOUz48Q09GSU5TT3V0cj48dkNPRklOUz4wLjAwPC92Q09GSU5TPjxDU1Q+NDk8L0NTVD48dkJDPjAuMDA8L3ZCQz48cENPRklOUz4wPC9wQ09GSU5TPjwvQ09GSU5TT3V0cj48L0NPRklOUz48UElTPjxQSVNPdXRyPjx2UElTPjAuMDA8L3ZQSVM+PENTVD40OTwvQ1NUPjx2QkM+MC4wMDwvdkJDPjxwUElTPjA8L3BQSVM+PC9QSVNPdXRyPjwvUElTPjwvaW1wb3N0bz48dkl0ZW0+My4zNjwvdkl0ZW0+PC9kZXQ+PGRldD48bkl0ZW0+Mjwvbkl0ZW0+PHByb2Q+PGNFQU4+U0VNIEdUSU48L2NFQU4+PGNQcm9kPjAyLjEyLjAzMTM8L2NQcm9kPjxxQ29tPjExMjwvcUNvbT48Y0VBTlRyaWI+U0VNIEdUSU48L2NFQU5UcmliPjx2VW5UcmliPjAuMDkyPC92VW5UcmliPjxjQmVuZWY+U0M4NDAwMDg8L2NCZW5lZj48cVRyaWI+MTEyPC9xVHJpYj48dlByb2Q+MTAuMzA8L3ZQcm9kPjx4UHJvZD5UQUcgUlNWIFJFQ0lDTEFETyAyNDAgMVA1UCA2ODYyNjggMTJYNCA3PC94UHJvZD48dlVuQ29tPjAuMDkyPC92VW5Db20+PGluZFRvdD4xPC9pbmRUb3Q+PHVUcmliPlVOPC91VHJpYj48TkNNPjQ4MjExMDAwPC9OQ00+PHVDb20+VU48L3VDb20+PENGT1A+NjkwMzwvQ0ZPUD48L3Byb2Q+PGltcG9zdG8+PElCU0NCUz48Q1NUPjQxMDwvQ1NUPjxjQ2xhc3NUcmliPjQxMDAyOTwvY0NsYXNzVHJpYj48L0lCU0NCUz48SUNNUz48SUNNUzQwPjxvcmlnPjA8L29yaWc+PENTVD41MDwvQ1NUPjwvSUNNUzQwPjwvSUNNUz48Q09GSU5TPjxDT0ZJTlNPdXRyPjx2Q09GSU5TPjAuMDA8L3ZDT0ZJTlM+PENTVD40OTwvQ1NUPjx2QkM+MC4wMDwvdkJDPjxwQ09GSU5TPjA8L3BDT0ZJTlM+PC9DT0ZJTlNPdXRyPjwvQ09GSU5TPjxQSVM+PFBJU091dHI+PHZQSVM+MC4wMDwvdlBJUz48Q1NUPjQ5PC9DU1Q+PHZCQz4wLjAwPC92QkM+PHBQSVM+MDwvcFBJUz48L1BJU091dHI+PC9QSVM+PC9pbXBvc3RvPjx2SXRlbT4xMC4zMDwvdkl0ZW0+PC9kZXQ+PGRldD48bkl0ZW0+Mzwvbkl0ZW0+PHByb2Q+PGNFQU4+U0VNIEdUSU48L2NFQU4+PGNQcm9kPjA1LjAzLjAwMzE8L2NQcm9kPjxxQ29tPjExMjwvcUNvbT48Y0VBTlRyaWI+U0VNIEdUSU48L2NFQU5UcmliPjx2VW5UcmliPjAuMTIyPC92VW5UcmliPjxjQmVuZWY+U0M4NDAwMDg8L2NCZW5lZj48cVRyaWI+MTEyPC9xVHJpYj48dlByb2Q+MTMuNjY8L3ZQcm9kPjx4UHJvZD5MQUNSRSBSRVNFUlZBIDE4IDIyIDE1MDA8L3hQcm9kPjx2VW5Db20+MC4xMjI8L3ZVbkNvbT48aW5kVG90PjE8L2luZFRvdD48dVRyaWI+VU48L3VUcmliPjxOQ00+NjIxNzkwMDA8L05DTT48dUNvbT5VTjwvdUNvbT48Q0ZPUD42OTAzPC9DRk9QPjwvcHJvZD48aW1wb3N0bz48SUJTQ0JTPjxDU1Q+NDEwPC9DU1Q+PGNDbGFzc1RyaWI+NDEwMDI5PC9jQ2xhc3NUcmliPjwvSUJTQ0JTPjxJQ01TPjxJQ01TNDA+PG9yaWc+MDwvb3JpZz48Q1NUPjUwPC9DU1Q+PC9JQ01TNDA+PC9JQ01TPjxDT0ZJTlM+PENPRklOU091dHI+PHZDT0ZJTlM+MC4wMDwvdkNPRklOUz48Q1NUPjQ5PC9DU1Q+PHZCQz4wLjAwPC92QkM+PHBDT0ZJTlM+MDwvcENPRklOUz48L0NPRklOU091dHI+PC9DT0ZJTlM+PFBJUz48UElTT3V0cj48dlBJUz4wLjAwPC92UElTPjxDU1Q+NDk8L0NTVD48dkJDPjAuMDA8L3ZCQz48cFBJUz4wPC9wUElTPjwvUElTT3V0cj48L1BJUz48L2ltcG9zdG8+PHZJdGVtPjEzLjY2PC92SXRlbT48L2RldD48dG90YWw+PHZORlRvdD4yNy4zMjwvdk5GVG90PjxJQ01TVG90Pjx2Q09GSU5TPjAuMDA8L3ZDT0ZJTlM+PHZCQ1NUPjAuMDA8L3ZCQ1NUPjxxQkNNb25vUmV0PjAuMDA8L3FCQ01vbm9SZXQ+PHZJQ01TRGVzb24+MC4wMDwvdklDTVNEZXNvbj48dlByb2Q+MjcuMzI8L3ZQcm9kPjx2U2VnPjAuMDA8L3ZTZWc+PHZGQ1A+MC4wMDwvdkZDUD48dkZDUFNUPjAuMDA8L3ZGQ1BTVD48cUJDTW9ub1JldGVuPjAuMDA8L3FCQ01vbm9SZXRlbj48dlNUPjAuMDA8L3ZTVD48dklDTVM+MC4wMDwvdklDTVM+PHZJST4wLjAwPC92SUk+PHZPdXRybz4wLjAwPC92T3V0cm8+PHZGcmV0ZT4wLjAwPC92RnJldGU+PHZJQ01TTW9ub1JldGVuPjAuMDA8L3ZJQ01TTW9ub1JldGVuPjxxQkNNb25vPjAuMDA8L3FCQ01vbm8+PHZJQ01TTW9ubz4wLjAwPC92SUNNU01vbm8+PHZORj4yNy4zMjwvdk5GPjx2UElTPjAuMDA8L3ZQSVM+PHZJUElEZXZvbD4wLjAwPC92SVBJRGV2b2w+PHZCQz4wLjAwPC92QkM+PHZGQ1BTVFJldD4wLjAwPC92RkNQU1RSZXQ+PHZEZXNjPjAuMDA8L3ZEZXNjPjx2SVBJPjAuMDA8L3ZJUEk+PHZJQ01TTW9ub1JldD4wLjAwPC92SUNNU01vbm9SZXQ+PC9JQ01TVG90PjxJQlNDQlNUb3Q+PGdDQlM+PHZEZXZUcmliPjAuMDA8L3ZEZXZUcmliPjx2Q3JlZFByZXM+MC4wMDwvdkNyZWRQcmVzPjx2Q3JlZFByZXNDb25kU3VzPjAuMDA8L3ZDcmVkUHJlc0NvbmRTdXM+PHZDQlM+MC4wMDwvdkNCUz48dkRpZj4wLjAwPC92RGlmPjwvZ0NCUz48dkJDSUJTQ0JTPjAuMDA8L3ZCQ0lCU0NCUz48Z0lCUz48dklCUz4wLjAwPC92SUJTPjxnSUJTVUY+PHZEZXZUcmliPjAuMDA8L3ZEZXZUcmliPjx2SUJTVUY+MC4wMDwvdklCU1VGPjx2RGlmPjAuMDA8L3ZEaWY+PC9nSUJTVUY+PHZDcmVkUHJlcz4wLjAwPC92Q3JlZFByZXM+PHZDcmVkUHJlc0NvbmRTdXM+MC4wMDwvdkNyZWRQcmVzQ29uZFN1cz48Z0lCU011bj48dkRldlRyaWI+MC4wMDwvdkRldlRyaWI+PHZJQlNNdW4+MC4wMDwvdklCU011bj48dkRpZj4wLjAwPC92RGlmPjwvZ0lCU011bj48L2dJQlM+PC9JQlNDQlNUb3Q+PC90b3RhbD48cGFnPjxkZXRQYWc+PHZQYWc+MC4wMDwvdlBhZz48dFBhZz45MDwvdFBhZz48aW5kUGFnPjA8L2luZFBhZz48L2RldFBhZz48L3BhZz48SWQ+TkZlNDIyNjA0MTEwNDIzODcwMDAxNjU1NTAwMTAwMDAzMDI4MDEwMTE2MzEyMjI8L0lkPjxpZGU+PHRwTkY+MTwvdHBORj48bW9kPjU1PC9tb2Q+PGluZFByZXM+MTwvaW5kUHJlcz48dHBJbXA+MTwvdHBJbXA+PG5ORj4zMDI4MDwvbk5GPjxjTXVuRkc+NDIwMDIwMDwvY011bkZHPjxwcm9jRW1pPjA8L3Byb2NFbWk+PGZpbk5GZT4xPC9maW5ORmU+PGRoRW1pPjIwMjYtMDQtMjhUMTA6NTc6MjEtMDM6MDA8L2RoRW1pPjx0cEFtYj4xPC90cEFtYj48aW5kRmluYWw+MTwvaW5kRmluYWw+PGRoU2FpRW50PjIwMjYtMDQtMjhUMTE6MDI6MjAtMDM6MDA8L2RoU2FpRW50PjxpZERlc3Q+MjwvaWREZXN0Pjx0cEVtaXM+MTwvdHBFbWlzPjxjRFY+MjwvY0RWPjxjVUY+NDI8L2NVRj48c2VyaWU+MTwvc2VyaWU+PG5hdE9wPlJFVC4gREUgTUVSQ0FET1JJQSBSRUMuIFBBUkEgSU5ELiBFIE5BTyBBUExJQ0FEQSBOTyBQUk9DRVNTTzwvbmF0T3A+PGNORj4wMTE2MzEyMjwvY05GPjx2ZXJQcm9jPlBOXzQuMDA8L3ZlclByb2M+PGluZEludGVybWVkPjA8L2luZEludGVybWVkPjwvaWRlPjxlbWl0Pjx4Tm9tZT5KQUNFIENPTkZFQ0NPRVMgTFREQTwveE5vbWU+PENSVD4zPC9DUlQ+PHhGYW50PkNJQSBGQVNISU9OPC94RmFudD48Q05QSj4xMTA0MjM4NzAwMDE2NTwvQ05QSj48ZW5kZXJFbWl0Pjxmb25lPjQ3OTkyNzkyODQzPC9mb25lPjxVRj5TQzwvVUY+PHhQYWlzPkJyYXNpbDwveFBhaXM+PGNQYWlzPjEwNTg8L2NQYWlzPjx4TGdyPlIgUklDQVJETyBCRVRUQTwveExncj48eE11bj5BR1JPTEFORElBPC94TXVuPjxucm8+MjMxPC9ucm8+PGNNdW4+NDIwMDIwMDwvY011bj48eEJhaXJybz5DRU5UUk88L3hCYWlycm8+PENFUD44ODQyMDAwMDwvQ0VQPjwvZW5kZXJFbWl0PjxJRT4yNTU5MTU5NTA8L0lFPjwvZW1pdD48ZGVzdD48eE5vbWU+QVpaQVMgMjE1NCBTLkE8L3hOb21lPjxDTlBKPjE2NTkwMjM0MDEwOTk2PC9DTlBKPjxlbmRlckRlc3Q+PHhDcGw+R0xQMzAwIEM8L3hDcGw+PGZvbmU+MjEyMTI5NTAwMDwvZm9uZT48VUY+Uko8L1VGPjx4UGFpcz5CcmFzaWw8L3hQYWlzPjxjUGFpcz4xMDU4PC9jUGFpcz48eExncj5BViBBUlRIVVIgQU5UT05JTyBTRU5EQVM8L3hMZ3I+PHhNdW4+U0FPIEpPQU8gREUgTUVSSVRJPC94TXVuPjxucm8+OTk5PC9ucm8+PGNNdW4+MzMwNTEwOTwvY011bj48eEJhaXJybz5QQVJRVUUgSlVSSVRJPC94QmFpcnJvPjxDRVA+MjU1ODUwODU8L0NFUD48L2VuZGVyRGVzdD48SUU+MTIzMjM2ODk8L0lFPjxpbmRJRURlc3Q+MTwvaW5kSUVEZXN0PjxlbWFpbD5PQlJJR0FDT0VTRklTQ0FJU0BBUkVaWk8uQ09NLkJSPC9lbWFpbD48L2Rlc3Q+PHRyYW5zcD48bW9kRnJldGU+MTwvbW9kRnJldGU+PHZvbD48cGVzb0w+MC4xMDA8L3Blc29MPjxlc3A+Vk9MVU1FPC9lc3A+PHFWb2w+MTwvcVZvbD48blZvbD4wPC9uVm9sPjxwZXNvQj4wLjEwMDwvcGVzb0I+PC92b2w+PHRyYW5zcG9ydGE+PHhOb21lPk1PVlZJIExPR0lTVElDQSBMVERBPC94Tm9tZT48VUY+U0M8L1VGPjx4RW5kZXI+Ui4gMSBERSBKQU5FSVJPPC94RW5kZXI+PHhNdW4+QkxVTUVOQVU8L3hNdW4+PENOUEo+MjM4NjQ4MzgwMDEzNjI8L0NOUEo+PElFPjI1NjA1OTIwOTwvSUU+PC90cmFuc3BvcnRhPjwvdHJhbnNwPjwvaW5mTkZlPjwvTkZlPjx2ZXJzYW8+NC4wMDwvdmVyc2FvPjwvbmZlUHJvYz4=",
+      "arquivadoForn": true,
+      "cidadeDestino": "Serra",
+      "mensagensChat": [],
+      "numeroDestino": "3255",
+      "pesoTarifavel": 5.3957999999999995,
+      "arquivadoAdmin": true,
+      "comprovantePOD": null,
+      "dataCriacaoISO": "2026-10-27T17:02:00.563Z",
+      "disponivelData": "2026-10-27",
+      "arquivadoTransp": true,
+      "coletaRealizada": false,
+      "enderecoDestino": "Rod. Governador Mario Covas",
+      "valorMercadoria": 27.32,
+      "historicoEventos": [
+        {
+          "data": "27/10/2026 às 14:02",
+          "evento": "Solicitação Criada"
+        },
+        {
+          "data": "03/11/2026 às 14:55",
+          "evento": "SOLICITAÇÃO DE CANCELAMENTO — Responsabilidade informada: Destinatário. Ocorrido: Pedido cancelado internamente."
+        },
+        {
+          "data": "03/11/2026 às 14:55",
+          "evento": "CANCELAMENTO ACEITO — Responsabilidade: Destinatário. Ocorrido: Pedido cancelado internamente."
+        }
+      ],
+      "dataLimiteEntrega": "",
+      "complementoDestino": "",
+      "enderecoFornecedor": {
+        "uf": "RJ",
+        "cep": "25585085",
+        "cnpj": "16.590.234/0064-50",
+        "numero": "999",
+        "logradouro": "ARTHUR ANTONIO SENDAS",
+        "complemento": "GALPAO300 MODULOS A E B",
+        "razaoSocial": "AZZAS 2154 S.A"
+      },
+      "comprovantePODDados": null,
+      "transportadoraVencedoraID": "brasspress01",
+      "transportadoraVencedoraNome": "Braspress"
+    },
+    {
+      "id": "COL-9563",
+      "cep": "25585-085",
+      "cnpj": "16.590.234/0064-50",
+      "peso": 183,
+      "frete": "CIF",
+      "modal": "Rodoviário",
+      "altura": 5,
+      "origem": "ARTHUR ANTONIO SENDAS, 999 - GALPAO300 MODULOS A E B - RJ",
+      "status": "Em Trânsito",
+      "anexoNF": null,
+      "contato": {
+        "nome": "João da Silva",
+        "email": "raony.borges@usereserva.com",
+        "telefone": "21978345560"
+      },
+      "destino": "ZZAB COMÉRCIO DE CALÇADOS LTDA — Rod. Governador Mario Covas, 3255 - ES",
+      "horaFim": "18:00",
+      "largura": 13,
+      "reversa": false,
+      "volumes": 234,
+      "anexoXML": null,
+      "anexosNF": [],
+      "emAtraso": false,
+      "ufOrigem": "RJ",
+      "anexosXML": [],
+      "cubagemM3": 0.19773,
+      "nfNumeros": [],
+      "substatus": null,
+      "tipoFrete": "CIF",
+      "ufDestino": "ES",
+      "cepDestino": "29168-074",
+      "fornecedor": "AZZAS 2154 S.A",
+      "horaInicio": "08:00",
+      "pesoCubado": 59.318999999999996,
+      "cnpjDestino": "09.611.669/0005-18",
+      "comprimento": 13,
+      "criadoPorId": "forn01",
+      "dataCriacao": "03/11/2026",
+      "ocorrencias": [],
+      "anexoNFDados": null,
+      "cancelamento": null,
+      "cidadeOrigem": "São João de Meriti",
+      "razaoDestino": "ZZAB COMÉRCIO DE CALÇADOS LTDA",
+      "anexoXMLDados": null,
+      "arquivadoForn": false,
+      "cidadeDestino": "Serra",
+      "mensagensChat": [
+        {
+          "tipo": "sistema-alerta",
+          "autor": "SISTEMA",
+          "canal": "admin_fornecedor",
+          "texto": "<b>Carga em trânsito</b><br>A carga saiu do status <b>Coletada</b> e agora está <b>Em Trânsito</b>.",
+          "lidaPor": [
+            "transportadora",
+            "fornecedor"
+          ],
+          "timestamp": "03/11/2026 às 15:34"
+        },
+        {
+          "tipo": "admin",
+          "autor": "Administrador Master",
+          "canal": "admin_fornecedor",
+          "texto": "ola, forn",
+          "arquivo": null,
+          "lidaPor": [
+            "admin",
+            "fornecedor"
+          ],
+          "timestamp": "03/11/2026, 15:44:20"
+        },
+        {
+          "tipo": "fornecedor",
+          "autor": "Indústria ABC",
+          "canal": "admin_fornecedor",
+          "texto": "olá",
+          "arquivo": null,
+          "lidaPor": [
+            "fornecedor"
+          ],
+          "timestamp": "03/11/2026, 15:44:50"
+        }
+      ],
+      "numeroDestino": "3255",
+      "pesoTarifavel": 183,
+      "arquivadoAdmin": false,
+      "comprovantePOD": null,
+      "dataCriacaoISO": "2026-11-03T17:56:31.692Z",
+      "disponivelData": "2026-11-03",
+      "statusAnterior": null,
+      "arquivadoTransp": false,
+      "coletaRealizada": true,
+      "enderecoDestino": "Rod. Governador Mario Covas",
+      "valorMercadoria": 63210,
+      "historicoEventos": [
+        {
+          "data": "03/11/2026 às 14:56",
+          "evento": "Solicitação Criada"
+        },
+        {
+          "data": "03/11/2026 às 14:56",
+          "evento": "Braspress assumiu a responsabilidade pela coleta."
+        },
+        {
+          "data": "03/11/2026 às 15:26",
+          "evento": "Coleta realizada (confirmada por Brasspress). Status atual: Coletada."
+        },
+        {
+          "data": "03/11/2026 às 15:34",
+          "evento": "Carga saiu do status Coletada e passou para Em Trânsito."
+        }
+      ],
+      "dataLimiteEntrega": "",
+      "complementoDestino": "",
+      "enderecoFornecedor": {
+        "uf": "RJ",
+        "cep": "25585085",
+        "cnpj": "16.590.234/0064-50",
+        "numero": "999",
+        "logradouro": "ARTHUR ANTONIO SENDAS",
+        "complemento": "GALPAO300 MODULOS A E B",
+        "razaoSocial": "AZZAS 2154 S.A"
+      },
+      "comprovantePODDados": null,
+      "dataColetaRealizada": "03/11/2026 às 15:26",
+      "quemConfirmouColeta": "transportadora",
+      "transportadoraVencedoraID": "brasspress01",
+      "transportadoraVencedoraNome": "Braspress"
+    }
+  ],
+  "meta": {
+    "version": 48,
+    "updatedAt": 1793734756606
+  },
+  "session:7oNv6PXj-Mld08wrKtS1OGMKaxrqPuQ5VCqzxuwAc8E": {
+    "userId": "admin01",
+    "exp": 1793755147167
+  },
+  "session:uuXGzYV2f3VUqRd5ag3wrQ0hBSVl2pGtJ2ztI6PEoX4": {
+    "userId": "admin01",
+    "exp": 1793755173683
+  },
+  "session:pCBQaQY5jaRBpHJ9N68e1X7q2oIgKcnEtoeXmu8npxM": {
+    "userId": "admin01",
+    "exp": 1793755856568
+  },
+  "session:NsPVl_xHjG9x1G0Kq1X5nRvzUZ2ay7ybtfXi66zKqcE": {
+    "userId": "admin01",
+    "exp": 1793755888380
+  },
+  "session:IewZIEU4ecgO9ZU2J6eCpnuusmoXgsRXAyvebbQRpIw": {
+    "userId": "forn01",
+    "exp": 1793755889840
+  },
+  "session:Hui77h82sbJNpLrSU3pq_RpEpJvQCvjUwCMNCUiS9XA": {
+    "userId": "brasspress01",
+    "exp": 1793755891597
+  },
+  "tickets": [
+    {
+      "id": "CH-1793727208991-U8P90",
+      "status": "Resolvido",
+      "assunto": "vvsvs",
+      "criadoEm": "2026-11-03T17:33:28.991Z",
+      "perfilId": "forn01",
+      "mensagens": [
+        {
+          "id": "M-1793727208991",
+          "data": "2026-11-03T17:33:28.991Z",
+          "tipo": "fornecedor",
+          "texto": "fzdsfs",
+          "autorId": "forn01",
+          "autorNome": "Indústria ABC"
+        },
+        {
+          "id": "M-1793727227899-M6-40w",
+          "data": "2026-11-03T17:33:47.899Z",
+          "tipo": "admin",
+          "texto": "Olá! Recebemos sua solicitação e vamos verificar.",
+          "autorId": "admin01",
+          "autorNome": "Administrador Master"
+        },
+        {
+          "id": "M-1793727232956-RRDtjw",
+          "data": "2026-11-03T17:33:52.956Z",
+          "tipo": "admin",
+          "texto": "Por favor, envie o ID da carga e os documentos relacionados.",
+          "autorId": "admin01",
+          "autorNome": "Administrador Master"
+        }
+      ],
+      "usuarioId": "forn01",
+      "criadoPorId": "forn01",
+      "resolvidoEm": "2026-11-03T17:33:55.919Z",
+      "criadoPorNome": "Indústria ABC",
+      "resolvidoPorId": "admin01"
+    }
+  ],
+  "session:anPiUQnq0eZ643KXZs1erlU4jLGtLptwU1S-xFr5Nnk": {
+    "userId": "admin01",
+    "exp": 1793756019468
+  },
+  "session:owtxQZK2h-aT-ENuQgZv__-BPHmxkUQbk1kGYIEr47E": {
+    "userId": "forn01",
+    "exp": 1793756350286
+  },
+  "session:utFp8gEj7Nli9SKZHaap4QP1lkx_Zy1vlifFvRnlTaI": {
+    "userId": "brasspress01",
+    "exp": 1793757414676
+  },
+  "session:05E4q0DiBU1HW0zHmkrqJJGDeoBlcYfM-zD2p3wpr2M": {
+    "userId": "admin01",
+    "exp": 1793757679944
+  },
+  "session:W4AhYSH1GFZcsNLNcWZmO9MeotQBcYxhQeW4lEV10Is": {
+    "userId": "admin01",
+    "exp": 1793760198430
+  },
+  "session:JspU1aB1oNd49Nlbs8-URmOFOCToM5l217NPuLg4CNk": {
+    "userId": "forn01",
+    "exp": 1793760468659
+  },
+  "session:BKaScIvFup8MXnDCzHjmatHOZV_eZGm1fMx1EcTuar8": {
+    "userId": "admin01",
+    "exp": 1793763549312
+  }
+}

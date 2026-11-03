@@ -1,11 +1,13 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-title Logistix360 - Ambiente local de testes
+title Logistix360 - Ambiente local de testes (Supabase)
 echo ==============================================
 echo   Logistix360 - Ambiente local de testes
+echo   Banco de Dados: Supabase
 echo ==============================================
 echo.
+
 where node >nul 2>nul
 if errorlevel 1 (
   echo Node.js nao encontrado.
@@ -13,25 +15,14 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-where npm >nul 2>nul
+
+powershell -NoProfile -Command "$p = Get-NetTCPConnection -LocalPort 8888 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1; if ($p) { $proc = Get-Process -Id $p.OwningProcess -ErrorAction SilentlyContinue; if ($proc -and $proc.Name -eq 'node') { Write-Host 'Encerrando instancia anterior do servidor (PID' $p.OwningProcess')...'; Stop-Process -Id $p.OwningProcess -Force; Start-Sleep -Seconds 2 } elseif ($proc) { Write-Host 'A porta 8888 esta ocupada por outro programa:' $proc.Name '(PID' $p.OwningProcess')'; exit 1 } }"
 if errorlevel 1 (
-  echo npm nao encontrado. Reinstale o Node.js LTS.
   pause
   exit /b 1
 )
-if not exist node_modules (
-  echo Instalando dependencias. A primeira vez precisa de internet...
-  call npm install
-  if errorlevel 1 (
-    echo Falha ao instalar dependencias.
-    pause
-    exit /b 1
-  )
-)
+
+echo Iniciando o servidor local...
 echo.
-echo Iniciando o servidor de testes...
-echo Quando aparecer a URL, abra http://localhost:8888 no navegador.
-echo Para parar o site, feche esta janela ou pressione Ctrl+C.
-echo.
-call npm run dev
+node server.mjs
 pause
