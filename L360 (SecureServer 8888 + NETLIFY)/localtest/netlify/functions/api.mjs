@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+﻿import fs from 'node:fs';
 import path from 'node:path';
 
 const LOCAL_STORE = path.join(process.cwd(), '.local_store.json');
@@ -249,7 +249,19 @@ async function del(key) {
 const envPasswordFingerprint = password => password ? crypto.createHash('sha256').update(String(password)).digest('base64url') : null;
 
 const sharedEmail = () => String(process.env.LOGISTIX_SHARED_EMAIL || '').trim().toLowerCase();
-const MANAGED_IDS = ['admin01', 'forn01', 'brasspress01'];
+
+// Usuarios adicionais com acesso a todos os perfis (admin + fornecedor + transportadora)
+const EXTRA_SHARED_USERS = [
+  { prefix: 'samuel',  nome: 'Samuel Fragoso',  email: 'samuel.fragoso@farmrio.com.br' },
+  { prefix: 'natalia', nome: 'Natalia Alves',    email: 'natalia.alves@usereserva.com' },
+  { prefix: 'adriano', nome: 'Adriano Soares',   email: 'adriano.soares@farmrio.com.br' }
+];
+
+// IDs gerenciados pelo sistema (senhas vem do .env)
+const MANAGED_IDS = [
+  'admin01', 'forn01', 'brasspress01',
+  ...EXTRA_SHARED_USERS.flatMap(u => [u.prefix+'_admin', u.prefix+'_forn', u.prefix+'_transp'])
+];
 
 async function ensureUsers() {
   let users = await read('users', null);
@@ -272,17 +284,25 @@ async function ensureUsers() {
     };
   };
 
+  const extraProfiles = (eu, a, f, t) => [
+    make(eu.prefix+'_admin',  eu.nome, 'admin',          eu.email, a, ['TODAS']),
+    make(eu.prefix+'_forn',   eu.nome, 'fornecedor',     eu.email, f, []),
+    make(eu.prefix+'_transp', eu.nome, 'transportadora', eu.email, t, ['SP','RJ','MG','ES'])
+  ];
+
   if (!Array.isArray(users) || !users.length) {
     const a = adminPass || 'Admin@123', f = fornPass || 'Forn@123', t = transpPass || 'Brass@123';
     users = [
       make('admin01', 'Administrador Master', 'admin', shared || 'admin@logistix.com', a, ['TODAS']),
-      make('forn01', 'Indústria ABC', 'fornecedor', shared || 'fornecedor@empresa.com', f, []),
-      make('brasspress01', 'Brasspress', 'transportadora', shared || 'brasspress@logistix.com', t, ['SP', 'RJ', 'MG', 'ES'])
+      make('forn01', 'Industria ABC', 'fornecedor', shared || 'fornecedor@empresa.com', f, []),
+      make('brasspress01', 'Brasspress', 'transportadora', shared || 'brasspress@logistix.com', t, ['SP','RJ','MG','ES'])
     ];
+    for (const eu of EXTRA_SHARED_USERS) users.push(...extraProfiles(eu, a, f, t));
     await write('users', users);
     return users;
   }
 
+  // --- Sincronizar perfis primarios (admin01 / forn01 / brasspress01) ---
   const configured = [
     ['admin01', adminPass],
     ['forn01', fornPass],
@@ -292,14 +312,12 @@ async function ensureUsers() {
   for (const [id, pass] of configured) {
     const i = users.findIndex(x => x.id === id);
     if (i < 0) continue;
-    // Modo e-mail único: os 3 perfis administrativos passam a usar o mesmo e-mail
     if (shared && String(users[i].email || '').toLowerCase() !== shared) {
       users[i] = { ...users[i], email: shared };
       changed = true;
     }
     if (!pass) continue;
     const fp = envPasswordFingerprint(pass);
-    // Com e-mail único, a senha do .env/Netlify é a fonte de verdade (mesmo se houver senha personalizada antiga)
     if ((shared || !users[i].customPassword) && users[i].managedPasswordFingerprint !== fp) {
       const h = hashPassword(pass);
       users[i] = {
@@ -315,10 +333,40 @@ async function ensureUsers() {
       changed = true;
     }
   }
+
+  // --- Provisionar / sincronizar usuarios extras ---
+  const a = adminPass || 'Admin@123', f = fornPass || 'Forn@123', t = transpPass || 'Brass@123';
+  for (const eu of EXTRA_SHARED_USERS) {
+    const profs = [
+      { id: eu.prefix+'_admin',  tipo: 'admin',          pass: a, cob: ['TODAS'] },
+      { id: eu.prefix+'_forn',   tipo: 'fornecedor',     pass: f, cob: [] },
+      { id: eu.prefix+'_transp', tipo: 'transportadora', pass: t, cob: ['SP','RJ','MG','ES'] }
+    ];
+    for (const p of profs) {
+      const idx = users.findIndex(x => x.id === p.id);
+      if (idx < 0) {
+        users.push(make(p.id, eu.nome, p.tipo, eu.email, p.pass, p.cob));
+        changed = true;
+      } else {
+        if (String(users[idx].email || '').toLowerCase() !== eu.email.toLowerCase()) {
+          users[idx] = { ...users[idx], email: eu.email };
+          changed = true;
+        }
+        const fp = envPasswordFingerprint(p.pass);
+        if (users[idx].managedPasswordFingerprint !== fp) {
+          const h = hashPassword(p.pass);
+          users[idx] = { ...users[idx], passwordSalt: h.salt, passwordHash: h.hash, passwordIterations: 210000, managedPasswordFingerprint: fp, customPassword: false };
+          delete users[idx].plainPassword;
+          delete users[idx].senha;
+          changed = true;
+        }
+      }
+    }
+  }
+
   if (changed) await write('users', users);
   return users;
 }
-
 async function getSession(req) {
   const raw = req.headers.get('cookie') || '';
   const m = raw.match(new RegExp(`${COOKIE}=([^;]+)`));
@@ -435,6 +483,12 @@ async function login(req) {
     forn01: [process.env.LOGISTIX_FORNECEDOR_PASSWORD, ['FornLocal@123', 'Forn@123']],
     brasspress01: [process.env.LOGISTIX_TRANSPORTADORA_PASSWORD, ['BrassLocal@123', 'Brass@123']]
   };
+  // Estender demoPasswords para usuarios extras
+  for (const eu of EXTRA_SHARED_USERS) {
+    demoPasswords[eu.prefix+'_admin']  = [process.env.LOGISTIX_ADMIN_PASSWORD, ['AdminLocal@123', 'Admin@123']];
+    demoPasswords[eu.prefix+'_forn']   = [process.env.LOGISTIX_FORNECEDOR_PASSWORD, ['FornLocal@123', 'Forn@123']];
+    demoPasswords[eu.prefix+'_transp'] = [process.env.LOGISTIX_TRANSPORTADORA_PASSWORD, ['BrassLocal@123', 'Brass@123']];
+  }
   const matchOf = x => {
     const d = demoPasswords[x.id];
     const isDemoMatch = Boolean(d && !d[0] && d[1].includes(pass));

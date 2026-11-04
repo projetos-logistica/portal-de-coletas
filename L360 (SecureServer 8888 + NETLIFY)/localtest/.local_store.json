@@ -58,6 +58,153 @@
       "statusAprovacao": "aprovado",
       "passwordIterations": 210000,
       "managedPasswordFingerprint": "nMp5ux-TUa673VWx5b1TC5A2dK9xy9-yurB-j56lYYw"
+    },
+    {
+      "id": "samuel_admin",
+      "nome": "Samuel Fragoso",
+      "tipo": "admin",
+      "email": "samuel.fragoso@farmrio.com.br",
+      "cobertura": [
+        "TODAS"
+      ],
+      "passwordSalt": "8XDjNWRoPBjWtC1EEyXzXw",
+      "passwordHash": "kgZ9ki4WYrll6iwjjtud4RMYFATYRrz4d9SwtJpsXGg",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:35.588Z",
+      "managedPasswordFingerprint": "kL0muNY8RHZJHp3pRbK2BRoxzyCHmR96TFz3H8KDix4"
+    },
+    {
+      "id": "samuel_forn",
+      "nome": "Samuel Fragoso",
+      "tipo": "fornecedor",
+      "email": "samuel.fragoso@farmrio.com.br",
+      "cobertura": [],
+      "passwordSalt": "OjMkBhPEhPf63LaEBMbHXw",
+      "passwordHash": "h8raTsoS5TYBuCCgdHUv1cGD1SdHPB5ZQU6F1mjTy8o",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:35.694Z",
+      "managedPasswordFingerprint": "2DM93v_-U4gl8o7SUGYXOe4dAUYM5sQfFykYAsffgPM"
+    },
+    {
+      "id": "samuel_transp",
+      "nome": "Samuel Fragoso",
+      "tipo": "transportadora",
+      "email": "samuel.fragoso@farmrio.com.br",
+      "cobertura": [
+        "SP",
+        "RJ",
+        "MG",
+        "ES"
+      ],
+      "passwordSalt": "7tCAC2YHK9O_OliRFzjIUQ",
+      "passwordHash": "AzJoQp8As-KJurB4N_nYD0z5PIHLzckhlawBO8rTqsI",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:35.786Z",
+      "managedPasswordFingerprint": "nMp5ux-TUa673VWx5b1TC5A2dK9xy9-yurB-j56lYYw"
+    },
+    {
+      "id": "natalia_admin",
+      "nome": "Natalia Alves",
+      "tipo": "admin",
+      "email": "natalia.alves@usereserva.com",
+      "cobertura": [
+        "TODAS"
+      ],
+      "passwordSalt": "exKMDat2hmABe1HRP5yOpg",
+      "passwordHash": "KqeAEzdh4KEgV18VjuimLJq1PPluJFUmXI5aBXRWYes",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:35.873Z",
+      "managedPasswordFingerprint": "kL0muNY8RHZJHp3pRbK2BRoxzyCHmR96TFz3H8KDix4"
+    },
+    {
+      "id": "natalia_forn",
+      "nome": "Natalia Alves",
+      "tipo": "fornecedor",
+      "email": "natalia.alves@usereserva.com",
+      "cobertura": [],
+      "passwordSalt": "3uOT72oe_eGqIouVAavmdg",
+      "passwordHash": "myGOdf6wiEHj2IZ4Li-qSyJMD_m3DOJAYJKB5CFZluo",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:35.959Z",
+      "managedPasswordFingerprint": "2DM93v_-U4gl8o7SUGYXOe4dAUYM5sQfFykYAsffgPM"
+    },
+    {
+      "id": "natalia_transp",
+      "nome": "Natalia Alves",
+      "tipo": "transportadora",
+      "email": "natalia.alves@usereserva.com",
+      "cobertura": [
+        "SP",
+        "RJ",
+        "MG",
+        "ES"
+      ],
+      "passwordSalt": "81XpOk7-9vKhHaTRZBFmUg",
+      "passwordHash": "t6ks0aIMrCoYY6iJgCBm6DrRVK9QWTM46iOWyboBvKk",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:36.045Z",
+      "managedPasswordFingerprint": "nMp5ux-TUa673VWx5b1TC5A2dK9xy9-yurB-j56lYYw"
+    },
+    {
+      "id": "adriano_admin",
+      "nome": "Adriano Soares",
+      "tipo": "admin",
+      "email": "adriano.soares@farmrio.com.br",
+      "cobertura": [
+        "TODAS"
+      ],
+      "passwordSalt": "qThdVt51FrndSLHt0WpfvQ",
+      "passwordHash": "D2e-sRBrwwgOL_beAOEP_W3uPw6F9N95Lt_Q8l26Eyc",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:36.131Z",
+      "managedPasswordFingerprint": "kL0muNY8RHZJHp3pRbK2BRoxzyCHmR96TFz3H8KDix4"
+    },
+    {
+      "id": "adriano_forn",
+      "nome": "Adriano Soares",
+      "tipo": "fornecedor",
+      "email": "adriano.soares@farmrio.com.br",
+      "cobertura": [],
+      "passwordSalt": "5TU4H8IsX5RVg0SJfKqrYQ",
+      "passwordHash": "0RlP_TbkBzsAbrLwmY_wAH_0gJSMNvi5E-XK2N4m304",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:36.221Z",
+      "managedPasswordFingerprint": "2DM93v_-U4gl8o7SUGYXOe4dAUYM5sQfFykYAsffgPM"
+    },
+    {
+      "id": "adriano_transp",
+      "nome": "Adriano Soares",
+      "tipo": "transportadora",
+      "email": "adriano.soares@farmrio.com.br",
+      "cobertura": [
+        "SP",
+        "RJ",
+        "MG",
+        "ES"
+      ],
+      "passwordSalt": "AShZCcYBk_IarrAipc070Q",
+      "passwordHash": "EzqifA1Ve75LGvJDKMwC4KCnotIxb_dZoPKma1DEYYY",
+      "passwordIterations": 210000,
+      "emailVinculado": true,
+      "dadosColeta": {},
+      "createdAt": "2026-11-04T16:33:36.318Z",
+      "managedPasswordFingerprint": "nMp5ux-TUa673VWx5b1TC5A2dK9xy9-yurB-j56lYYw"
     }
   ],
   "session:C8Rg51fC9XxNNBtCabgX-2VG-DJnrvgknko65AROy1A": {
@@ -406,5 +553,17 @@
   "session:BKaScIvFup8MXnDCzHjmatHOZV_eZGm1fMx1EcTuar8": {
     "userId": "admin01",
     "exp": 1793763549312
+  },
+  "session:eLVZaRo-VvXa7tgwFNnDF98Kwyi7zXnH0LNbW5E6Grg": {
+    "userId": "samuel_admin",
+    "exp": 1793838817083
+  },
+  "session:X1uK0W8ymYF2QVlR8VpYzp66naGTosOD9kuAzBWEY2c": {
+    "userId": "natalia_transp",
+    "exp": 1793838831049
+  },
+  "session:rsYmNCKKhYk1xrXazbJyUF7jVurJkGI-PsteLqRJawk": {
+    "userId": "adriano_forn",
+    "exp": 1793838833600
   }
 }
