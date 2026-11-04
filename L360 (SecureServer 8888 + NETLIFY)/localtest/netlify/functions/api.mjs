@@ -2,10 +2,11 @@
 import path from 'node:path';
 
 const LOCAL_STORE = path.join(process.cwd(), '.local_store.json');
+const readStoreRaw = () => fs.readFileSync(LOCAL_STORE, 'utf8').replace(/^\uFEFF/, '');
 function getLocal(k, def) {
   try {
     if (fs.existsSync(LOCAL_STORE)) {
-      const s = JSON.parse(fs.readFileSync(LOCAL_STORE, 'utf8'));
+      const s = JSON.parse(readStoreRaw());
       if (k in s) return s[k];
     }
   } catch {}
@@ -14,7 +15,7 @@ function getLocal(k, def) {
 function setLocal(k, v) {
   try {
     let s = {};
-    if (fs.existsSync(LOCAL_STORE)) s = JSON.parse(fs.readFileSync(LOCAL_STORE, 'utf8'));
+    if (fs.existsSync(LOCAL_STORE)) s = JSON.parse(readStoreRaw());
     s[k] = v;
     fs.writeFileSync(LOCAL_STORE, JSON.stringify(s, null, 2), 'utf8');
   } catch (e) {
@@ -24,7 +25,7 @@ function setLocal(k, v) {
 function delLocal(k) {
   try {
     if (fs.existsSync(LOCAL_STORE)) {
-      const s = JSON.parse(fs.readFileSync(LOCAL_STORE, 'utf8'));
+      const s = JSON.parse(readStoreRaw());
       delete s[k];
       fs.writeFileSync(LOCAL_STORE, JSON.stringify(s, null, 2), 'utf8');
     }
