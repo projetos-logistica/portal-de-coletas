@@ -8,6 +8,7 @@
     <script src="qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
   <style>
     :root {
@@ -1250,582 +1251,26 @@
         <input type="email" id="recuperar-email" placeholder="exemplo@empresa.com">
       </div>
 
-      <button class="btn btn-sucesso" id="btn-enviar-recuperacao" style="width:100%; padding:12px;" onclick="solicitarRecuperacaoSenha()">Enviar Link de Redefinição</button>
-      <div style="margin-top:12px;">
-        <button class="btn btn-outline" style="width:100%;" onclick="fecharEsqueciSenha()">Voltar para Login</button>
-      </div>
-      <div id="recuperar-msg" style="margin-top:14px; font-size:12px; display:none;"></div>
-    </div>
-  </div>
-
-  <!-- TELA REDEFINIR SENHA (QUANDO ACESSADO VIA LINK COM ?resetToken=...) -->
-  <div id="tela-redefinir-senha" class="escondido" style="position:fixed; inset:0; z-index:99999; display:flex; justify-content:center; align-items:center; background:radial-gradient(ellipse at 20% 15%,rgba(56,189,248,.24),transparent 32%),radial-gradient(ellipse at 82% 84%,rgba(129,140,248,.24),transparent 32%),linear-gradient(135deg,#06172a 0%,#0a2540 52%,#173e72 100%);">
-    <div class="card" style="width: 390px; text-align: center; padding: 34px; max-width: 90vw; animation:loginRise .5s both;">
-      <h2 style="margin:0 0 6px 0; color:var(--cor-primaria); font-size:22px;">Criar Nova Senha</h2>
-      <p style="color:#64748B; font-size:12px; margin-bottom:20px;">Cadastre uma nova senha forte (mínimo 8 caracteres).</p>
-      
-      <div style="text-align:left; margin-bottom:14px;">
-        <label>Nova Senha</label>
-        <input type="password" id="redefinir-nova-senha" placeholder="Mínimo 8 caracteres">
-      </div>
-      <div style="text-align:left; margin-bottom:20px;">
-        <label>Confirmar Nova Senha</label>
-        <input type="password" id="redefinir-confirma-senha" placeholder="Repita a nova senha">
-      </div>
-
-      <button class="btn btn-sucesso" id="btn-confirmar-redefinicao" style="width:100%; padding:12px;" onclick="concluirRedefinicaoSenha()">Salvar Nova Senha</button>
-      <div style="margin-top:12px;">
-        <button class="btn btn-outline" style="width:100%;" onclick="irParaLoginDireto()">Cancelar e Ir para Login</button>
-      </div>
-    </div>
-  </div>
-
-  
-  <!-- MODAL: AUTO-REGISTRO DE PARCEIRO (FORNECEDOR OU TRANSPORTADORA) -->
-  <div id="modal-registro-parceiro" class="escondido" style="position:fixed; inset:0; z-index:99999; display:flex; justify-content:center; align-items:center; background:rgba(10,37,64,0.75); backdrop-filter:blur(6px); overflow-y:auto; padding:20px 0;">
-    <div class="card" style="width: 520px; max-width: 95vw; max-height:90vh; overflow-y:auto; padding: 32px; animation:loginRise .4s both;">
-      <h3 style="margin:0 0 6px 0; color:var(--cor-primaria); font-size:22px;">Solicitar Cadastro de Parceiro</h3>
-      <p style="color:#64748B; font-size:12px; margin-bottom:20px;">Preencha os dados da sua empresa. O acesso passará pela aprovação da equipe da Reserva.</p>
-      
-      <div style="margin-bottom:14px; text-align:left;">
-        <label>Tipo de Empresa</label>
-        <select id="reg-tipo" style="padding:10px; border-radius:8px;" onchange="toggleRegUFs()">
-          <option value="fornecedor" selected>Fornecedor (Indústria / Confecção / Matéria-prima)</option>
-          <option value="transportadora">Transportadora</option>
-        </select>
-      </div>
-
-      <div style="margin-bottom:14px; text-align:left;">
-        <label>CNPJ da Empresa (14 dígitos)</label>
-        <input type="text" id="reg-cnpj" placeholder="00.000.000/0000-00" maxlength="18">
-      </div>
-
-      <div style="margin-bottom:14px; text-align:left;">
-        <label>Razão Social / Nome Fantasia</label>
-        <input type="text" id="reg-nome" placeholder="Ex.: Indústria Têxtil Exemplo Ltda">
-      </div>
-
-      <div style="margin-bottom:14px; text-align:left;">
-        <label>E-mail do Responsável (será seu login)</label>
-        <input type="email" id="reg-email" placeholder="contato@suaempresa.com.br">
-      </div>
-
-      <div style="margin-bottom:14px; text-align:left;">
-        <label>Criar Senha de Acesso (Mínimo 8 caracteres)</label>
-        <input type="password" id="reg-senha" placeholder="Digite uma senha forte">
-      </div>
-
-      <div id="box-reg-ufs" style="display:none; margin-bottom:16px; text-align:left; border:1px solid var(--cor-borda); padding:12px; border-radius:8px; background:#F8FAFC;">
-        <label style="margin-bottom:6px;">UFs de Atendimento / Cobertura</label>
-        <p style="font-size:11px; color:#64748B; margin:0 0 8px;">Selecione 'Nacional' para atender todo o Brasil ou marque estados específicos.</p>
-        <div style="display:flex; flex-wrap:wrap; gap:8px;">
-          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:bold; cursor:pointer;"><input type="checkbox" value="TODAS" id="reg-uf-todas" checked style="width:auto;"> Nacional (Todas as UFs)</label>
-        </div>
-      </div>
-
-      <div style="text-align:left; margin-bottom:20px; display:flex; align-items:flex-start; gap:8px;">
-        <input type="checkbox" id="reg-aceite-lgpd" checked style="width:16px; height:16px; margin-top:2px;">
-        <label for="reg-aceite-lgpd" style="margin:0; text-transform:none; font-size:11px; color:#475569;">
-          Declaro que represento legalmente esta empresa e concordo com o processamento dos dados cadastrais pela Reserva.
-        </label>
-      </div>
-
-      <button class="btn btn-sucesso" id="btn-enviar-registro" style="width:100%; padding:12px;" onclick="enviarSolicitacaoRegistro()">Enviar Solicitação de Cadastro</button>
-      <div style="margin-top:10px;">
-        <button class="btn btn-outline" style="width:100%;" onclick="fecharModalRegistro()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SISTEMA PRINCIPAL -->
-  <div id="tela-sistema" class="escondido">
-    <!-- AMBIENT ABSTRACT BACKGROUND ORBS -->
-    <div class="ambient-glow-wrapper" aria-hidden="true">
-      <div class="ambient-orb orb-1"></div>
-      <div class="ambient-orb orb-2"></div>
-      <div class="ambient-orb orb-3"></div>
-    </div>
-    <nav class="navbar">
-      <div class="navbar-brand">Logistix<span>360</span> <small style="font-size:10px; color:#94A3B8; font-weight:normal; letter-spacing:0;">v3.5.8</small></div>
-      <div style="display: flex; align-items: center; gap: 16px;">
-        <span class="status-nuvem" id="indicador-conexao">● Conectando...</span>
-        <span id="user-badge" style="font-size: 13px; font-weight: 600; background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; display: none;"></span>
-        <button class="btn btn-outline" style="color: white; border-color: rgba(255,255,255,0.3);" onclick="logout()">Sair</button>
-      </div>
-    </nav>
-
-    <!-- SUB-NAVBAR FORNECEDOR -->
-    <div id="nav-fornecedor" class="sub-navbar escondido">
-      <button class="nav-tab ativo" id="tab-forn-dash" onclick="alternarAba('forn-dashboard', this); renderFornDashboard();">📊 Dashboard do Fornecedor</button>
-      <button class="nav-tab" id="tab-forn-solicitar" onclick="alternarAba('forn-solicitar', this)">📝 Nova Solicitação</button>
-      <button class="nav-tab" id="tab-forn-historico" onclick="alternarAba('forn-historico', this); renderFornecedorHistorico();">
-        📦 Meus Pedidos <span id="alert-forn-hist" class="alerta-pisca escondido">⚠️</span>
-      </button>
-      <button class="nav-tab" id="tab-forn-chat" onclick="alternarAba('painel-chat-compartilhado', this); renderPainelChat(); iniciarChatPolling();">
-        💬 Chat da Carga <span id="badge-forn-chat" class="alerta-msg-pisca escondido">🔔</span>
-      </button>
-      <button class="nav-tab" onclick="alternarAba('painel-suporte-cliente', this); renderSuporteCliente();">🎧 Central de Ajuda</button>
-      </div>
-
-    <!-- SUB-NAVBAR TRANSPORTADORA -->
-    <div id="nav-transportadora" class="sub-navbar escondido">
-      <button class="nav-tab ativo" onclick="alternarAba('transp-dashboard', this); renderTranspDashboard();">📊 Dashboard de Operação</button>
-      <button class="nav-tab" onclick="alternarAba('transp-mural', this); renderMural();">🔍 Coletas Disponíveis</button>
-      <button class="nav-tab" id="tab-transp-ativas" onclick="alternarAba('transp-ativas', this); renderMinhasCargas();">
-        🚚 Gestão de Rota & Histórico <span id="alert-transp-ativas" class="alerta-pisca escondido">⚠</span>
-      </button>
-      <button class="nav-tab" id="tab-transp-chat" onclick="alternarAba('painel-chat-compartilhado', this); renderPainelChat(); iniciarChatPolling();">
-        💬 Chat com Cliente <span id="badge-transp-chat" class="alerta-msg-pisca escondido">🔔</span>
-      </button>
-      <button class="nav-tab" onclick="alternarAba('painel-suporte-cliente', this); renderSuporteCliente();">🎧 Central de Ajuda</button>
-      </div>
-
-    <!-- SUB-NAVBAR ADMIN -->
-    <div id="nav-admin" class="sub-navbar escondido">
-      <button class="nav-tab ativo" onclick="alternarAba('admin-dashboard', this); renderAdminDashboard();">📊 Dashboard Global</button>
-      <button class="nav-tab" id="tab-admin-analytics" onclick="alternarAba('admin-analytics', this); renderAdminAnalytics();">📈 Métricas de Movimentação</button>
-      <button class="nav-tab" id="tab-admin-torre" onclick="alternarAba('admin-torre', this); renderAdmin();">
-        🗼 Torre de Auditoria <span id="alert-admin-torre" class="alerta-pisca escondido">⚠️</span>
-      </button>
-      <button class="nav-tab" onclick="alternarAba('admin-gestao-parceiros', this); renderGestaoParceiros();">👥 Gestão de Parceiros</button>
-      <button class="nav-tab" id="tab-admin-chat" onclick="alternarAba('painel-chat-compartilhado', this); renderPainelChat(); iniciarChatPolling();">
-        💬 Chat das Cargas <span id="badge-admin-chat" class="alerta-msg-pisca escondido">🔔</span>
-      </button>
-      <button class="nav-tab" onclick="alternarAba('painel-suporte-admin', this); renderSuporteAdmin();">
-        🎧 HelpDesk <span id="badge-admin-helpdesk" class="alerta-msg-pisca escondido">🔔</span>
-      </button>
-      </div>
-
-    <div class="conteiner">
-
-      <!-- ================= TELA: ADMIN -> GESTÃO DE PARCEIROS E UFS ================= -->
-      <div id="admin-gestao-parceiros" class="secao-aba escondido">
-        <div class="partner-hero">
-          <div>
-            <div style="font-size:10px;font-weight:800;letter-spacing:1.6px;color:#38BDF8;">CENTRAL DE ACESSOS E PARCEIROS</div>
-            <h2>Gestão de Parceiros & Perfis</h2>
-            <p>Controle de aprovação de novos cadastros, definição de abrangência logística por UF e administração dos acessos com segurança de dados segregada.</p>
-          </div>
-          <div class="partner-hero-badge">🔐 Acesso por E-mail & Senha Criptografada</div>
-        </div>
-        <div class="security-strip"><strong>Fluxo de Aprovação:</strong> Novos parceiros solicitam cadastro na tela de login · Contas aguardam aprovação do Administrador · Notificações automáticas por e-mail via Resend.</div>
-        <div class="partner-summary">
-          <div class="partner-summary-card"><small>Total de perfis</small><strong id="partner-count-total">0</strong></div>
-          <div class="partner-summary-card" style="border-color:#F59E0B !important;"><small style="color:#B45309;font-weight:bold;">Aguardando Aprovação</small><strong id="partner-count-pendente" style="color:#D97706 !important;">0</strong></div>
-          <div class="partner-summary-card"><small>Fornecedores</small><strong id="partner-count-forn">0</strong></div>
-          <div class="partner-summary-card"><small>Transportadoras</small><strong id="partner-count-transp">0</strong></div>
-        </div>
-        <div class="card">
-          <div class="partner-tools" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-            <div style="display:flex; gap:8px; flex:1; min-width:260px;">
-              <input id="filtro-parceiros-admin" type="search" placeholder="Pesquisar por nome, CNPJ, e-mail ou tipo..." oninput="renderGestaoParceiros()" style="flex:1;">
-              <select id="filtro-parceiros-status" onchange="renderGestaoParceiros()" style="width:auto; padding:6px 12px; font-size:12px;">
-                <option value="TODOS">Todos os status</option>
-                <option value="pendente">⏳ Apenas Pendentes</option>
-                <option value="aprovado">✔ Apenas Aprovados</option>
-                <option value="rejeitado">✖ Apenas Rejeitados</option>
-              </select>
-            </div>
-            <button class="btn btn-sucesso" onclick="abrirModalNovoParceiro()">＋ Cadastrar parceiro direto</button>
-          </div>
-          <p style="color:#64748B; font-size:12px; margin:0 0 14px;">Gerencie cadastros, libere novos acessos e defina a malha operacional das transportadoras por estado (UF).</p>
-          <div class="tabela-container">
-            <table class="tabela">
-              <thead>
-                <tr>
-                  <th>CNPJ / ID</th>
-                  <th>Empresa</th>
-                  <th>Tipo</th>
-                  <th>E-mail de Acesso</th>
-                  <th>Status do Acesso</th>
-                  <th>UFs Cobertura</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="tb-admin-usuarios"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================= TELA: SUPORTE CLIENTE ================= -->
-      <div id="painel-suporte-cliente" class="secao-aba escondido">
-        <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-            <h3 style="margin:0; color: var(--cor-primaria);">🎧 Central de Ajuda e Agendamentos</h3>
-            <button class="btn btn-sucesso" onclick="abrirModalNovoTicket()">+ Abrir Novo Chamado</button>
-          </div>
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-            <div style="border-right: 1px solid var(--cor-borda); padding-right: 16px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                  <label style="margin:0;">Seus Chamados</label>
-                  <select id="filtro-ticket-cliente" onchange="renderSuporteCliente()" style="padding:4px; font-size:11px; width:auto;">
-                      <option value="TODOS">Todos</option>
-                      <option value="Aberto" selected>Abertos</option>
-                      <option value="Resolvido">Resolvidos</option>
-                  </select>
-              </div>
-              <div id="lista-tickets-cliente" style="display:flex; flex-direction:column; gap:8px;"></div>
-            </div>
-            <div id="chat-ticket-cliente"><p style="color:#64748B; text-align:center; padding-top:40px;">Selecione um chamado ao lado ou abra um novo para falar com a Torre.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================= TELA: SUPORTE ADMIN ================= -->
-      <div id="painel-suporte-admin" class="secao-aba escondido">
-        <div class="card">
-          <h3 style="margin-top:0; color: var(--cor-primaria);">🎧 HelpDesk: Atendimento a Parceiros</h3>
-          <p style="color:#64748B; font-size:13px; margin-bottom:16px;">Gerencie solicitações de agendamento e suporte técnico recebidos na Torre de Controle.</p>
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-            <div style="border-right: 1px solid var(--cor-borda); padding-right: 16px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                  <label style="margin:0;">Fila de Atendimento</label>
-                  <select id="filtro-ticket-admin" onchange="renderSuporteAdmin()" style="padding:4px; font-size:11px; width:auto;">
-                      <option value="TODOS">Todos</option>
-                      <option value="Aberto" selected>Abertos</option>
-                      <option value="Resolvido">Resolvidos</option>
-                  </select>
-              </div>
-              <div id="lista-tickets-admin" style="display:flex; flex-direction:column; gap:8px;"></div>
-            </div>
-            <div id="chat-ticket-admin"><p style="color:#64748B; text-align:center; padding-top:40px;">Selecione um chamado ao lado para atender.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================= TELA: DASHBOARDS ================= -->
-      <div id="admin-dashboard" class="secao-aba escondido">
-        <div class="dashboard-section-title"><h3>Visão operacional do Admin</h3><span style="font-size:12px;color:#64748B;">Somente indicadores necessários para decisão e tratamento</span></div>
-        <div class="dashboard-grid-compact">
-          <div class="kpi-card" onclick="filtrarAdminPorKPI('TODOS')"><h4>Total de coletas</h4><div class="val" id="admin-kpi-total">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#F59E0B;border-top-color:#F59E0B" onclick="filtrarAdminPorKPI('Aguardando Aceite da Transportadora')"><h4>Aguardando aceite</h4><div class="val" id="admin-kpi-aceite">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#0EA5E9;border-top-color:#0EA5E9" onclick="filtrarAdminPorKPI('COLETA_PENDENTE')"><h4>Coleta pendente</h4><div class="val" id="admin-kpi-coleta">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarAdminPorKPI('COLETA_REALIZADA')"><h4>Coletada</h4><div class="val" id="admin-kpi-coletas-realizadas">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#2563EB;border-top-color:#2563EB" onclick="filtrarAdminPorKPI('Em Trânsito')"><h4>Em trânsito</h4><div class="val" id="admin-kpi-transito">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#7C3AED;border-top-color:#7C3AED" onclick="filtrarAdminPorKPI('Em Rota')"><h4>Em rota de entrega</h4><div class="val" id="admin-kpi-rota">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#7C3AED;border-top-color:#7C3AED" onclick="filtrarAdminPorKPI('Ocorrência')"><h4>Ocorrências</h4><div class="val" id="admin-kpi-ocorrencia">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#F97316;border-top-color:#F97316" onclick="filtrarAdminPorKPI('EM_ATRASO')"><h4>Atrasos</h4><div class="val" id="admin-kpi-atraso">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarAdminPorKPI('Entregue')"><h4>Entregues</h4><div class="val" id="admin-kpi-entregues">0</div></div>
-        </div>
-        <div class="dashboard-breakdown">
-          <div class="dashboard-section-title"><h3>Cancelamentos</h3><button class="btn btn-outline" style="padding:6px 10px;font-size:11px" onclick="filtrarAdminPorKPI('Cancelado')">Ver cargas canceladas</button></div>
-          <div class="dashboard-breakdown-grid">
-            <div class="dashboard-breakdown-item"><strong>Fornecedor</strong><span id="admin-kpi-cancel-forn">0</span></div>
-            <div class="dashboard-breakdown-item"><strong>Transportadora</strong><span id="admin-kpi-cancel-transp">0</span></div>
-            <div class="dashboard-breakdown-item"><strong>Administrativo</strong><span id="admin-kpi-cancel-admin">0</span></div>
-            <div class="dashboard-breakdown-item"><strong>Externo</strong><span id="admin-kpi-cancel-externo">0</span></div>
-            <div class="dashboard-breakdown-item"><strong>Destinatário</strong><span id="admin-kpi-cancel-destinatario">0</span></div>
-          </div>
-
-        
-        <!-- SEÇÃO DE EXPORTAÇÃO E ARQUIVO ATUALIZÁVEL EXCEL -->
-        <div class="dashboard-export-section card" style="margin-top:24px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#E0F2FE 100%);border-radius:14px;border:1px solid #BAE6FD;box-shadow:0 4px 12px rgba(2,132,199,0.08);overflow:visible !important;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
-            <div>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-size:20px;">📊</span>
-                <h4 style="margin:0;color:#0369A1;font-size:15px;font-weight:700;">Exportação Global de Coletas & Conexão Atualizável</h4>
-                <span style="background:#0284C7;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:0.5px;">NOVO</span>
-              </div>
-              <p style="margin:4px 0 0;font-size:12px;color:#475569;">
-                Filtre por período personalizado (mês a mês) e exporte para planilha formatada ou baixe o <strong>arquivo atualizável (.iqy)</strong> conectado em tempo real à base de coletas autorizada do seu perfil.
-              </p>
-            </div>
-            <!-- Atalhos Rápidos de Período -->
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'ESTE_MES')">📅 Este Mês</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'MES_ANTERIOR')">📅 Mês Anterior</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', '30D')">30 Dias</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', '90D')">90 Dias</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'ANO')">Ano Atual</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'TUDO')">Todo Histórico</button>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;position:relative;z-index:20;">
-            <div style="flex:1;min-width:145px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Inicial *</label>
-              <input type="date" id="admin-exp-data-inicio" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
-            </div>
-            <div style="flex:1;min-width:145px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Final *</label>
-              <input type="date" id="admin-exp-data-fim" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
-            </div>
-            <div style="flex:1.4;min-width:200px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Filtro de Status</label>
-              <div class="ms-container" id="ms-container-admin-exp-status">
-                <button type="button" class="ms-button" id="ms-btn-admin-exp-status" onclick="toggleMS('ms-dropdown-admin-exp-status')">Todos os Status ▼</button>
-                <div class="ms-dropdown" id="ms-dropdown-admin-exp-status">
-                  <label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Todos os Status</label>
-                  <label><input type="checkbox" value="EM_ABERTO" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Em Aberto</label>
-                  <label><input type="checkbox" value="Aguardando Aceite da Transportadora" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Aguardando Aceite</label>
-                  <label><input type="checkbox" value="Aceito pela Transportadora" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Aguardando Coleta</label>
-                  <label><input type="checkbox" value="Separado" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Separado</label>
-                  <label><input type="checkbox" value="Em Trânsito" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Em Trânsito</label>
-                  <label><input type="checkbox" value="Em Rota" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Em Rota</label>
-                  <label><input type="checkbox" value="EM_ATRASO" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Atrasados</label>
-                  <label><input type="checkbox" value="Ocorrência" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Ocorrência</label>
-                  <label><input type="checkbox" value="Entregue" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Entregue</label>
-                  <label><input type="checkbox" value="Cancelado" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Cancelado</label>
-                </div>
-              </div>
-            </div>
-            <!-- Botões de Ação -->
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <button class="btn btn-sucesso" style="padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:6px;" onclick="exportarExcelDoDashboard('admin')">
-                <span>📥</span> Baixar Excel (.XLSX)
+      <!-- Botões de Ação Atualizados -->
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <!-- Botões de Ação Atualizados -->
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <!-- Botões de Ação Atualizados -->
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <button class="btn btn-sucesso" style="padding:10px 18px;font-size:13px;display:flex;align-items:center;gap:6px;font-weight:700;background:linear-gradient(135deg,#10B981 0%,#059669 100%);box-shadow:0 3px 8px rgba(16,185,129,0.25);" onclick="baixarArquivoAtualizavelExcel('transp')" title="Baixa a planilha Excel (.XLSX) já com a Query embutida dentro do arquivo">
+                <span>🔄</span> Baixar Excel com Query Embutida (.XLSX)
               </button>
-              <button class="btn btn-outline" style="padding:10px 16px;font-size:13px;background:white;color:#0284C7;border-color:#0284C7;display:flex;align-items:center;gap:6px;" onclick="baixarArquivoAtualizavelExcel('admin')" title="Arquivo de Consulta Dinâmica (.iqy) que se atualiza automaticamente dentro do Excel">
-                <span>🔄</span> Baixar Arquivo Atualizável (.IQY)
+              <button class="btn btn-outline" style="padding:10px 14px;font-size:12px;background:white;color:#0369A1;border-color:#BAE6FD;" onclick="exportarExcelDoDashboard('transp')" title="Baixa uma versão estática dos dados sem conexão externa">
+                <span>📄</span> Baixar Planilha Estática
               </button>
-              <button class="btn btn-outline" style="padding:10px 12px;font-size:12px;background:#F8FAFC;color:#475569;" onclick="copiarLinkQuery('admin')" title="Copiar URL ou script do Power Query M">
-                <span>📋</span> Copiar Query
+              <button class="btn btn-outline" style="padding:10px 12px;font-size:12px;background:#F8FAFC;color:#475569;" onclick="copiarLinkQuery('transp')" title="Copiar URL direta da Query">
+                <span>📋</span> Copiar URL da Query
               </button>
             </div>
           </div>
-          <div style="margin-top:10px;font-size:11px;color:#64748B;display:flex;align-items:center;gap:6px;">
+          <div style="margin-top:10px;font-size:11px;color:#475569;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.7);padding:8px 12px;border-radius:8px;border:1px solid #BAE6FD;">
             <span>ℹ️</span>
-            <span><strong>Dica:</strong> O <em>Arquivo Atualizável (.iqy)</em> abre direto no Excel e permite atualizar os dados a qualquer momento clicando em <strong>Dados > Atualizar Tudo</strong>. Nenhum dado fora do seu perfil é exposto.</span>
-          </div>
-        </div>
-        </div>
-      </div>
-
-      <div id="admin-analytics" class="secao-aba escondido analytics-command-center">
-        <div class="analytics-hero analytics-hero-v2">
-          <div class="analytics-hero-copy"><span class="analytics-eyebrow">LOGISTIX360 · INTELLIGENCE LAB</span><h2>Centro de inteligência</h2><p>Transforme movimentação em decisões. Filtre, compare e encontre os sinais que importam.</p><div class="analytics-live-line"><span class="analytics-live-dot"></span><span id="admin-analytics-period-summary">Visão consolidada da operação</span></div></div>
-          <div class="analytics-brand-orbit" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit-core">L<span>360</span></div><i class="orbit-node node-a"></i><i class="orbit-node node-b"></i><i class="orbit-node node-c"></i></div>
-        </div>
-        <div class="analytics-filter-shell">
-          <div class="analytics-filter-heading"><div><span class="analytics-kicker">01 / CONTEXTO</span><h3>Configure sua análise</h3><p>Todos os indicadores, gráficos e tabelas respondem a estes filtros.</p></div><button class="btn btn-outline" onclick="limparFiltrosAnalytics()">↺ Restaurar visão</button></div>
-          <div class="analytics-filters analytics-filters-v2">
-            <div class="grid-form" style="margin:0;">
-              <div style="grid-column:span 3;"><label>Fornecedor</label><select id="analytics-filtro-fornecedor" onchange="renderAdminAnalytics()"><option value="TODOS">Todos os fornecedores</option></select></div>
-              <div style="grid-column:span 4;" class="analytics-period-box"><div class="analytics-period-label">Janela de análise</div><div class="analytics-period-fields"><div><label style="font-size:10px;margin-bottom:3px;">Mês inicial</label><input type="month" id="analytics-filtro-mes-ini" onchange="renderAdminAnalytics()"></div><div><label style="font-size:10px;margin-bottom:3px;">Mês final</label><input type="month" id="analytics-filtro-mes-fim" onchange="renderAdminAnalytics()"></div></div><div class="analytics-period-actions"><button type="button" onclick="aplicarPeriodoAnalytics('3M')">3 meses</button><button type="button" onclick="aplicarPeriodoAnalytics('6M')">6 meses</button><button type="button" onclick="aplicarPeriodoAnalytics('ANO')">Ano atual</button><button type="button" onclick="aplicarPeriodoAnalytics('TODOS')">Tudo</button></div></div>
-              <div style="grid-column:span 2;"><label>Modelo de frete</label><select id="analytics-filtro-frete" onchange="renderAdminAnalytics()"><option value="TODOS">Todos</option><option value="CIF">CIF (frete por conta do remetente)</option><option value="FOB">FOB (frete por conta do destinatário)</option></select></div>
-              <div style="grid-column:span 1;"><label>UF</label><select id="analytics-filtro-uf" onchange="renderAdminAnalytics()"><option value="TODOS">Todas</option></select></div>
-              <div style="grid-column:span 2;"><label>Status atual</label><select id="analytics-filtro-status" onchange="renderAdminAnalytics()"><option value="TODOS">Todos</option><option value="Aguardando Aceite da Transportadora">Aguardando Aceite</option><option value="Aceito pela Transportadora">Aceito</option><option value="Separado">Separado</option><option value="Coletada">Coletada</option><option value="Em Trânsito">Em Trânsito</option><option value="Em Rota">Em Rota</option><option value="Entregue">Entregue</option><option value="Ocorrência">Ocorrência</option><option value="Cancelado">Cancelado</option></select></div>
-            </div>
-          </div>
-        </div>
-        <div class="analytics-section-heading"><div><span class="analytics-kicker">02 / RESUMO EXECUTIVO</span><h3>Operação em números</h3><p>Uma leitura rápida da dimensão financeira, física e comercial do período.</p></div><div class="analytics-context-chip"><span></span> Atualizado com os filtros</div></div>
-        <div class="analytics-kpi-wall">
-          <div class="analytics-kpi kpi-finance"><div class="analytics-kpi-top"><span>Valor total em NF</span><span class="analytics-kpi-icon">R$</span></div><strong id="admin-metrica-valor">R$ 0,00</strong><small>Valor declarado das cargas</small><div class="kpi-sparkline spark-finance"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="analytics-kpi kpi-volume"><div class="analytics-kpi-top"><span>Cargas movimentadas</span><span class="analytics-kpi-icon">▦</span></div><strong id="admin-metrica-nf">0</strong><small>Registros no recorte selecionado</small><div class="kpi-sparkline spark-volume"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="analytics-kpi kpi-cube"><div class="analytics-kpi-top"><span>Cubagem total</span><span class="analytics-kpi-icon">◇</span></div><strong id="admin-metrica-cubagem">0,000 m³</strong><small>Ocupação volumétrica calculada</small><div class="kpi-sparkline spark-cube"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="analytics-kpi kpi-weight"><div class="analytics-kpi-top"><span>Peso real total</span><span class="analytics-kpi-icon">↟</span></div><strong id="admin-metrica-peso">0,00 kg</strong><small>Peso informado nas cargas</small><div class="kpi-sparkline spark-weight"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-        </div>
-        <div class="analytics-secondary-grid">
-          <div class="analytics-secondary-card"><span>Ticket médio por carga</span><strong id="admin-metrica-ticket">R$ 0,00</strong><small>Valor médio declarado</small></div>
-          <div class="analytics-secondary-card"><span>Cubagem média por carga</span><strong id="admin-metrica-cubagem-media">0,000 m³</strong><small>Volume médio por registro</small></div>
-          <div class="analytics-secondary-card"><span>Peso cubado total</span><strong id="admin-metrica-peso-cubado">0,00 kg</strong><small>Referência para cobrança</small></div>
-          <div class="analytics-secondary-card"><span>Média de cargas / fornecedor</span><strong id="admin-metrica-media-nf-fornecedor">0,00</strong><small>Distribuição da carteira</small></div>
-          <div class="analytics-secondary-card"><span>Frete CIF / FOB</span><strong id="admin-metrica-cif-fob">0 / 0</strong><small>Contagem por modalidade</small></div>
-        </div>
-        <div class="analytics-visual-grid">
-          <section class="analytics-visual-card analytics-monthly-card"><div class="analytics-card-heading"><div><span class="analytics-kicker">03 / TENDÊNCIA</span><h3>Ritmo mensal da operação</h3><p>Compare valor movimentado e volume de cargas ao longo do tempo.</p></div><span class="analytics-heading-symbol">↗</span></div><div id="analytics-chart-monthly" class="analytics-monthly-chart"><div class="analytics-empty">Os dados mensais aparecerão aqui após a leitura dos registros.</div></div><div class="analytics-chart-legend"><span><i class="legend-value"></i> Valor movimentado</span><span><i class="legend-cargas"></i> Quantidade de cargas</span></div></section>
-          <section class="analytics-visual-card analytics-status-card"><div class="analytics-card-heading"><div><span class="analytics-kicker">04 / COMPOSIÇÃO</span><h3>Como o valor se distribui</h3><p>Participação dos fornecedores no valor total declarado.</p></div><span class="analytics-heading-symbol">◌</span></div><div class="analytics-donut-layout"><div id="analytics-chart-donut" class="analytics-donut"><div class="analytics-donut-hole"><strong id="analytics-donut-total">R$ 0</strong><span>valor total</span></div></div><div id="analytics-donut-legend" class="analytics-donut-legend"><div class="analytics-empty">A distribuição será calculada com os filtros atuais.</div></div></div><div class="analytics-insight-callout"><span class="analytics-insight-icon">✦</span><div><strong>Leitura inteligente</strong><p id="analytics-insight-text">Ajuste os filtros para identificar concentração, picos e oportunidades.</p></div></div></section>
-        </div>
-        <div class="analytics-insight-grid">
-          <div class="analytics-insight-tile insight-low"><span>MENOR MOVIMENTAÇÃO MENSAL</span><strong id="admin-metrica-mes-min">Sem dados</strong><small>Menor valor agregado no mês</small></div>
-          <div class="analytics-insight-tile insight-high"><span>PICO DE MOVIMENTAÇÃO</span><strong id="admin-metrica-mes-max">Sem dados</strong><small>Maior valor agregado no mês</small></div>
-          <div class="analytics-insight-tile insight-average"><span>MÉDIA POR FORNECEDOR</span><strong id="admin-metrica-media-fornecedor">R$ 0,00</strong><small>Valor médio por parceiro</small></div>
-        </div>
-        <details class="analytics-data-drawer" open><summary><span><b>05</b><span><strong>Explorar dados por fornecedor</strong><small>Detalhamento financeiro e físico de cada parceiro</small></span></span><span class="analytics-summary-arrow">＋</span></summary><div class="analytics-table-wrap"><div class="analytics-table-title"><h4>Ranking de fornecedores</h4><span>Ordenado pelo valor movimentado</span></div><div class="tabela-container"><table class="tabela"><thead><tr><th>Fornecedor</th><th>Cargas</th><th>Valor</th><th>Média/carga</th><th>Volumes</th><th>Peso real</th><th>Peso cubado</th><th>Cubagem</th><th>Cubagem/carga</th><th>Participação</th></tr></thead><tbody id="tb-admin-fornecedores-metricas"></tbody></table></div></div></details>
-        <details class="analytics-data-drawer"><summary><span><b>06</b><span><strong>Explorar evolução mensal</strong><small>Histórico de cargas, valores, pesos e cubagem</small></span></span><span class="analytics-summary-arrow">＋</span></summary><div class="analytics-table-wrap"><div class="analytics-table-title"><h4>Histórico mensal</h4><span>Detalhamento do período filtrado</span></div><div class="tabela-container"><table class="tabela"><thead><tr><th>Mês</th><th>Cargas</th><th>Valor</th><th>Volumes</th><th>Peso real</th><th>Peso cubado</th><th>Cubagem</th><th>Cubagem/carga</th></tr></thead><tbody id="tb-admin-mensal-metricas"></tbody></table></div></div></details>
-        <section class="analytics-carrier-section"><div class="analytics-section-heading"><div><span class="analytics-kicker">07 / PERFORMANCE DE PARCEIROS</span><h3>Visão das transportadoras</h3><p>Volume atribuído, avanço operacional e composição física da carteira.</p></div></div><div class="analytics-secondary-grid analytics-carrier-kpis"><div class="analytics-secondary-card"><span>Cargas atribuídas</span><strong id="admin-transp-kpi-cargas">0</strong></div><div class="analytics-secondary-card"><span>Em trânsito / rota</span><strong id="admin-transp-kpi-transito">0</strong></div><div class="analytics-secondary-card"><span>Entregues</span><strong id="admin-transp-kpi-entregues">0</strong></div><div class="analytics-secondary-card"><span>Ocorrências</span><strong id="admin-transp-kpi-ocorrencias">0</strong></div><div class="analytics-secondary-card"><span>Volumes</span><strong id="admin-transp-kpi-volumes">0</strong></div><div class="analytics-secondary-card"><span>Cubagem</span><strong id="admin-transp-kpi-cubagem">0,000 m³</strong></div></div><details class="analytics-data-drawer"><summary><span><b>08</b><span><strong>Comparar transportadoras</strong><small>Detalhamento lado a lado dos indicadores</small></span></span><span class="analytics-summary-arrow">＋</span></summary><div class="analytics-table-wrap"><div class="tabela-container"><table class="tabela"><thead><tr><th>Transportadora</th><th>Cargas</th><th>Em trânsito/rota</th><th>Entregues</th><th>Ocorrências</th><th>Volumes</th><th>Peso real</th><th>Peso cubado</th><th>Cubagem</th><th>Participação</th></tr></thead><tbody id="tb-admin-transportadoras-metricas"></tbody></table></div></div></details></section>
-      </div>
-
-      <div id="forn-dashboard" class="secao-aba">
-        <div class="dashboard-section-title"><h3>Minha operação</h3><span style="font-size:12px;color:#64748B;">Somente cargas deste fornecedor</span></div>
-        <div class="dashboard-grid-compact">
-          <div class="kpi-card" onclick="filtrarFornPorKPI('TODOS')"><h4>Total de coletas</h4><div class="val" id="forn-kpi-total">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#F59E0B;border-top-color:#F59E0B" onclick="filtrarFornPorKPI('Aguardando Aceite da Transportadora')"><h4>Aguardando transportadora</h4><div class="val" id="forn-kpi-aceite">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#0EA5E9;border-top-color:#0EA5E9" onclick="filtrarFornPorKPI('COLETA_PENDENTE')"><h4>Coleta pendente</h4><div class="val" id="forn-kpi-coleta-pendente">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarFornPorKPI('COLETA_REALIZADA')"><h4>Coletada</h4><div class="val" id="forn-kpi-coleta-realizada">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#2563EB;border-top-color:#2563EB" onclick="filtrarFornPorKPI('Em Trânsito')"><h4>Em trânsito</h4><div class="val" id="forn-kpi-transito">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#7C3AED;border-top-color:#7C3AED" onclick="filtrarFornPorKPI('Em Rota')"><h4>Em rota de entrega</h4><div class="val" id="forn-kpi-rota">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#7C3AED;border-top-color:#7C3AED" onclick="filtrarFornPorKPI('Ocorrência')"><h4>Ocorrências</h4><div class="val" id="forn-kpi-ocorrencia">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#F97316;border-top-color:#F97316" onclick="filtrarFornPorKPI('EM_ATRASO')"><h4>Atrasos</h4><div class="val" id="forn-kpi-atraso">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarFornPorKPI('Entregue')"><h4>Entregues</h4><div class="val" id="forn-kpi-entregue">0</div></div>
-        </div>
-        <div class="dashboard-breakdown">
-          <div class="dashboard-section-title"><h3>Cancelamentos das minhas cargas</h3><button class="btn btn-outline" style="padding:6px 10px;font-size:11px" onclick="filtrarFornPorKPI('Cancelado')">Ver canceladas</button></div>
-          <div class="dashboard-breakdown-grid">
-            <div class="dashboard-breakdown-item"><strong>Fornecedor</strong><span id="forn-kpi-cancel-forn">0</span></div><div class="dashboard-breakdown-item"><strong>Transportadora</strong><span id="forn-kpi-cancel-transp">0</span></div><div class="dashboard-breakdown-item"><strong>Administrativo</strong><span id="forn-kpi-cancel-admin">0</span></div><div class="dashboard-breakdown-item"><strong>Externo</strong><span id="forn-kpi-cancel-externo">0</span></div><div class="dashboard-breakdown-item"><strong>Destinatário</strong><span id="forn-kpi-cancel-destinatario">0</span></div>
-          </div>
-
-        
-        <!-- SEÇÃO DE EXPORTAÇÃO E ARQUIVO ATUALIZÁVEL EXCEL -->
-        <div class="dashboard-export-section card" style="margin-top:24px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#E0F2FE 100%);border-radius:14px;border:1px solid #BAE6FD;box-shadow:0 4px 12px rgba(2,132,199,0.08);overflow:visible !important;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
-            <div>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-size:20px;">📊</span>
-                <h4 style="margin:0;color:#0369A1;font-size:15px;font-weight:700;">Exportação das Minhas Coletas & Conexão Atualizável</h4>
-                <span style="background:#0284C7;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:0.5px;">NOVO</span>
-              </div>
-              <p style="margin:4px 0 0;font-size:12px;color:#475569;">
-                Filtre por período personalizado (mês a mês) e exporte para planilha formatada ou baixe o <strong>arquivo atualizável (.iqy)</strong> conectado em tempo real à base de coletas autorizada do seu perfil.
-              </p>
-            </div>
-            <!-- Atalhos Rápidos de Período -->
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'ESTE_MES')">📅 Este Mês</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'MES_ANTERIOR')">📅 Mês Anterior</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', '30D')">30 Dias</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', '90D')">90 Dias</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'ANO')">Ano Atual</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'TUDO')">Todo Histórico</button>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;position:relative;z-index:20;">
-            <div style="flex:1;min-width:145px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Inicial *</label>
-              <input type="date" id="forn-exp-data-inicio" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
-            </div>
-            <div style="flex:1;min-width:145px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Final *</label>
-              <input type="date" id="forn-exp-data-fim" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
-            </div>
-            <div style="flex:1.4;min-width:200px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Filtro de Status</label>
-              <div class="ms-container" id="ms-container-forn-exp-status">
-                <button type="button" class="ms-button" id="ms-btn-forn-exp-status" onclick="toggleMS('ms-dropdown-forn-exp-status')">Todos os Status ▼</button>
-                <div class="ms-dropdown" id="ms-dropdown-forn-exp-status">
-                  <label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Todos os Status</label>
-                  <label><input type="checkbox" value="EM_ABERTO" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Em Aberto</label>
-                  <label><input type="checkbox" value="Aguardando Aceite da Transportadora" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Aguardando Aceite</label>
-                  <label><input type="checkbox" value="Aceito pela Transportadora" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Aguardando Coleta</label>
-                  <label><input type="checkbox" value="Separado" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Separado</label>
-                  <label><input type="checkbox" value="Em Trânsito" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Em Trânsito</label>
-                  <label><input type="checkbox" value="Em Rota" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Em Rota</label>
-                  <label><input type="checkbox" value="EM_ATRASO" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Atrasados</label>
-                  <label><input type="checkbox" value="Ocorrência" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Ocorrência</label>
-                  <label><input type="checkbox" value="Entregue" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Entregue</label>
-                  <label><input type="checkbox" value="Cancelado" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Cancelado</label>
-                </div>
-              </div>
-            </div>
-            <!-- Botões de Ação -->
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <button class="btn btn-sucesso" style="padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:6px;" onclick="exportarExcelDoDashboard('forn')">
-                <span>📥</span> Baixar Excel (.XLSX)
-              </button>
-              <button class="btn btn-outline" style="padding:10px 16px;font-size:13px;background:white;color:#0284C7;border-color:#0284C7;display:flex;align-items:center;gap:6px;" onclick="baixarArquivoAtualizavelExcel('forn')" title="Arquivo de Consulta Dinâmica (.iqy) que se atualiza automaticamente dentro do Excel">
-                <span>🔄</span> Baixar Arquivo Atualizável (.IQY)
-              </button>
-              <button class="btn btn-outline" style="padding:10px 12px;font-size:12px;background:#F8FAFC;color:#475569;" onclick="copiarLinkQuery('forn')" title="Copiar URL ou script do Power Query M">
-                <span>📋</span> Copiar Query
-              </button>
-            </div>
-          </div>
-          <div style="margin-top:10px;font-size:11px;color:#64748B;display:flex;align-items:center;gap:6px;">
-            <span>ℹ️</span>
-            <span><strong>Dica:</strong> O <em>Arquivo Atualizável (.iqy)</em> abre direto no Excel e permite atualizar os dados a qualquer momento clicando em <strong>Dados > Atualizar Tudo</strong>. Nenhum dado fora do seu perfil é exposto.</span>
-          </div>
-        </div>
-        </div>
-      </div>
-
-      <div id="transp-dashboard" class="secao-aba escondido">
-        <div class="dashboard-section-title">
-          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <h3 style="margin:0;">Operação da transportadora</h3>
-            <span class="badge-metrica-assumidas" style="display:inline-flex;align-items:center;gap:6px;background:#EEF2FF;border:1px solid #C7D2FE;color:#3730A3;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;">
-              📦 Coletas assumidas: <strong id="transp-metric-assumidas" style="font-size:14px;color:#1E1B4B;">0</strong>
-            </span>
-          </div>
-          <span style="font-size:12px;color:#64748B;">Coletas disponíveis no mural + coletas sob sua gestão</span>
-        </div>
-        <div class="dashboard-grid-compact">
-          <div class="kpi-card" style="--kpi-accent:#F59E0B;border-top-color:#F59E0B" onclick="filtrarTranspPorKPI('Aguardando Aceite da Transportadora')"><h4>Coletas disponíveis</h4><div class="val" id="transp-kpi-aceite">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#0EA5E9;border-top-color:#0EA5E9" onclick="filtrarTranspPorKPI('COLETA_PENDENTE')"><h4>Coleta pendente</h4><div class="val" id="transp-kpi-coleta-pendente">0</div></div>
-          <div class="kpi-card kpi-metric-inline" style="--kpi-accent:#6366F1;border-top-color:#6366F1;background:linear-gradient(135deg,#EEF2FF 0%,#E0E7FF 100%)" onclick="filtrarTranspPorKPI('TODOS')"><h4>Total de coletas</h4><div class="val" id="transp-kpi-total">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarTranspPorKPI('COLETA_REALIZADA')"><h4>Coletada</h4><div class="val" id="transp-kpi-coleta-realizada">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#2563EB;border-top-color:#2563EB" onclick="filtrarTranspPorKPI('Em Trânsito')"><h4>Em trânsito</h4><div class="val" id="transp-kpi-transito">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#7C3AED;border-top-color:#7C3AED" onclick="filtrarTranspPorKPI('Em Rota')"><h4>Em rota de entrega</h4><div class="val" id="transp-kpi-rota">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#7C3AED;border-top-color:#7C3AED" onclick="filtrarTranspPorKPI('Ocorrência')"><h4>Ocorrências</h4><div class="val" id="transp-kpi-ocorrencia">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#F97316;border-top-color:#F97316" onclick="filtrarTranspPorKPI('EM_ATRASO')"><h4>Atrasos</h4><div class="val" id="transp-kpi-atrasos">0</div></div>
-          <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarTranspPorKPI('Entregue')"><h4>Entregues</h4><div class="val" id="transp-kpi-entregue">0</div></div>
-        </div>
-        <div class="dashboard-breakdown">
-          <div class="dashboard-section-title"><h3>Cancelamentos das coletas assumidas</h3><button class="btn btn-outline" style="padding:6px 10px;font-size:11px" onclick="filtrarTranspPorKPI('Cancelado')">Ver canceladas</button></div>
-          <div class="dashboard-breakdown-grid">
-            <div class="dashboard-breakdown-item"><strong>Fornecedor</strong><span id="transp-kpi-cancel-forn">0</span></div><div class="dashboard-breakdown-item"><strong>Transportadora</strong><span id="transp-kpi-cancel-transp">0</span></div><div class="dashboard-breakdown-item"><strong>Administrativo</strong><span id="transp-kpi-cancel-admin">0</span></div><div class="dashboard-breakdown-item"><strong>Externo</strong><span id="transp-kpi-cancel-externo">0</span></div><div class="dashboard-breakdown-item"><strong>Destinatário</strong><span id="transp-kpi-cancel-destinatario">0</span></div>
-          </div>
-
-        
-        <!-- SEÇÃO DE EXPORTAÇÃO E ARQUIVO ATUALIZÁVEL EXCEL -->
-        <div class="dashboard-export-section card" style="margin-top:24px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#E0F2FE 100%);border-radius:14px;border:1px solid #BAE6FD;box-shadow:0 4px 12px rgba(2,132,199,0.08);overflow:visible !important;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
-            <div>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-size:20px;">📊</span>
-                <h4 style="margin:0;color:#0369A1;font-size:15px;font-weight:700;">Exportação Operacional das Coletas & Conexão Atualizável</h4>
-                <span style="background:#0284C7;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:0.5px;">NOVO</span>
-              </div>
-              <p style="margin:4px 0 0;font-size:12px;color:#475569;">
-                Filtre por período personalizado (mês a mês) e exporte para planilha formatada ou baixe o <strong>arquivo atualizável (.iqy)</strong> conectado em tempo real à base de coletas autorizada do seu perfil.
-              </p>
-            </div>
-            <!-- Atalhos Rápidos de Período -->
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'ESTE_MES')">📅 Este Mês</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'MES_ANTERIOR')">📅 Mês Anterior</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', '30D')">30 Dias</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', '90D')">90 Dias</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'ANO')">Ano Atual</button>
-              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'TUDO')">Todo Histórico</button>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;position:relative;z-index:20;">
-            <div style="flex:1;min-width:145px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Inicial *</label>
-              <input type="date" id="transp-exp-data-inicio" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
-            </div>
-            <div style="flex:1;min-width:145px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Final *</label>
-              <input type="date" id="transp-exp-data-fim" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
-            </div>
-            <div style="flex:1.4;min-width:200px;">
-              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Filtro de Status</label>
-              <div class="ms-container" id="ms-container-transp-exp-status">
-                <button type="button" class="ms-button" id="ms-btn-transp-exp-status" onclick="toggleMS('ms-dropdown-transp-exp-status')">Todos os Status ▼</button>
-                <div class="ms-dropdown" id="ms-dropdown-transp-exp-status">
-                  <label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Todos os Status</label>
-                  <label><input type="checkbox" value="EM_ABERTO" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Em Aberto</label>
-                  <label><input type="checkbox" value="Aguardando Aceite da Transportadora" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Aguardando Aceite</label>
-                  <label><input type="checkbox" value="Aceito pela Transportadora" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Aguardando Coleta</label>
-                  <label><input type="checkbox" value="Separado" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Separado</label>
-                  <label><input type="checkbox" value="Em Trânsito" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Em Trânsito</label>
-                  <label><input type="checkbox" value="Em Rota" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Em Rota</label>
-                  <label><input type="checkbox" value="EM_ATRASO" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Atrasados</label>
-                  <label><input type="checkbox" value="Ocorrência" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Ocorrência</label>
-                  <label><input type="checkbox" value="Entregue" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Entregue</label>
-                  <label><input type="checkbox" value="Cancelado" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Cancelado</label>
-                </div>
-              </div>
-            </div>
-            <!-- Botões de Ação -->
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <button class="btn btn-sucesso" style="padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:6px;" onclick="exportarExcelDoDashboard('transp')">
-                <span>📥</span> Baixar Excel (.XLSX)
-              </button>
-              <button class="btn btn-outline" style="padding:10px 16px;font-size:13px;background:white;color:#0284C7;border-color:#0284C7;display:flex;align-items:center;gap:6px;" onclick="baixarArquivoAtualizavelExcel('transp')" title="Arquivo de Consulta Dinâmica (.iqy) que se atualiza automaticamente dentro do Excel">
-                <span>🔄</span> Baixar Arquivo Atualizável (.IQY)
-              </button>
-              <button class="btn btn-outline" style="padding:10px 12px;font-size:12px;background:#F8FAFC;color:#475569;" onclick="copiarLinkQuery('transp')" title="Copiar URL ou script do Power Query M">
-                <span>📋</span> Copiar Query
-              </button>
-            </div>
-          </div>
-          <div style="margin-top:10px;font-size:11px;color:#64748B;display:flex;align-items:center;gap:6px;">
-            <span>ℹ️</span>
-            <span><strong>Dica:</strong> O <em>Arquivo Atualizável (.iqy)</em> abre direto no Excel e permite atualizar os dados a qualquer momento clicando em <strong>Dados > Atualizar Tudo</strong>. Nenhum dado fora do seu perfil é exposto.</span>
+            <span><strong>Arquivo com Query Embutida:</strong> O arquivo baixado é um <code>.xlsx</code> que já vem com a conexão configurada internamente. Ao abrir no Excel, basta clicar em <strong>Dados > Atualizar Tudo</strong> para sincronizar as coletas autorizadas da sua conta em tempo real.</span>
           </div>
         </div>
         </div>
@@ -4734,204 +4179,219 @@ STATUS: ${p.status || 'Pendente'}`;
     }
 
     // Baixa arquivo .iqy (Internet Query) para atualização automática no Microsoft Excel
-    function baixarArquivoAtualizavelExcel(prefix) {
+    async function baixarArquivoAtualizavelExcel(prefix) {
       if (!sessaoValida()) return;
       const dataIni = document.getElementById(prefix + '-exp-data-inicio')?.value || '';
       const dataFim = document.getElementById(prefix + '-exp-data-fim')?.value || '';
+      if (!dataIni || !dataFim) { mostrarToast('Selecione a data inicial e a data final.', 'alerta'); return; }
+      if (dataIni > dataFim) { mostrarToast('A data inicial não pode ser posterior à data final.', 'alerta'); return; }
+
       const fStatusArr = obterValoresMultiSelect('ms-container-' + prefix + '-exp-status');
+      const hojeISO = new Date().toISOString().split('T')[0];
+
+      // Filtra coletas autorizadas do perfil
+      const pedidosFiltrados = obterPedidosRelatorioDoPerfil().filter(p => {
+        const dp = p.disponivelData || p.dataCriacao || '';
+        if (dp < dataIni || dp > dataFim) return false;
+        if (!fStatusArr.includes('TODOS')) {
+          const aberto = p.status !== 'Entregue' && p.status !== 'Cancelado';
+          const jaColetada = p.coletaRealizada === true || ['Em Trânsito', 'Em Rota', 'Entregue'].includes(p.status);
+          const atraso = aberto && (p.emAtraso === true || (jaColetada ? !!(p.dataLimiteEntrega && p.dataLimiteEntrega < hojeISO) : !!(p.disponivelData && p.disponivelData < hojeISO)));
+          const match = (fStatusArr.includes('EM_ABERTO') && aberto) ||
+                        (fStatusArr.includes('EM_ATRASO') && atraso) ||
+                        (fStatusArr.includes('COLETA_PENDENTE') && !p.coletaRealizada && (p.status === 'Aceito pela Transportadora' || p.status === 'Separado')) ||
+                        (fStatusArr.includes('COLETA_REALIZADA') && p.status === 'Coletada') ||
+                        fStatusArr.includes(p.status);
+          if (!match) return false;
+        }
+        return true;
+      });
+
+      if (!window.ExcelJS) { mostrarToast('Biblioteca ExcelJS não carregou.', 'alerta'); return; }
+
+      mostrarToast('Gerando planilha com Query embutida...', 'sucesso');
+
+      // 1. Cria a planilha com dados estilizados via ExcelJS
+      const ordemColunas = [0,22,1,2,3,5,6,7,31,30,8,32,9,21,4,10,18,19,20,11,16,17,15,12,13,14,27,28,29,23,24,25,26];
+      const headersOriginais = ['ID da Carga','Data de Criação','Data Disponível','Limite de Entrega','Modal','Fornecedor','CNPJ Origem','Endereço de Origem','Endereço de Destino','UF Destino','Tipo de Frete','Volumes','Comprimento (cm)','Largura (cm)','Altura (cm)','Cubagem (m³)','Peso Real (kg)','Peso Cubado (kg)','Valor da Mercadoria (R$)','NFs','Quantidade de NFs','Transportadora','Status','Causa do Cancelamento','Ocorrido no Cancelamento','Solicitado por','Data do Cancelamento','Coleta Realizada','Data/Hora da Coleta','POD','CNPJ Destino','Destinatário','Complemento Destino'];
+      const headers = ordemColunas.map(i => headersOriginais[i]);
+
+      const workbook = new ExcelJS.Workbook();
+      workbook.creator = 'Logistix360';
+      workbook.subject = 'Relatório Atualizável de Coletas';
+      workbook.title = 'Relatório Atualizável Logistix360';
+      workbook.created = new Date();
+
+      const ws = workbook.addWorksheet('Coletas', { views: [{ state: 'frozen', ySplit: 1, xSplit: 0, showGridLines: true }] });
+      ws.columns = headers.map((header, i) => ({ header, key: 'c' + i, width: [14,15,14,14,14,32,20,38,30,20,38,30,12,28,13,14,22,28,16,12,15,16,14,15,13,13,16,24,18,24,38,25,22][i] || 18 }));
+
+      const fmtData = v => { if (!v) return ''; if (/^\d{4}-\d{2}-\d{2}$/.test(String(v))) { const [a,m,d] = String(v).split('-'); return d + '/' + m + '/' + a; } return String(v); };
+      const valorCancelamento = p => { const c = p.cancelamento || {}; const cancelado = p.status === 'Cancelado' || (c.status === 'aceito'); if (!cancelado && !c.dataSolicitacao && !c.dataConclusao) return ['Não cancelado','Não cancelado','Não cancelado','Não cancelado']; return [obterResponsabilidadeCancelamento(p) || 'Não informado', c.ocorrido || c.motivo || 'Não informado', c.solicitante || 'Não informado', c.dataConclusao || c.dataSolicitacao || 'Não informado']; };
+
+      const linhas = [];
+      pedidosFiltrados.forEach(p => {
+        const nfs = [...new Set(obterNumerosNF(p).map(v => String(v).trim()).filter(Boolean))];
+        const cancel = valorCancelamento(p);
+        const cubagem = Number(p.cubagemM3) || obterCubagemM3(p.volumes, p.comprimento, p.largura, p.altura);
+        const valoresOriginais = [p.id || '', fmtData(p.dataCriacao || ''), fmtData(p.disponivelData || ''), fmtData(p.dataLimiteEntrega || ''), p.modal || 'Rodoviário', p.fornecedor || '', p.cnpj || '', p.origem || '', p.destino || '', p.ufDestino || '', p.frete || p.tipoFrete || '', Number(p.volumes) || 0, Number(p.comprimento) || 0, Number(p.largura) || 0, Number(p.altura) || 0, cubagem, Number(p.peso) || 0, Number(obterPesoCubado(p)) || 0, Number(p.valorMercadoria) || 0, nfs.length ? nfs.join(', ') : 'Não informado', nfs.length, p.transportadoraVencedoraNome || 'Não atribuída', p.status || 'Não informado', cancel[0], cancel[1], cancel[2], cancel[3], p.coletaRealizada ? 'Sim' : 'Não', p.dataColetaRealizada || p.dataHoraColeta || '', p.comprovantePOD || 'N/A', p.cnpjDestino || '', p.razaoDestino || '', p.complementoDestino || ''];
+        linhas.push(ordemColunas.map(i => valoresOriginais[i]));
+      });
+
+      linhas.forEach(row => ws.addRow(row));
+
+      const headerRow = ws.getRow(1);
+      headerRow.height = 34;
+      headerRow.eachCell(cell => {
+        cell.font = { name: 'Aptos', bold: true, color: { argb: 'FFFFFFFF' }, size: 10 };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0A2540' } };
+        cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        cell.border = { bottom: { style: 'medium', color: { argb: 'FF0284C7' } } };
+      });
+      ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: Math.max(1, ws.rowCount), column: headers.length } };
+
+      ws.eachRow((row, rowNumber) => {
+        if (rowNumber === 1) return;
+        row.height = 27;
+        row.eachCell((cell, colNumber) => {
+          cell.font = { name: 'Aptos', size: 10, color: { argb: 'FF243447' } };
+          cell.alignment = { vertical: 'middle', wrapText: [6,8,9,11,12,14,18,29,30,31,32,33].includes(colNumber) };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+          cell.border = { bottom: { style: 'hair', color: { argb: 'FFD7E2EC' } } };
+        });
+        row.getCell(23).numFmt = '#,##0.000';
+        [21, 22].forEach(c => { row.getCell(c).numFmt = '#,##0.00'; row.getCell(c).alignment = { horizontal: 'right', vertical: 'middle' }; });
+        row.getCell(17).numFmt = '"R$" #,##0.00';
+        row.getCell(20).numFmt = '#,##0';
+        row.getCell(19).numFmt = '0';
+        const status = String(row.getCell(2).value || '').toLowerCase();
+        const statusCell = row.getCell(2);
+        let fill = 'FFE2E8F0', font = 'FF334155';
+        if (status.includes('cancel')) { fill = 'FFFFEDD5'; font = 'FF9A3412'; }
+        else if (status.includes('ocorr')) { fill = 'FFFEE2E2'; font = 'FFB91C1C'; }
+        else if (status.includes('atras')) { fill = 'FFFFF3C4'; font = 'FF92400E'; }
+        else if (status.includes('entreg')) { fill = 'FFD1FAE5'; font = 'FF065F46'; }
+        else if (status.includes('trânsito') || status.includes('rota')) { fill = 'FFDBEAFE'; font = 'FF1D4ED8'; }
+        else if (status.includes('aguardando')) { fill = 'FFEDE9FE'; font = 'FF5B21B6'; }
+        else if (status.includes('separado') || status.includes('colet')) { fill = 'FFCCFBF1'; font = 'FF115E59'; }
+        statusCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fill } };
+        statusCell.font = { name: 'Aptos', bold: true, size: 10, color: { argb: font } };
+        statusCell.alignment = { vertical: 'middle', wrapText: true };
+      });
+
+      const ultimaLinha = ws.rowCount;
+      const totalRow = ws.addRow([]);
+      totalRow.getCell(1).value = 'TOTAL DO RELATÓRIO';
+      totalRow.getCell(20).value = { formula: 'SUM(T2:T' + ultimaLinha + ')' };
+      totalRow.getCell(17).value = { formula: 'SUM(Q2:Q' + ultimaLinha + ')' };
+      totalRow.getCell(19).value = { formula: 'SUM(S2:S' + ultimaLinha + ')' };
+      totalRow.eachCell(cell => {
+        cell.font = { name: 'Aptos', bold: true, color: { argb: 'FFFFFFFF' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E3A8A' } };
+        cell.alignment = { vertical: 'middle' };
+      });
+      totalRow.height = 26;
+      totalRow.getCell(19).numFmt = '"R$" #,##0.00';
+
+      const baseBuffer = await workbook.xlsx.writeBuffer();
+
+      // Monta URL da Query Segura
       const statusParam = fStatusArr.join(',');
-
-      // Monta a URL de feed da API (com token seguro)
       const token = sessaoSegura.apiToken || sessaoSegura.token || 'sessao-ativa';
-      const feedUrl = `${window.location.origin}/api/relatorio-coletas-csv?auth=${encodeURIComponent(token)}&dataInicio=${encodeURIComponent(dataIni)}&dataFim=${encodeURIComponent(dataFim)}&status=${encodeURIComponent(statusParam)}`;
+      const feedUrl = window.location.origin + '/api/relatorio-coletas-csv?auth=' + encodeURIComponent(token) + '&dataInicio=' + encodeURIComponent(dataIni) + '&dataFim=' + encodeURIComponent(dataFim) + '&status=' + encodeURIComponent(statusParam);
+      const feedUrlXml = feedUrl.replace(/&/g, '&amp;');
 
-      // Conteúdo do arquivo Web Query .iqy padrão Microsoft Excel
-      const iqyContent = [
-        'WEB',
-        '1',
-        feedUrl,
-        '',
-        'Selection=EntirePage',
-        'Formatting=None',
-        'PreFormattedTextToColumns=True',
-        'ConsecutiveDelimitersAsOne=True',
-        'SingleBlockTextImport=False',
-        'DisableDateRecognition=False',
-        'DisableRedirections=False'
-      ].join('\r\n');
+      let finalBlob = null;
 
-      const blob = new Blob([iqyContent], { type: 'text/x-ms-iqy;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
+      // 2. Injeta a Query diretamente no pacote OpenXML (.xlsx) usando JSZip
+      if (window.JSZip) {
+        try {
+          const zip = await JSZip.loadAsync(baseBuffer);
+
+          // Injeta xl/connections.xml com a Web Query
+          const connectionsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+            '<connections xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+              '<connection id="1" name="ConsultaColetasLogistix360" type="4" refreshedVersion="0" background="1" saveData="1" refreshOnLoad="1">' +
+                '<webPr sourceData="1" parsePre="1" consecutive="1" url="' + feedUrlXml + '" htmlTables="0"/>' +
+              '</connection>' +
+            '</connections>';
+          zip.file('xl/connections.xml', connectionsXml);
+
+          // Injeta xl/queryTables/queryTable1.xml
+          const qFields = headers.map((h, i) => '<queryTableField id="' + (i + 1) + '" name="' + h + '"/>').join('');
+          const queryTableXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+            '<queryTable xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" name="ConsultaColetasLogistix360" connectionId="1" autoFormatId="0" applyNumberFormats="0" applyBorderFormats="0" applyFontFormats="0" applyPatternFormats="0" applyAlignmentFormats="0" applyWidthHeightFormats="0" backgroundRefresh="1" refreshOnLoad="1">' +
+              '<queryTableRefresh nextId="' + (headers.length + 1) + '">' +
+                '<queryTableFields count="' + headers.length + '">' + qFields + '</queryTableFields>' +
+              '</queryTableRefresh>' +
+            '</queryTable>';
+          zip.file('xl/queryTables/queryTable1.xml', queryTableXml);
+
+          // Atualiza xl/_rels/workbook.xml.rels
+          let wbRels = await zip.file('xl/_rels/workbook.xml.rels')?.async('text') || '';
+          if (!wbRels.includes('connections.xml')) {
+            wbRels = wbRels.replace('</Relationships>', '<Relationship Id="rIdConn1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/connections" Target="connections.xml"/></Relationships>');
+            zip.file('xl/_rels/workbook.xml.rels', wbRels);
+          }
+
+          // Atualiza xl/worksheets/_rels/sheet1.xml.rels
+          let sheetRels = await zip.file('xl/worksheets/_rels/sheet1.xml.rels')?.async('text');
+          if (!sheetRels) {
+            sheetRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>';
+          }
+          if (!sheetRels.includes('queryTable1.xml')) {
+            sheetRels = sheetRels.replace('</Relationships>', '<Relationship Id="rIdQT1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/queryTable" Target="../queryTables/queryTable1.xml"/></Relationships>');
+            zip.file('xl/worksheets/_rels/sheet1.xml.rels', sheetRels);
+          }
+
+          // Atualiza [Content_Types].xml
+          let ct = await zip.file('[Content_Types].xml')?.async('text') || '';
+          if (!ct.includes('connections+xml')) {
+            ct = ct.replace('</Types>', '<Override PartName="/xl/connections.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.connections+xml"/><Override PartName="/xl/queryTables/queryTable1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.queryTable+xml"/></Types>');
+            zip.file('[Content_Types].xml', ct);
+          }
+
+          finalBlob = await zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        } catch (e) {
+          console.error('Erro ao injetar Query no ZIP:', e);
+          finalBlob = new Blob([baseBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        }
+      } else {
+        finalBlob = new Blob([baseBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      }
+
+      // Dispara o download do arquivo .xlsx
+      const url = URL.createObjectURL(finalBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `Coletas_Atualizavel_${prefix.toUpperCase()}_${dataIni || 'inicio'}_a_${dataFim || 'fim'}.iqy`;
+      a.download = 'Relatorio_Coletas_Atualizavel_' + dataIni + '_a_' + dataFim + '.xlsx';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 2000);
 
-      abrirModal('Como Usar o Arquivo Atualizável no Excel', `
+      mostrarToast('Planilha com Query Embutida baixada com sucesso!', 'sucesso');
+
+      abrirModal('Planilha Excel com Query Embutida', `
         <div style="text-align:left;line-height:1.6;">
-          <div style="background:#EFF6FF;border-left:4px solid #0284C7;padding:12px;border-radius:6px;margin-bottom:16px;">
-            <strong style="color:#0369A1;">Arquivo de Consulta (.iqy) baixado com sucesso!</strong>
-            <p style="margin:4px 0 0;font-size:13px;color:#334155;">Este arquivo conecta o seu Microsoft Excel diretamente à base de coletas autorizada do seu perfil.</p>
+          <div style="background:#ECFDF5;border-left:4px solid #10B981;padding:14px;border-radius:8px;margin-bottom:16px;">
+            <strong style="color:#065F46;font-size:14px;">Planilha .XLSX com Query baixada com sucesso!</strong>
+            <p style="margin:4px 0 0;font-size:13px;color:#047857;">O arquivo já contém todas as coletas do período selecionado e vem com a consulta automática configurada internamente.</p>
           </div>
-          <ol style="font-size:13px;color:#334155;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
-            <li>Dê dois cliques no arquivo <strong>.iqy</strong> baixado para abrir no Excel.</li>
-            <li>Se o Excel exibir um aviso de segurança sobre Conexões de Dados da Web, clique em <strong>Habilitar</strong>.</li>
-            <li>Escolha onde inserir a tabela (Planilha Existente ou Nova) e clique em <strong>OK</strong>.</li>
-            <li>Para atualizar os dados com novos registros a qualquer momento, basta ir na aba <strong>Dados > Atualizar Tudo</strong> (ou clicar com o botão direito na tabela e selecionar <em>Atualizar</em>).</li>
-          </ol>
-          <div style="margin-top:16px;text-align:right;">
-            <button class="btn btn-primario" onclick="fecharModal()">Entendi</button>
+          <div style="font-size:13px;color:#334155;margin-bottom:14px;">
+            <strong>Como funciona a atualização no Excel:</strong>
+            <ol style="margin:8px 0 0 20px;padding:0;display:flex;flex-direction:column;gap:8px;">
+              <li>Abra o arquivo <strong>.xlsx</strong> baixado no Microsoft Excel.</li>
+              <li>Se aparecer a barra amarela de segurança de dados externos, clique em <strong>Habilitar Conteúdo</strong>.</li>
+              <li>Para atualizar os dados mais recentes a qualquer momento, clique na aba superior <strong>Dados &gt; Atualizar Tudo</strong> (ou clique com o botão direito na tabela e selecione <em>Atualizar</em>).</li>
+              <li>O Excel consulta o servidor em segundo plano e atualiza as linhas mantendo sua formatação e fórmulas intactas.</li>
+            </ol>
+          </div>
+          <div style="text-align:right;">
+            <button class="btn btn-sucesso" style="padding:10px 20px;" onclick="fecharModal()">Perfeito, Entendi!</button>
           </div>
         </div>
       `);
     }
-
-    // Copia o link ou a query M para o Power BI / Excel Power Query
-    function copiarLinkQuery(prefix) {
-      if (!sessaoValida()) return;
-      const dataIni = document.getElementById(prefix + '-exp-data-inicio')?.value || '';
-      const dataFim = document.getElementById(prefix + '-exp-data-fim')?.value || '';
-      const fStatusArr = obterValoresMultiSelect('ms-container-' + prefix + '-exp-status');
-      const statusParam = fStatusArr.join(',');
-      const token = sessaoSegura.apiToken || sessaoSegura.token || 'sessao-ativa';
-      const feedUrl = `${window.location.origin}/api/relatorio-coletas-csv?auth=${encodeURIComponent(token)}&dataInicio=${encodeURIComponent(dataIni)}&dataFim=${encodeURIComponent(dataFim)}&status=${encodeURIComponent(statusParam)}`;
-
-      const powerQueryFormula = `let
-    Fonte = Csv.Document(Web.Contents("${feedUrl}"), [Delimiter=";", Encoding=65001, QuoteStyle=QuoteStyle.None]),
-    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true])
-in
-    Cabecalhos`;
-
-      navigator.clipboard.writeText(powerQueryFormula).then(() => {
-        mostrarToast('Código Power Query copiado para a área de transferência!', 'sucesso');
-      }).catch(() => {
-        prompt('Copie a URL da Query:', feedUrl);
-      });
-    }
-
-    function exportarExcelDoDashboard(prefix) {
-      if(!sessaoValida()) return;
-      const dataIni = document.getElementById(prefix+'-exp-data-inicio').value;
-      const dataFim = document.getElementById(prefix+'-exp-data-fim').value;
-      if(!dataIni || !dataFim) { mostrarToast('Selecione a data inicial e a data final para exportar.','alerta'); return; }
-      if(dataIni > dataFim) { mostrarToast('A data inicial não pode ser posterior à data final.','alerta'); return; }
-      const fStatusArr = obterValoresMultiSelect('ms-container-'+prefix+'-exp-status');
-      const hojeISO = new Date().toISOString().split('T')[0];
-      const pedidosFiltrados = obterPedidosRelatorioDoPerfil().filter(p => {
-        const dp = p.disponivelData || p.dataCriacao || '';
-        if(dp < dataIni || dp > dataFim) return false;
-        if(!fStatusArr.includes('TODOS')) {
-          const aberto = p.status!=='Entregue' && p.status!=='Cancelado';
-          const jaColetada = p.coletaRealizada===true || ['Em Trânsito','Em Rota','Entregue'].includes(p.status);
-          const atraso = aberto && (p.emAtraso===true || (jaColetada ? !!(p.dataLimiteEntrega && p.dataLimiteEntrega < hojeISO) : !!(p.disponivelData && p.disponivelData < hojeISO)));
-          const match = (fStatusArr.includes('EM_ABERTO') && aberto) || (fStatusArr.includes('EM_ATRASO') && atraso) || (fStatusArr.includes('COLETA_PENDENTE') && !p.coletaRealizada && (p.status==='Aceito pela Transportadora'||p.status==='Separado')) || (fStatusArr.includes('COLETA_REALIZADA') && p.status==='Coletada') || fStatusArr.includes(p.status);
-          if(!match) return false;
-        }
-        return true;
-      });
-      if(!pedidosFiltrados.length){ mostrarToast('Nenhuma coleta encontrada no período selecionado.','alerta'); return; }
-      // Re-use the existing processarExportacaoExcel logic with filtered data
-      _gerarExcelComDados(pedidosFiltrados, dataIni, dataFim);
-    }
-
-    async function _gerarExcelComDados(pedidosFiltrados, dataIni, dataFim) {
-      if(!window.ExcelJS){ mostrarToast('A biblioteca de exportação Excel não carregou. Verifique a conexão e tente novamente.','alerta'); return; }
-      const ordemColunas=[0,22,1,2,3,5,6,7,31,30,8,32,9,21,4,10,18,19,20,11,16,17,15,12,13,14,27,28,29,23,24,25,26];
-      const headersOriginais=['ID da Carga','Data de Criação','Data Disponível','Limite de Entrega','Modal','Fornecedor','CNPJ Origem','Endereço de Origem','Endereço de Destino','UF Destino','Tipo de Frete','Volumes','Comprimento (cm)','Largura (cm)','Altura (cm)','Cubagem (m³)','Peso Real (kg)','Peso Cubado (kg)','Valor da Mercadoria (R$)','NFs','Quantidade de NFs','Transportadora','Status','Causa do Cancelamento','Ocorrido no Cancelamento','Solicitado por','Data do Cancelamento','Coleta Realizada','Data/Hora da Coleta','POD','CNPJ Destino','Destinatário','Complemento Destino'];
-      const headers=ordemColunas.map(i=>headersOriginais[i]);
-      const workbook=new ExcelJS.Workbook(); workbook.creator='Logistix360'; workbook.subject='Relatório de coletas'; workbook.title='Relatório de Coletas Logistix360'; workbook.created=new Date();
-      const ws=workbook.addWorksheet('Relatório de Coletas',{views:[{state:'frozen',ySplit:1,xSplit:0,showGridLines:false}]});
-      ws.columns=headers.map((header,i)=>({header,key:`c${i}`,width:[14,15,14,14,14,32,20,38,30,20,38,30,12,28,13,14,22,28,16,12,15,16,14,15,13,13,16,24,18,24,38,25,22][i]||18}));
-      const fmtData=v=>{if(!v)return ''; if(/^\d{4}-\d{2}-\d{2}$/.test(String(v))){const [a,m,d]=String(v).split('-');return `${d}/${m}/${a}`;} return String(v);};
-      const valorCancelamento=p=>{const c=p.cancelamento||{};const cancelado=p.status==='Cancelado'||(c.status==='aceito'); if(!cancelado&&!c.dataSolicitacao&&!c.dataConclusao)return ['Não cancelado','Não cancelado','Não cancelado','Não cancelado']; return [obterResponsabilidadeCancelamento(p)||'Não informado',c.ocorrido||c.motivo||'Não informado',c.solicitante||'Não informado',c.dataConclusao||c.dataSolicitacao||'Não informado'];};
-      const linhas=[];
-      pedidosFiltrados.forEach(p=>{
-        const nfs=[...new Set(obterNumerosNF(p).map(v=>String(v).trim()).filter(Boolean))];
-        const cancel=valorCancelamento(p);
-        const cubagem=Number(p.cubagemM3)||obterCubagemM3(p.volumes,p.comprimento,p.largura,p.altura);
-        const valoresOriginais=[p.id||'',fmtData(p.dataCriacao||''),fmtData(p.disponivelData||''),fmtData(p.dataLimiteEntrega||''),p.modal||'Rodoviário',p.fornecedor||'',p.cnpj||'',p.origem||'',p.destino||'',p.ufDestino||'',p.frete||p.tipoFrete||'',Number(p.volumes)||0,Number(p.comprimento)||0,Number(p.largura)||0,Number(p.altura)||0,cubagem,Number(p.peso)||0,Number(obterPesoCubado(p))||0,Number(p.valorMercadoria)||0,nfs.length?nfs.join(', '):'Não informado',nfs.length,p.transportadoraVencedoraNome||'Não atribuída',p.status||'Não informado',cancel[0],cancel[1],cancel[2],cancel[3],p.coletaRealizada?'Sim':'Não',p.dataColetaRealizada||p.dataHoraColeta||'',p.comprovantePOD||'N/A',p.cnpjDestino||'',p.razaoDestino||'',p.complementoDestino||''];
-        linhas.push(ordemColunas.map(i=>valoresOriginais[i]));
-      });
-      linhas.forEach(row=>ws.addRow(row));
-      const header=ws.getRow(1); header.height=34; header.eachCell(cell=>{cell.font={name:'Aptos',bold:true,color:{argb:'FFFFFFFF'},size:10};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0A2540'}};cell.alignment={vertical:'middle',horizontal:'center',wrapText:true};cell.border={bottom:{style:'medium',color:{argb:'FF0284C7'}}};});
-      ws.autoFilter={from:{row:1,column:1},to:{row:Math.max(1,ws.rowCount),column:headers.length}};
-      ws.eachRow((row,rowNumber)=>{if(rowNumber===1)return; row.height=27; row.eachCell((cell,colNumber)=>{cell.font={name:'Aptos',size:10,color:{argb:'FF243447'}};cell.alignment={vertical:'middle',wrapText:[6,8,9,11,12,14,18,29,30,31,32,33].includes(colNumber)};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFFFFF'}};cell.border={bottom:{style:'hair',color:{argb:'FFD7E2EC'}}};});
-        row.getCell(23).numFmt='#,##0.000'; [21,22].forEach(c=>{row.getCell(c).numFmt='#,##0.00';row.getCell(c).alignment={horizontal:'right',vertical:'middle'};}); row.getCell(17).numFmt='"R$" #,##0.00'; row.getCell(20).numFmt='#,##0'; row.getCell(19).numFmt='0';
-        const status=String(row.getCell(2).value||'').toLowerCase(); const statusCell=row.getCell(2); let fill='FFE2E8F0',font='FF334155';
-        if(status.includes('cancel')){fill='FFFFEDD5';font='FF9A3412';} else if(status.includes('ocorr')){fill='FFFEE2E2';font='FFB91C1C';} else if(status.includes('atras')){fill='FFFFF3C4';font='FF92400E';} else if(status.includes('entreg')){fill='FFD1FAE5';font='FF065F46';} else if(status.includes('trânsito')||status.includes('rota')){fill='FFDBEAFE';font='FF1D4ED8';} else if(status.includes('aguardando')){fill='FFEDE9FE';font='FF5B21B6';} else if(status.includes('separado')||status.includes('colet')){fill='FFCCFBF1';font='FF115E59';}
-        statusCell.fill={type:'pattern',pattern:'solid',fgColor:{argb:fill}};statusCell.font={name:'Aptos',bold:true,size:10,color:{argb:font}};statusCell.alignment={vertical:'middle',wrapText:true};
-        if(String(row.getCell(30).value)==='Não cancelado'){[30,31,32,33].forEach(c=>{row.getCell(c).font={name:'Aptos',size:10,color:{argb:'FF64748B'},italic:true};});}
-      });
-      ws.getRow(1).commit?.();
-      const ultimaLinhaDados=ws.rowCount; const totalRow=ws.addRow([]); totalRow.getCell(1).value='TOTAL DO RELATÓRIO'; totalRow.getCell(20).value={formula:`SUM(T2:T${ultimaLinhaDados})`}; totalRow.getCell(17).value={formula:`SUM(Q2:Q${ultimaLinhaDados})`}; totalRow.getCell(19).value={formula:`SUM(S2:S${ultimaLinhaDados})`};
-      totalRow.eachCell(cell=>{cell.font={name:'Aptos',bold:true,color:{argb:'FFFFFFFF'}};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF1E3A8A'}};cell.alignment={vertical:'middle'};}); totalRow.height=26; totalRow.getCell(19).numFmt='"R$" #,##0.00';
-      const buffer=await workbook.xlsx.writeBuffer(); const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}); const url=URL.createObjectURL(blob); const link=document.createElement('a'); link.href=url; link.download=`Relatorio_Coletas_${dataIni}_a_${dataFim}_Logistix360.xlsx`; document.body.appendChild(link); link.click(); document.body.removeChild(link); setTimeout(()=>URL.revokeObjectURL(url),1500); mostrarToast(`Excel exportado! (${pedidosFiltrados.length} coletas / ${pedidosFiltrados.reduce((s,p)=>s+new Set(obterNumerosNF(p).map(v=>String(v).trim()).filter(Boolean)).size,0)} NFs únicas)`, 'sucesso');
-    }
-
-    function obterPedidosRelatorioDoPerfil() {
-      if (estado.usuarioAtual === 'admin') return [...estado.pedidos];
-      if (estado.usuarioAtual === 'fornecedor') return estado.pedidos.filter(p => p.criadoPorId === estado.dadosUsuario.id);
-      if (estado.usuarioAtual === 'transportadora') return estado.pedidos.filter(p => p.transportadoraVencedoraID === estado.dadosUsuario.id);
-      return [];
-    }
-
-    function abrirModalExportarRelatorio() { if(!sessaoValida()) return;
-      const html = `<div style="text-align:left;"><p style="font-size:13px; color:#64748B; margin-bottom:16px;">Selecione o período e os filtros do relatório de coletas para exportar para o Excel:</p><div style="margin-bottom:14px;"><label>Período de Análise *</label><select id="exp-periodo"><option value="HOJE">Hoje</option><option value="SEMANA">Últimos 7 Dias (Semana)</option><option value="MES" selected>Último Mês (30 Dias)</option><option value="TODOS">Todo o Histórico</option></select></div><div style="margin-bottom:14px; position: relative;"><label>Filtro de Status *</label><div class="ms-container" id="ms-container-exp-status"><button type="button" class="ms-button" id="ms-btn-exp-status" onclick="toggleMS('ms-dropdown-exp-status')">Todos os Status ▼</button><div class="ms-dropdown" id="ms-dropdown-exp-status"><label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Todos os Status</label><label><input type="checkbox" value="EM_ABERTO" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Em Aberto (Ativas)</label><label><input type="checkbox" value="Aguardando Aceite da Transportadora" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Aguardando Aceite</label><label><input type="checkbox" value="Aceito pela Transportadora" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Aguardando Coleta</label><label><input type="checkbox" value="Separado" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Separado</label><label><input type="checkbox" value="Em Trânsito" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Em Trânsito</label><label><input type="checkbox" value="Em Rota" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Em Rota</label><label><input type="checkbox" value="EM_ATRASO" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Atrasados</label><label><input type="checkbox" value="Ocorrência" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Ocorrência</label><label><input type="checkbox" value="Entregue" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Entregue</label><label><input type="checkbox" value="Cancelado" onchange="handleMSChange(this, 'ms-container-exp-status', 'ms-btn-exp-status')"> Cancelado</label></div></div></div><div style="margin-bottom:24px; position: relative;"><label>Modal *</label><div class="ms-container" id="ms-container-exp-modal"><button type="button" class="ms-button" id="ms-btn-exp-modal" onclick="toggleMS('ms-dropdown-exp-modal')">Todos ▼</button><div class="ms-dropdown" id="ms-dropdown-exp-modal"><label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-exp-modal', 'ms-btn-exp-modal')"> Todos</label><label><input type="checkbox" value="Rodoviário" onchange="handleMSChange(this, 'ms-container-exp-modal', 'ms-btn-exp-modal')"> Rodoviário</label><label><input type="checkbox" value="Aéreo" onchange="handleMSChange(this, 'ms-container-exp-modal', 'ms-btn-exp-modal')"> Aéreo</label></div></div></div><button class="btn btn-sucesso" style="width:100%; padding:12px; font-size:14px;" onclick="processarExportacaoExcel()">📊 Gerar e Baixar Relatório Excel (.XLSX)</button></div>`;
-      abrirModal('Exportar Relatório Formatado', html);
-    }
-
-    function escaparCSV(v) { return `"${String(v ?? '').replace(/"/g,'""')}"`; }
-    async function processarExportacaoExcel() { if(!sessaoValida()) return;
-      const periodo=document.getElementById('exp-periodo').value, fStatusArr=obterValoresMultiSelect('ms-container-exp-status'), fModalArr=obterValoresMultiSelect('ms-container-exp-modal'); const hoje=new Date(); let limiteData=new Date(0);
-      if(periodo==='HOJE') limiteData=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate()); else if(periodo==='SEMANA') limiteData=new Date(hoje.getTime()-7*86400000); else if(periodo==='MES') limiteData=new Date(hoje.getTime()-30*86400000);
-      const hojeISO=new Date().toISOString().split('T')[0];
-      const pedidosFiltrados=obterPedidosRelatorioDoPerfil().filter(p=>{ const dataPedido=new Date((p.disponivelData||'')+'T00:00:00'); if(dataPedido<limiteData)return false; if(!fModalArr.includes('TODOS')&&!fModalArr.includes(p.modal))return false; if(!fStatusArr.includes('TODOS')){ const aberto=p.status!=='Entregue'&&p.status!=='Cancelado'; const jaColetada=p.coletaRealizada===true||['Em Trânsito','Em Rota','Entregue'].includes(p.status); const atraso=aberto&&(p.emAtraso===true||(jaColetada ? !!(p.dataLimiteEntrega&&p.dataLimiteEntrega<hojeISO) : !!(p.disponivelData&&p.disponivelData<hojeISO))); const match=(fStatusArr.includes('EM_ABERTO')&&aberto)||(fStatusArr.includes('EM_ATRASO')&&atraso)||(fStatusArr.includes('COLETA_PENDENTE')&&!p.coletaRealizada&&(p.status==='Aceito pela Transportadora'||p.status==='Separado'))||(fStatusArr.includes('COLETA_REALIZADA')&&p.status==='Coletada')||fStatusArr.includes(p.status); if(!match)return false;} return true; });
-      if(!pedidosFiltrados.length){mostrarToast('Nenhuma carga atende aos parâmetros selecionados.','alerta');return;}
-      if(!window.ExcelJS){mostrarToast('A biblioteca de exportação Excel não carregou. Verifique a conexão e tente novamente.','alerta');return;}
-      const ordemColunas=[0,22,1,2,3,5,6,7,31,30,8,32,9,21,4,10,18,19,20,11,16,17,15,12,13,14,27,28,29,23,24,25,26];
-      const headersOriginais=['ID da Carga','Data de Criação','Data Disponível','Limite de Entrega','Modal','Fornecedor','CNPJ Origem','Endereço de Origem','Endereço de Destino','UF Destino','Tipo de Frete','Volumes','Comprimento (cm)','Largura (cm)','Altura (cm)','Cubagem (m³)','Peso Real (kg)','Peso Cubado (kg)','Valor da Mercadoria (R$)','NFs','Quantidade de NFs','Transportadora','Status','Causa do Cancelamento','Ocorrido no Cancelamento','Solicitado por','Data do Cancelamento','Coleta Realizada','Data/Hora da Coleta','POD','CNPJ Destino','Destinatário','Complemento Destino'];
-      const headers=ordemColunas.map(i=>headersOriginais[i]);
-      const workbook=new ExcelJS.Workbook(); workbook.creator='Logistix360'; workbook.subject='Relatório de coletas'; workbook.title='Relatório de Coletas Logistix360'; workbook.created=new Date();
-      const ws=workbook.addWorksheet('Relatório de Coletas',{views:[{state:'frozen',ySplit:1, xSplit:0, showGridLines:false}]});
-      ws.columns=headers.map((header,i)=>({header,key:`c${i}`,width:[14,15,14,14,14,32,20,38,30,20,38,30,12,28,13,14,22,28,16,12,15,16,14,15,13,13,16,24,18,24,38,25,22][i]||18}));
-      const linhas=[];
-      const valorCancelamento=p=>{const c=p.cancelamento||{};const cancelado=p.status==='Cancelado'||(c.status==='aceito'); if(!cancelado&&!c.dataSolicitacao&&!c.dataConclusao)return ['Não cancelado','Não cancelado','Não cancelado','Não cancelado']; return [obterResponsabilidadeCancelamento(p)||'Não informado',c.ocorrido||c.motivo||'Não informado',c.solicitante||'Não informado',c.dataConclusao||c.dataSolicitacao||'Não informado'];};
-      const fmtData=v=>{if(!v)return ''; if(/^\d{4}-\d{2}-\d{2}$/.test(String(v))){const [a,m,d]=String(v).split('-');return `${d}/${m}/${a}`;} return String(v);};
-      pedidosFiltrados.forEach(p=>{
-        const nfs=[...new Set(obterNumerosNF(p).map(v=>String(v).trim()).filter(Boolean))];
-        const cancel=valorCancelamento(p);
-        const cubagem=Number(p.cubagemM3)||obterCubagemM3(p.volumes,p.comprimento,p.largura,p.altura);
-        const valoresOriginais=[p.id||'',fmtData(p.dataCriacao||''),fmtData(p.disponivelData||''),fmtData(p.dataLimiteEntrega||''),p.modal||'Rodoviário',p.fornecedor||'',p.cnpj||'',p.origem||'',p.destino||'',p.ufDestino||'',p.frete||p.tipoFrete||'',Number(p.volumes)||0,Number(p.comprimento)||0,Number(p.largura)||0,Number(p.altura)||0,cubagem,Number(p.peso)||0,Number(obterPesoCubado(p))||0,Number(p.valorMercadoria)||0,nfs.length?nfs.join(', '):'Não informado',nfs.length,p.transportadoraVencedoraNome||'Não atribuída',p.status||'Não informado',cancel[0],cancel[1],cancel[2],cancel[3],p.coletaRealizada?'Sim':'Não',p.dataColetaRealizada||p.dataHoraColeta||'',p.comprovantePOD||'N/A',p.cnpjDestino||'',p.razaoDestino||'',p.complementoDestino||''];
-        linhas.push(ordemColunas.map(i=>valoresOriginais[i]));
-      });
-      linhas.forEach(row=>ws.addRow(row));
-      const header=ws.getRow(1); header.height=34; header.eachCell(cell=>{cell.font={name:'Aptos',bold:true,color:{argb:'FFFFFFFF'},size:10};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0A2540'}};cell.alignment={vertical:'middle',horizontal:'center',wrapText:true};cell.border={bottom:{style:'medium',color:{argb:'FF0284C7'}}};});
-      ws.autoFilter={from:{row:1,column:1},to:{row:Math.max(1,ws.rowCount),column:headers.length}};
-      ws.eachRow((row,rowNumber)=>{if(rowNumber===1)return; row.height=27; row.eachCell((cell,colNumber)=>{cell.font={name:'Aptos',size:10,color:{argb:'FF243447'}};cell.alignment={vertical:'middle',wrapText:[6,8,9,11,12,14,18,29,30,31,32,33].includes(colNumber)};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFFFFF'}};cell.border={bottom:{style:'hair',color:{argb:'FFD7E2EC'}}};});
-        row.getCell(23).numFmt='#,##0.000'; [21,22].forEach(c=>{row.getCell(c).numFmt='#,##0.00';row.getCell(c).alignment={horizontal:'right',vertical:'middle'};}); row.getCell(17).numFmt='"R$" #,##0.00'; row.getCell(20).numFmt='#,##0'; row.getCell(19).numFmt='0';
-        const status=String(row.getCell(2).value||'').toLowerCase(); const statusCell=row.getCell(2); let fill='FFE2E8F0',font='FF334155';
-        if(status.includes('cancel')){fill='FFFFEDD5';font='FF9A3412';} else if(status.includes('ocorr')){fill='FFFEE2E2';font='FFB91C1C';} else if(status.includes('atras')){fill='FFFFF3C4';font='FF92400E';} else if(status.includes('entreg')){fill='FFD1FAE5';font='FF065F46';} else if(status.includes('trânsito')||status.includes('rota')){fill='FFDBEAFE';font='FF1D4ED8';} else if(status.includes('aguardando')){fill='FFEDE9FE';font='FF5B21B6';} else if(status.includes('separado')||status.includes('colet')){fill='FFCCFBF1';font='FF115E59';}
-        statusCell.fill={type:'pattern',pattern:'solid',fgColor:{argb:fill}};statusCell.font={name:'Aptos',bold:true,size:10,color:{argb:font}};statusCell.alignment={vertical:'middle',wrapText:true};
-        if(String(row.getCell(30).value)==='Não cancelado'){[30,31,32,33].forEach(c=>{row.getCell(c).font={name:'Aptos',size:10,color:{argb:'FF64748B'},italic:true};});}
-      });
-      ws.getRow(1).commit?.();
-      const ultimaLinhaDados=ws.rowCount; const totalRow=ws.addRow([]); totalRow.getCell(1).value='TOTAL DO RELATÓRIO'; totalRow.getCell(20).value={formula:`SUM(T2:T${ultimaLinhaDados})`}; totalRow.getCell(17).value={formula:`SUM(Q2:Q${ultimaLinhaDados})`}; totalRow.getCell(19).value={formula:`SUM(S2:S${ultimaLinhaDados})`};
-      totalRow.eachCell(cell=>{cell.font={name:'Aptos',bold:true,color:{argb:'FFFFFFFF'}};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF1E3A8A'}};cell.alignment={vertical:'middle'};}); totalRow.height=26; totalRow.getCell(19).numFmt='"R$" #,##0.00';
-      // A linha de total fica fora do filtro para não interferir na leitura dos registros.
-      const buffer=await workbook.xlsx.writeBuffer(); const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}); const url=URL.createObjectURL(blob); const link=document.createElement('a'); link.href=url; link.download=`Relatorio_Coletas_Logistix360_${periodo}_${new Date().toISOString().slice(0,10)}.xlsx`; document.body.appendChild(link); link.click(); document.body.removeChild(link); setTimeout(()=>URL.revokeObjectURL(url),1500); fecharModal(); mostrarToast(`Excel formatado exportado! (${pedidosFiltrados.length} cargas / ${pedidosFiltrados.reduce((s,p)=>s+new Set(obterNumerosNF(p).map(v=>String(v).trim()).filter(Boolean)).size,0)} NFs únicas)`, 'sucesso');
-    }
-
-    // ===============================================================
-    // CENTRAL DE AJUDA / CHAMADOS
-    // ===============================================================
-    function formatarDataTicket(v) {
-      if (!v) return '';
-      try { return new Date(v).toLocaleString('pt-BR'); } catch(e) { return String(v); }
-    }
-
     function abrirModalNovoTicket() {
       if (!sessaoValida()) return;
       abrirModal('Novo chamado', `
