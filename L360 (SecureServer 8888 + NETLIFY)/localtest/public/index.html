@@ -95,7 +95,7 @@
     .alerta-msg-pisca { color: white; background: var(--cor-destaque); padding: 2px 6px; border-radius: 12px; font-size: 10px; margin-left: 6px; animation: piscar 1.5s infinite; }
 
     /* FILTROS MULTI-SELECT CUSTOMIZADOS */
-    .ms-container { position: relative; width: 100%; user-select: none; }
+    .ms-container { position: relative; width: 100%; user-select: none; z-index:100;}
     .ms-button { width: 100%; text-align: left; padding: 10px 14px; border: 1px solid var(--cor-borda); border-radius: 8px; background: white; font-size: 13px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--cor-texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: inherit; transition: border 0.3s; }
     .ms-button:hover { border-color: var(--cor-destaque); }
     .ms-dropdown { display: none; position: absolute; top: calc(100% + 4px); left: 0; width: 100%; max-height: 280px; overflow-y: auto; background: white; border: 1px solid var(--cor-borda); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 9999; padding: 6px 0; }
@@ -1163,7 +1163,32 @@
       }
     }
 
-  </style>
+  
+    /* Fix para permitir abertura de dropdowns em cards sem clipping */
+    .card:has(.ms-container),
+    .card.com-dropdown,
+    #transp-mural .card,
+    #transp-ativas .card,
+    #forn-historico .card,
+    #admin-torre .card,
+    .dashboard-export-section {
+      overflow: visible !important;
+      isolation: auto !important;
+    }
+    .ms-container {
+      position: relative !important;
+      width: 100%;
+      user-select: none;
+      z-index: 100 !important;
+    }
+    .ms-dropdown {
+      z-index: 99999 !important;
+    }
+    .ms-dropdown.show {
+      display: block !important;
+    }
+
+</style>
 </head>
 <body>
 
@@ -1340,13 +1365,12 @@
         💬 Chat da Carga <span id="badge-forn-chat" class="alerta-msg-pisca escondido">🔔</span>
       </button>
       <button class="nav-tab" onclick="alternarAba('painel-suporte-cliente', this); renderSuporteCliente();">🎧 Central de Ajuda</button>
-      <button class="nav-tab" onclick="abrirModalExportarRelatorio()">📊 Relatório Excel</button>
-    </div>
+      </div>
 
     <!-- SUB-NAVBAR TRANSPORTADORA -->
     <div id="nav-transportadora" class="sub-navbar escondido">
       <button class="nav-tab ativo" onclick="alternarAba('transp-dashboard', this); renderTranspDashboard();">📊 Dashboard de Operação</button>
-      <button class="nav-tab" onclick="alternarAba('transp-mural', this); renderMural();">🔍 Mural de Coletas</button>
+      <button class="nav-tab" onclick="alternarAba('transp-mural', this); renderMural();">🔍 Coletas Disponíveis</button>
       <button class="nav-tab" id="tab-transp-ativas" onclick="alternarAba('transp-ativas', this); renderMinhasCargas();">
         🚚 Gestão de Rota & Histórico <span id="alert-transp-ativas" class="alerta-pisca escondido">⚠</span>
       </button>
@@ -1354,8 +1378,7 @@
         💬 Chat com Cliente <span id="badge-transp-chat" class="alerta-msg-pisca escondido">🔔</span>
       </button>
       <button class="nav-tab" onclick="alternarAba('painel-suporte-cliente', this); renderSuporteCliente();">🎧 Central de Ajuda</button>
-      <button class="nav-tab" onclick="abrirModalExportarRelatorio()">📊 Relatório Excel</button>
-    </div>
+      </div>
 
     <!-- SUB-NAVBAR ADMIN -->
     <div id="nav-admin" class="sub-navbar escondido">
@@ -1371,8 +1394,7 @@
       <button class="nav-tab" onclick="alternarAba('painel-suporte-admin', this); renderSuporteAdmin();">
         🎧 HelpDesk <span id="badge-admin-helpdesk" class="alerta-msg-pisca escondido">🔔</span>
       </button>
-      <button class="nav-tab" onclick="abrirModalExportarRelatorio()">📊 Relatórios</button>
-    </div>
+      </div>
 
     <div class="conteiner">
 
@@ -1476,7 +1498,7 @@
       <div id="admin-dashboard" class="secao-aba escondido">
         <div class="dashboard-section-title"><h3>Visão operacional do Admin</h3><span style="font-size:12px;color:#64748B;">Somente indicadores necessários para decisão e tratamento</span></div>
         <div class="dashboard-grid-compact">
-          <div class="kpi-card" onclick="filtrarAdminPorKPI('TODOS')"><h4>Cargas ativas</h4><div class="val" id="admin-kpi-total">0</div></div>
+          <div class="kpi-card" onclick="filtrarAdminPorKPI('TODOS')"><h4>Total de coletas</h4><div class="val" id="admin-kpi-total">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#F59E0B;border-top-color:#F59E0B" onclick="filtrarAdminPorKPI('Aguardando Aceite da Transportadora')"><h4>Aguardando aceite</h4><div class="val" id="admin-kpi-aceite">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#0EA5E9;border-top-color:#0EA5E9" onclick="filtrarAdminPorKPI('COLETA_PENDENTE')"><h4>Coleta pendente</h4><div class="val" id="admin-kpi-coleta">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarAdminPorKPI('COLETA_REALIZADA')"><h4>Coletada</h4><div class="val" id="admin-kpi-coletas-realizadas">0</div></div>
@@ -1495,6 +1517,78 @@
             <div class="dashboard-breakdown-item"><strong>Externo</strong><span id="admin-kpi-cancel-externo">0</span></div>
             <div class="dashboard-breakdown-item"><strong>Destinatário</strong><span id="admin-kpi-cancel-destinatario">0</span></div>
           </div>
+
+        
+        <!-- SEÇÃO DE EXPORTAÇÃO E ARQUIVO ATUALIZÁVEL EXCEL -->
+        <div class="dashboard-export-section card" style="margin-top:24px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#E0F2FE 100%);border-radius:14px;border:1px solid #BAE6FD;box-shadow:0 4px 12px rgba(2,132,199,0.08);overflow:visible !important;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:20px;">📊</span>
+                <h4 style="margin:0;color:#0369A1;font-size:15px;font-weight:700;">Exportação Global de Coletas & Conexão Atualizável</h4>
+                <span style="background:#0284C7;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:0.5px;">NOVO</span>
+              </div>
+              <p style="margin:4px 0 0;font-size:12px;color:#475569;">
+                Filtre por período personalizado (mês a mês) e exporte para planilha formatada ou baixe o <strong>arquivo atualizável (.iqy)</strong> conectado em tempo real à base de coletas autorizada do seu perfil.
+              </p>
+            </div>
+            <!-- Atalhos Rápidos de Período -->
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'ESTE_MES')">📅 Este Mês</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'MES_ANTERIOR')">📅 Mês Anterior</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', '30D')">30 Dias</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', '90D')">90 Dias</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'ANO')">Ano Atual</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('admin', 'TUDO')">Todo Histórico</button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;position:relative;z-index:20;">
+            <div style="flex:1;min-width:145px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Inicial *</label>
+              <input type="date" id="admin-exp-data-inicio" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
+            </div>
+            <div style="flex:1;min-width:145px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Final *</label>
+              <input type="date" id="admin-exp-data-fim" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
+            </div>
+            <div style="flex:1.4;min-width:200px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Filtro de Status</label>
+              <div class="ms-container" id="ms-container-admin-exp-status">
+                <button type="button" class="ms-button" id="ms-btn-admin-exp-status" onclick="toggleMS('ms-dropdown-admin-exp-status')">Todos os Status ▼</button>
+                <div class="ms-dropdown" id="ms-dropdown-admin-exp-status">
+                  <label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Todos os Status</label>
+                  <label><input type="checkbox" value="EM_ABERTO" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Em Aberto</label>
+                  <label><input type="checkbox" value="Aguardando Aceite da Transportadora" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Aguardando Aceite</label>
+                  <label><input type="checkbox" value="Aceito pela Transportadora" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Aguardando Coleta</label>
+                  <label><input type="checkbox" value="Separado" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Separado</label>
+                  <label><input type="checkbox" value="Em Trânsito" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Em Trânsito</label>
+                  <label><input type="checkbox" value="Em Rota" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Em Rota</label>
+                  <label><input type="checkbox" value="EM_ATRASO" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Atrasados</label>
+                  <label><input type="checkbox" value="Ocorrência" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Ocorrência</label>
+                  <label><input type="checkbox" value="Entregue" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Entregue</label>
+                  <label><input type="checkbox" value="Cancelado" onchange="handleMSChange(this, 'ms-container-admin-exp-status', 'ms-btn-admin-exp-status')"> Cancelado</label>
+                </div>
+              </div>
+            </div>
+            <!-- Botões de Ação -->
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <button class="btn btn-sucesso" style="padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:6px;" onclick="exportarExcelDoDashboard('admin')">
+                <span>📥</span> Baixar Excel (.XLSX)
+              </button>
+              <button class="btn btn-outline" style="padding:10px 16px;font-size:13px;background:white;color:#0284C7;border-color:#0284C7;display:flex;align-items:center;gap:6px;" onclick="baixarArquivoAtualizavelExcel('admin')" title="Arquivo de Consulta Dinâmica (.iqy) que se atualiza automaticamente dentro do Excel">
+                <span>🔄</span> Baixar Arquivo Atualizável (.IQY)
+              </button>
+              <button class="btn btn-outline" style="padding:10px 12px;font-size:12px;background:#F8FAFC;color:#475569;" onclick="copiarLinkQuery('admin')" title="Copiar URL ou script do Power Query M">
+                <span>📋</span> Copiar Query
+              </button>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:#64748B;display:flex;align-items:center;gap:6px;">
+            <span>ℹ️</span>
+            <span><strong>Dica:</strong> O <em>Arquivo Atualizável (.iqy)</em> abre direto no Excel e permite atualizar os dados a qualquer momento clicando em <strong>Dados > Atualizar Tudo</strong>. Nenhum dado fora do seu perfil é exposto.</span>
+          </div>
+        </div>
         </div>
       </div>
 
@@ -1546,7 +1640,7 @@
       <div id="forn-dashboard" class="secao-aba">
         <div class="dashboard-section-title"><h3>Minha operação</h3><span style="font-size:12px;color:#64748B;">Somente cargas deste fornecedor</span></div>
         <div class="dashboard-grid-compact">
-          <div class="kpi-card" onclick="filtrarFornPorKPI('TODOS')"><h4>Minhas cargas</h4><div class="val" id="forn-kpi-total">0</div></div>
+          <div class="kpi-card" onclick="filtrarFornPorKPI('TODOS')"><h4>Total de coletas</h4><div class="val" id="forn-kpi-total">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#F59E0B;border-top-color:#F59E0B" onclick="filtrarFornPorKPI('Aguardando Aceite da Transportadora')"><h4>Aguardando transportadora</h4><div class="val" id="forn-kpi-aceite">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#0EA5E9;border-top-color:#0EA5E9" onclick="filtrarFornPorKPI('COLETA_PENDENTE')"><h4>Coleta pendente</h4><div class="val" id="forn-kpi-coleta-pendente">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarFornPorKPI('COLETA_REALIZADA')"><h4>Coletada</h4><div class="val" id="forn-kpi-coleta-realizada">0</div></div>
@@ -1561,15 +1655,95 @@
           <div class="dashboard-breakdown-grid">
             <div class="dashboard-breakdown-item"><strong>Fornecedor</strong><span id="forn-kpi-cancel-forn">0</span></div><div class="dashboard-breakdown-item"><strong>Transportadora</strong><span id="forn-kpi-cancel-transp">0</span></div><div class="dashboard-breakdown-item"><strong>Administrativo</strong><span id="forn-kpi-cancel-admin">0</span></div><div class="dashboard-breakdown-item"><strong>Externo</strong><span id="forn-kpi-cancel-externo">0</span></div><div class="dashboard-breakdown-item"><strong>Destinatário</strong><span id="forn-kpi-cancel-destinatario">0</span></div>
           </div>
+
+        
+        <!-- SEÇÃO DE EXPORTAÇÃO E ARQUIVO ATUALIZÁVEL EXCEL -->
+        <div class="dashboard-export-section card" style="margin-top:24px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#E0F2FE 100%);border-radius:14px;border:1px solid #BAE6FD;box-shadow:0 4px 12px rgba(2,132,199,0.08);overflow:visible !important;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:20px;">📊</span>
+                <h4 style="margin:0;color:#0369A1;font-size:15px;font-weight:700;">Exportação das Minhas Coletas & Conexão Atualizável</h4>
+                <span style="background:#0284C7;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:0.5px;">NOVO</span>
+              </div>
+              <p style="margin:4px 0 0;font-size:12px;color:#475569;">
+                Filtre por período personalizado (mês a mês) e exporte para planilha formatada ou baixe o <strong>arquivo atualizável (.iqy)</strong> conectado em tempo real à base de coletas autorizada do seu perfil.
+              </p>
+            </div>
+            <!-- Atalhos Rápidos de Período -->
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'ESTE_MES')">📅 Este Mês</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'MES_ANTERIOR')">📅 Mês Anterior</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', '30D')">30 Dias</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', '90D')">90 Dias</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'ANO')">Ano Atual</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('forn', 'TUDO')">Todo Histórico</button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;position:relative;z-index:20;">
+            <div style="flex:1;min-width:145px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Inicial *</label>
+              <input type="date" id="forn-exp-data-inicio" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
+            </div>
+            <div style="flex:1;min-width:145px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Final *</label>
+              <input type="date" id="forn-exp-data-fim" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
+            </div>
+            <div style="flex:1.4;min-width:200px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Filtro de Status</label>
+              <div class="ms-container" id="ms-container-forn-exp-status">
+                <button type="button" class="ms-button" id="ms-btn-forn-exp-status" onclick="toggleMS('ms-dropdown-forn-exp-status')">Todos os Status ▼</button>
+                <div class="ms-dropdown" id="ms-dropdown-forn-exp-status">
+                  <label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Todos os Status</label>
+                  <label><input type="checkbox" value="EM_ABERTO" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Em Aberto</label>
+                  <label><input type="checkbox" value="Aguardando Aceite da Transportadora" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Aguardando Aceite</label>
+                  <label><input type="checkbox" value="Aceito pela Transportadora" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Aguardando Coleta</label>
+                  <label><input type="checkbox" value="Separado" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Separado</label>
+                  <label><input type="checkbox" value="Em Trânsito" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Em Trânsito</label>
+                  <label><input type="checkbox" value="Em Rota" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Em Rota</label>
+                  <label><input type="checkbox" value="EM_ATRASO" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Atrasados</label>
+                  <label><input type="checkbox" value="Ocorrência" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Ocorrência</label>
+                  <label><input type="checkbox" value="Entregue" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Entregue</label>
+                  <label><input type="checkbox" value="Cancelado" onchange="handleMSChange(this, 'ms-container-forn-exp-status', 'ms-btn-forn-exp-status')"> Cancelado</label>
+                </div>
+              </div>
+            </div>
+            <!-- Botões de Ação -->
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <button class="btn btn-sucesso" style="padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:6px;" onclick="exportarExcelDoDashboard('forn')">
+                <span>📥</span> Baixar Excel (.XLSX)
+              </button>
+              <button class="btn btn-outline" style="padding:10px 16px;font-size:13px;background:white;color:#0284C7;border-color:#0284C7;display:flex;align-items:center;gap:6px;" onclick="baixarArquivoAtualizavelExcel('forn')" title="Arquivo de Consulta Dinâmica (.iqy) que se atualiza automaticamente dentro do Excel">
+                <span>🔄</span> Baixar Arquivo Atualizável (.IQY)
+              </button>
+              <button class="btn btn-outline" style="padding:10px 12px;font-size:12px;background:#F8FAFC;color:#475569;" onclick="copiarLinkQuery('forn')" title="Copiar URL ou script do Power Query M">
+                <span>📋</span> Copiar Query
+              </button>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:#64748B;display:flex;align-items:center;gap:6px;">
+            <span>ℹ️</span>
+            <span><strong>Dica:</strong> O <em>Arquivo Atualizável (.iqy)</em> abre direto no Excel e permite atualizar os dados a qualquer momento clicando em <strong>Dados > Atualizar Tudo</strong>. Nenhum dado fora do seu perfil é exposto.</span>
+          </div>
+        </div>
         </div>
       </div>
 
       <div id="transp-dashboard" class="secao-aba escondido">
-        <div class="dashboard-section-title"><h3>Operação da transportadora</h3><span style="font-size:12px;color:#64748B;">Mural disponível + cargas assumidas</span></div>
+        <div class="dashboard-section-title">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <h3 style="margin:0;">Operação da transportadora</h3>
+            <span class="badge-metrica-assumidas" style="display:inline-flex;align-items:center;gap:6px;background:#EEF2FF;border:1px solid #C7D2FE;color:#3730A3;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;">
+              📦 Coletas assumidas: <strong id="transp-metric-assumidas" style="font-size:14px;color:#1E1B4B;">0</strong>
+            </span>
+          </div>
+          <span style="font-size:12px;color:#64748B;">Coletas disponíveis no mural + coletas sob sua gestão</span>
+        </div>
         <div class="dashboard-grid-compact">
-          <div class="kpi-card" style="--kpi-accent:#F59E0B;border-top-color:#F59E0B" onclick="filtrarTranspPorKPI('Aguardando Aceite da Transportadora')"><h4>Disponíveis no mural</h4><div class="val" id="transp-kpi-aceite">0</div></div>
+          <div class="kpi-card" style="--kpi-accent:#F59E0B;border-top-color:#F59E0B" onclick="filtrarTranspPorKPI('Aguardando Aceite da Transportadora')"><h4>Coletas disponíveis</h4><div class="val" id="transp-kpi-aceite">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#0EA5E9;border-top-color:#0EA5E9" onclick="filtrarTranspPorKPI('COLETA_PENDENTE')"><h4>Coleta pendente</h4><div class="val" id="transp-kpi-coleta-pendente">0</div></div>
-          <div class="kpi-card" onclick="filtrarTranspPorKPI('TODOS')"><h4>Cargas assumidas</h4><div class="val" id="transp-kpi-total">0</div></div>
+          <div class="kpi-card kpi-metric-inline" style="--kpi-accent:#6366F1;border-top-color:#6366F1;background:linear-gradient(135deg,#EEF2FF 0%,#E0E7FF 100%)" onclick="filtrarTranspPorKPI('TODOS')"><h4>Total de coletas</h4><div class="val" id="transp-kpi-total">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarTranspPorKPI('COLETA_REALIZADA')"><h4>Coletada</h4><div class="val" id="transp-kpi-coleta-realizada">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#2563EB;border-top-color:#2563EB" onclick="filtrarTranspPorKPI('Em Trânsito')"><h4>Em trânsito</h4><div class="val" id="transp-kpi-transito">0</div></div>
           <div class="kpi-card" style="--kpi-accent:#7C3AED;border-top-color:#7C3AED" onclick="filtrarTranspPorKPI('Em Rota')"><h4>Em rota de entrega</h4><div class="val" id="transp-kpi-rota">0</div></div>
@@ -1578,10 +1752,82 @@
           <div class="kpi-card" style="--kpi-accent:#16A34A;border-top-color:#16A34A" onclick="filtrarTranspPorKPI('Entregue')"><h4>Entregues</h4><div class="val" id="transp-kpi-entregue">0</div></div>
         </div>
         <div class="dashboard-breakdown">
-          <div class="dashboard-section-title"><h3>Cancelamentos das cargas assumidas</h3><button class="btn btn-outline" style="padding:6px 10px;font-size:11px" onclick="filtrarTranspPorKPI('Cancelado')">Ver canceladas</button></div>
+          <div class="dashboard-section-title"><h3>Cancelamentos das coletas assumidas</h3><button class="btn btn-outline" style="padding:6px 10px;font-size:11px" onclick="filtrarTranspPorKPI('Cancelado')">Ver canceladas</button></div>
           <div class="dashboard-breakdown-grid">
             <div class="dashboard-breakdown-item"><strong>Fornecedor</strong><span id="transp-kpi-cancel-forn">0</span></div><div class="dashboard-breakdown-item"><strong>Transportadora</strong><span id="transp-kpi-cancel-transp">0</span></div><div class="dashboard-breakdown-item"><strong>Administrativo</strong><span id="transp-kpi-cancel-admin">0</span></div><div class="dashboard-breakdown-item"><strong>Externo</strong><span id="transp-kpi-cancel-externo">0</span></div><div class="dashboard-breakdown-item"><strong>Destinatário</strong><span id="transp-kpi-cancel-destinatario">0</span></div>
           </div>
+
+        
+        <!-- SEÇÃO DE EXPORTAÇÃO E ARQUIVO ATUALIZÁVEL EXCEL -->
+        <div class="dashboard-export-section card" style="margin-top:24px;padding:22px;background:linear-gradient(135deg,#F0F9FF 0%,#E0F2FE 100%);border-radius:14px;border:1px solid #BAE6FD;box-shadow:0 4px 12px rgba(2,132,199,0.08);overflow:visible !important;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:20px;">📊</span>
+                <h4 style="margin:0;color:#0369A1;font-size:15px;font-weight:700;">Exportação Operacional das Coletas & Conexão Atualizável</h4>
+                <span style="background:#0284C7;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:0.5px;">NOVO</span>
+              </div>
+              <p style="margin:4px 0 0;font-size:12px;color:#475569;">
+                Filtre por período personalizado (mês a mês) e exporte para planilha formatada ou baixe o <strong>arquivo atualizável (.iqy)</strong> conectado em tempo real à base de coletas autorizada do seu perfil.
+              </p>
+            </div>
+            <!-- Atalhos Rápidos de Período -->
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'ESTE_MES')">📅 Este Mês</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'MES_ANTERIOR')">📅 Mês Anterior</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', '30D')">30 Dias</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', '90D')">90 Dias</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'ANO')">Ano Atual</button>
+              <button type="button" class="btn btn-outline" style="padding:4px 9px;font-size:11px;background:white;" onclick="definirPeriodoRapido('transp', 'TUDO')">Todo Histórico</button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;position:relative;z-index:20;">
+            <div style="flex:1;min-width:145px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Inicial *</label>
+              <input type="date" id="transp-exp-data-inicio" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
+            </div>
+            <div style="flex:1;min-width:145px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Data Final *</label>
+              <input type="date" id="transp-exp-data-fim" style="width:100%;padding:9px 12px;border:1px solid #94A3B8;border-radius:8px;font-size:13px;background:white;">
+            </div>
+            <div style="flex:1.4;min-width:200px;">
+              <label style="font-size:11px;font-weight:600;color:#0F172A;margin-bottom:4px;display:block;">Filtro de Status</label>
+              <div class="ms-container" id="ms-container-transp-exp-status">
+                <button type="button" class="ms-button" id="ms-btn-transp-exp-status" onclick="toggleMS('ms-dropdown-transp-exp-status')">Todos os Status ▼</button>
+                <div class="ms-dropdown" id="ms-dropdown-transp-exp-status">
+                  <label><input type="checkbox" value="TODOS" checked onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Todos os Status</label>
+                  <label><input type="checkbox" value="EM_ABERTO" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Em Aberto</label>
+                  <label><input type="checkbox" value="Aguardando Aceite da Transportadora" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Aguardando Aceite</label>
+                  <label><input type="checkbox" value="Aceito pela Transportadora" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Aguardando Coleta</label>
+                  <label><input type="checkbox" value="Separado" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Separado</label>
+                  <label><input type="checkbox" value="Em Trânsito" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Em Trânsito</label>
+                  <label><input type="checkbox" value="Em Rota" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Em Rota</label>
+                  <label><input type="checkbox" value="EM_ATRASO" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Atrasados</label>
+                  <label><input type="checkbox" value="Ocorrência" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Ocorrência</label>
+                  <label><input type="checkbox" value="Entregue" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Entregue</label>
+                  <label><input type="checkbox" value="Cancelado" onchange="handleMSChange(this, 'ms-container-transp-exp-status', 'ms-btn-transp-exp-status')"> Cancelado</label>
+                </div>
+              </div>
+            </div>
+            <!-- Botões de Ação -->
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <button class="btn btn-sucesso" style="padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:6px;" onclick="exportarExcelDoDashboard('transp')">
+                <span>📥</span> Baixar Excel (.XLSX)
+              </button>
+              <button class="btn btn-outline" style="padding:10px 16px;font-size:13px;background:white;color:#0284C7;border-color:#0284C7;display:flex;align-items:center;gap:6px;" onclick="baixarArquivoAtualizavelExcel('transp')" title="Arquivo de Consulta Dinâmica (.iqy) que se atualiza automaticamente dentro do Excel">
+                <span>🔄</span> Baixar Arquivo Atualizável (.IQY)
+              </button>
+              <button class="btn btn-outline" style="padding:10px 12px;font-size:12px;background:#F8FAFC;color:#475569;" onclick="copiarLinkQuery('transp')" title="Copiar URL ou script do Power Query M">
+                <span>📋</span> Copiar Query
+              </button>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:#64748B;display:flex;align-items:center;gap:6px;">
+            <span>ℹ️</span>
+            <span><strong>Dica:</strong> O <em>Arquivo Atualizável (.iqy)</em> abre direto no Excel e permite atualizar os dados a qualquer momento clicando em <strong>Dados > Atualizar Tudo</strong>. Nenhum dado fora do seu perfil é exposto.</span>
+          </div>
+        </div>
         </div>
       </div>
 
@@ -1744,9 +1990,9 @@
       </div>
 
       <div id="transp-mural" class="secao-aba escondido">
-        <div class="card" style="padding: 16px; margin-bottom: 20px;">
-          <h3 style="margin-top:0; margin-bottom: 4px; color: var(--cor-primaria);">Mural de Novas Coletas</h3>
-          <p style="color:#64748B; font-size:13px; margin-bottom: 20px;">Exibindo cargas onde a UF de origem está na sua área de abrangência.</p>
+        <div class="card" style="padding: 16px; margin-bottom: 20px; overflow: visible;">
+          <h3 style="margin-top:0; margin-bottom: 4px; color: var(--cor-primaria);">Coletas Disponíveis</h3>
+          <p style="color:#64748B; font-size:13px; margin-bottom: 20px;">Coletas disponíveis na sua área de abrangência. Filtre por UF ou modal.</p>
           <div style="display: flex; gap: 16px; align-items: center; flex-wrap:wrap;">
             <div style="flex: 1; min-width: 200px;"><label>Filtrar por UF da Coleta</label><select id="transp-cobertura" onchange="renderMural()"><option value="TODAS" selected>Ver Todas as minhas UFs</option></select></div>
             <div style="flex: 1; min-width: 200px;">
@@ -2108,7 +2354,10 @@
     }
 
     async function apiJSON(url, options={}) {
-      const res = await fetch(url, {credentials:'same-origin', cache:'no-store', ...options, headers:{'content-type':'application/json', ...(options.headers||{})}});
+      const finalUrl = (typeof url === 'string' && url.startsWith('/api/') && !url.startsWith('/api/'))
+        ? url.replace(/^\/api\//, '/api/')
+        : url;
+      const res = await fetch(finalUrl, {credentials:'same-origin', cache:'no-store', ...options, headers:{'content-type':'application/json', ...(options.headers||{})}});
       let data={}; try { data=await res.json(); } catch(e) {}
       if(!res.ok) { const err=new Error(data.error||`HTTP ${res.status}`); err.status=res.status; err.data=data; throw err; }
       return data;
@@ -4396,6 +4645,7 @@ STATUS: ${p.status || 'Pendente'}`;
     }
 
     function renderFornDashboard() {
+      inicializarDatasDashboard('forn');
       const hojeISO=new Date().toISOString().split('T')[0];
       const peds=estado.pedidos.filter(p=>!p.arquivadoForn&&p.criadoPorId===estado.dadosUsuario.id);
       const pend=peds.filter(p=>!p.coletaRealizada&&(p.status==='Aceito pela Transportadora'||p.status==='Separado'));
@@ -4405,13 +4655,17 @@ STATUS: ${p.status || 'Pendente'}`;
     }
 
     function renderTranspDashboard() {
+      inicializarDatasDashboard('transp');
       const hojeISO=new Date().toISOString().split('T')[0]; const peds=estado.pedidos.filter(p=>(!p.arquivadoTransp||p.status==='Cancelado')&&p.transportadoraVencedoraID===estado.dadosUsuario.id); const minhasUFs=estado.dadosUsuario.cobertura||[];
       const mural=estado.pedidos.filter(p=>!p.arquivadoTransp&&p.status==='Aguardando Aceite da Transportadora'&&transportadoraCobreUF(minhasUFs,p.ufOrigem));
       const pend=peds.filter(p=>!p.coletaRealizada&&(p.status==='Aceito pela Transportadora'||p.status==='Separado')); const set=(id,v)=>{const e=document.getElementById(id);if(e)e.innerText=v;};
-      set('transp-kpi-total',peds.filter(p=>p.status!=='Entregue'&&p.status!=='Cancelado').length); set('transp-kpi-aceite',mural.length); set('transp-kpi-coleta-pendente',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='COLETA_PENDENTE').length); set('transp-kpi-coleta',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='COLETA_PENDENTE').length); set('transp-kpi-coleta-realizada',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Coletada').length); set('transp-kpi-transito',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Em Trânsito').length); set('transp-kpi-rota',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Em Rota').length); set('transp-kpi-entregue',peds.filter(p=>p.status==='Entregue').length); set('transp-kpi-ocorrencia',peds.filter(p=>p.status==='Ocorrência').length); set('transp-kpi-atrasos',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='EM_ATRASO').length); renderCancelamentoDashboard('transp', peds);
+      const totalAtivasTransp = peds.filter(p=>p.status!=='Entregue'&&p.status!=='Cancelado').length;
+      set('transp-kpi-total', totalAtivasTransp);
+      set('transp-metric-assumidas', totalAtivasTransp); set('transp-kpi-aceite',mural.length); set('transp-kpi-coleta-pendente',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='COLETA_PENDENTE').length); set('transp-kpi-coleta',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='COLETA_PENDENTE').length); set('transp-kpi-coleta-realizada',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Coletada').length); set('transp-kpi-transito',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Em Trânsito').length); set('transp-kpi-rota',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Em Rota').length); set('transp-kpi-entregue',peds.filter(p=>p.status==='Entregue').length); set('transp-kpi-ocorrencia',peds.filter(p=>p.status==='Ocorrência').length); set('transp-kpi-atrasos',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='EM_ATRASO').length); renderCancelamentoDashboard('transp', peds);
     }
 
-    function renderAdminDashboard() { if(!sessaoValida('admin')) return;
+    function renderAdminDashboard() {
+      inicializarDatasDashboard('admin'); if(!sessaoValida('admin')) return;
       const peds=estado.pedidos.filter(p=>!p.arquivadoAdmin||p.status==='Cancelado'); const hojeISO=new Date().toISOString().split('T')[0]; const set=(id,v)=>{const e=document.getElementById(id);if(e)e.innerText=v;};
       const pend=peds.filter(p=>!p.coletaRealizada&&(p.status==='Aceito pela Transportadora'||p.status==='Separado'));
       set('admin-kpi-total',peds.filter(p=>p.status!=='Entregue'&&p.status!=='Cancelado').length); set('admin-kpi-aceite',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Aguardando Aceite da Transportadora').length); set('admin-kpi-coleta',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='COLETA_PENDENTE').length); set('admin-kpi-coletas-realizadas',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Coletada').length); set('admin-kpi-transito',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Em Trânsito').length); set('admin-kpi-rota',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Em Rota').length); set('admin-kpi-ocorrencia',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='Ocorrência').length); set('admin-kpi-atraso',peds.filter(p=>categoriaCardOperacional(p,hojeISO)==='EM_ATRASO').length); set('admin-kpi-entregues',peds.filter(p=>p.status==='Entregue').length); renderCancelamentoDashboard('admin', peds);
@@ -4428,6 +4682,193 @@ STATUS: ${p.status || 'Pendente'}`;
       const f = mapa[tipoStatus] || (tipoStatus==='Cancelado' ? 'Cancelado' : tipoStatus);
       setMultiSelectPorValor('ms-container-admin-status','ms-btn-admin-status',f);
       renderAdmin();
+    }
+
+
+    
+    // Atalhos rápidos para seleção de período no dashboard
+    function definirPeriodoRapido(prefix, tipo) {
+      const elIni = document.getElementById(prefix + '-exp-data-inicio');
+      const elFim = document.getElementById(prefix + '-exp-data-fim');
+      if (!elIni || !elFim) return;
+
+      const hoje = new Date();
+      const formatarISO = d => d.toISOString().split('T')[0];
+
+      if (tipo === 'ESTE_MES') {
+        const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+        const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+        elIni.value = formatarISO(primeiroDia);
+        elFim.value = formatarISO(ultimoDia);
+      } else if (tipo === 'MES_ANTERIOR') {
+        const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth() - 1, 1);
+        const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth(), 0);
+        elIni.value = formatarISO(primeiroDia);
+        elFim.value = formatarISO(ultimoDia);
+      } else if (tipo === '30D') {
+        const limite = new Date(hoje.getTime() - 30 * 86400000);
+        elIni.value = formatarISO(limite);
+        elFim.value = formatarISO(hoje);
+      } else if (tipo === '90D') {
+        const limite = new Date(hoje.getTime() - 90 * 86400000);
+        elIni.value = formatarISO(limite);
+        elFim.value = formatarISO(hoje);
+      } else if (tipo === 'ANO') {
+        const primeiroDia = new Date(hoje.getFullYear(), 0, 1);
+        elIni.value = formatarISO(primeiroDia);
+        elFim.value = formatarISO(hoje);
+      } else if (tipo === 'TUDO') {
+        elIni.value = '2020-01-01';
+        elFim.value = formatarISO(new Date(hoje.getFullYear() + 1, 11, 31));
+      }
+      mostrarToast('Período aplicado!', 'sucesso');
+    }
+
+    // Inicializa datas padrão nos dashboards ao abrir
+    function inicializarDatasDashboard(prefix) {
+      const elIni = document.getElementById(prefix + '-exp-data-inicio');
+      const elFim = document.getElementById(prefix + '-exp-data-fim');
+      if (elIni && !elIni.value && elFim && !elFim.value) {
+        definirPeriodoRapido(prefix, 'ESTE_MES');
+      }
+    }
+
+    // Baixa arquivo .iqy (Internet Query) para atualização automática no Microsoft Excel
+    function baixarArquivoAtualizavelExcel(prefix) {
+      if (!sessaoValida()) return;
+      const dataIni = document.getElementById(prefix + '-exp-data-inicio')?.value || '';
+      const dataFim = document.getElementById(prefix + '-exp-data-fim')?.value || '';
+      const fStatusArr = obterValoresMultiSelect('ms-container-' + prefix + '-exp-status');
+      const statusParam = fStatusArr.join(',');
+
+      // Monta a URL de feed da API (com token seguro)
+      const token = sessaoSegura.apiToken || sessaoSegura.token || 'sessao-ativa';
+      const feedUrl = `${window.location.origin}/api/relatorio-coletas-csv?auth=${encodeURIComponent(token)}&dataInicio=${encodeURIComponent(dataIni)}&dataFim=${encodeURIComponent(dataFim)}&status=${encodeURIComponent(statusParam)}`;
+
+      // Conteúdo do arquivo Web Query .iqy padrão Microsoft Excel
+      const iqyContent = [
+        'WEB',
+        '1',
+        feedUrl,
+        '',
+        'Selection=EntirePage',
+        'Formatting=None',
+        'PreFormattedTextToColumns=True',
+        'ConsecutiveDelimitersAsOne=True',
+        'SingleBlockTextImport=False',
+        'DisableDateRecognition=False',
+        'DisableRedirections=False'
+      ].join('\r\n');
+
+      const blob = new Blob([iqyContent], { type: 'text/x-ms-iqy;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Coletas_Atualizavel_${prefix.toUpperCase()}_${dataIni || 'inicio'}_a_${dataFim || 'fim'}.iqy`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+      abrirModal('Como Usar o Arquivo Atualizável no Excel', `
+        <div style="text-align:left;line-height:1.6;">
+          <div style="background:#EFF6FF;border-left:4px solid #0284C7;padding:12px;border-radius:6px;margin-bottom:16px;">
+            <strong style="color:#0369A1;">Arquivo de Consulta (.iqy) baixado com sucesso!</strong>
+            <p style="margin:4px 0 0;font-size:13px;color:#334155;">Este arquivo conecta o seu Microsoft Excel diretamente à base de coletas autorizada do seu perfil.</p>
+          </div>
+          <ol style="font-size:13px;color:#334155;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+            <li>Dê dois cliques no arquivo <strong>.iqy</strong> baixado para abrir no Excel.</li>
+            <li>Se o Excel exibir um aviso de segurança sobre Conexões de Dados da Web, clique em <strong>Habilitar</strong>.</li>
+            <li>Escolha onde inserir a tabela (Planilha Existente ou Nova) e clique em <strong>OK</strong>.</li>
+            <li>Para atualizar os dados com novos registros a qualquer momento, basta ir na aba <strong>Dados > Atualizar Tudo</strong> (ou clicar com o botão direito na tabela e selecionar <em>Atualizar</em>).</li>
+          </ol>
+          <div style="margin-top:16px;text-align:right;">
+            <button class="btn btn-primario" onclick="fecharModal()">Entendi</button>
+          </div>
+        </div>
+      `);
+    }
+
+    // Copia o link ou a query M para o Power BI / Excel Power Query
+    function copiarLinkQuery(prefix) {
+      if (!sessaoValida()) return;
+      const dataIni = document.getElementById(prefix + '-exp-data-inicio')?.value || '';
+      const dataFim = document.getElementById(prefix + '-exp-data-fim')?.value || '';
+      const fStatusArr = obterValoresMultiSelect('ms-container-' + prefix + '-exp-status');
+      const statusParam = fStatusArr.join(',');
+      const token = sessaoSegura.apiToken || sessaoSegura.token || 'sessao-ativa';
+      const feedUrl = `${window.location.origin}/api/relatorio-coletas-csv?auth=${encodeURIComponent(token)}&dataInicio=${encodeURIComponent(dataIni)}&dataFim=${encodeURIComponent(dataFim)}&status=${encodeURIComponent(statusParam)}`;
+
+      const powerQueryFormula = `let
+    Fonte = Csv.Document(Web.Contents("${feedUrl}"), [Delimiter=";", Encoding=65001, QuoteStyle=QuoteStyle.None]),
+    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true])
+in
+    Cabecalhos`;
+
+      navigator.clipboard.writeText(powerQueryFormula).then(() => {
+        mostrarToast('Código Power Query copiado para a área de transferência!', 'sucesso');
+      }).catch(() => {
+        prompt('Copie a URL da Query:', feedUrl);
+      });
+    }
+
+    function exportarExcelDoDashboard(prefix) {
+      if(!sessaoValida()) return;
+      const dataIni = document.getElementById(prefix+'-exp-data-inicio').value;
+      const dataFim = document.getElementById(prefix+'-exp-data-fim').value;
+      if(!dataIni || !dataFim) { mostrarToast('Selecione a data inicial e a data final para exportar.','alerta'); return; }
+      if(dataIni > dataFim) { mostrarToast('A data inicial não pode ser posterior à data final.','alerta'); return; }
+      const fStatusArr = obterValoresMultiSelect('ms-container-'+prefix+'-exp-status');
+      const hojeISO = new Date().toISOString().split('T')[0];
+      const pedidosFiltrados = obterPedidosRelatorioDoPerfil().filter(p => {
+        const dp = p.disponivelData || p.dataCriacao || '';
+        if(dp < dataIni || dp > dataFim) return false;
+        if(!fStatusArr.includes('TODOS')) {
+          const aberto = p.status!=='Entregue' && p.status!=='Cancelado';
+          const jaColetada = p.coletaRealizada===true || ['Em Trânsito','Em Rota','Entregue'].includes(p.status);
+          const atraso = aberto && (p.emAtraso===true || (jaColetada ? !!(p.dataLimiteEntrega && p.dataLimiteEntrega < hojeISO) : !!(p.disponivelData && p.disponivelData < hojeISO)));
+          const match = (fStatusArr.includes('EM_ABERTO') && aberto) || (fStatusArr.includes('EM_ATRASO') && atraso) || (fStatusArr.includes('COLETA_PENDENTE') && !p.coletaRealizada && (p.status==='Aceito pela Transportadora'||p.status==='Separado')) || (fStatusArr.includes('COLETA_REALIZADA') && p.status==='Coletada') || fStatusArr.includes(p.status);
+          if(!match) return false;
+        }
+        return true;
+      });
+      if(!pedidosFiltrados.length){ mostrarToast('Nenhuma coleta encontrada no período selecionado.','alerta'); return; }
+      // Re-use the existing processarExportacaoExcel logic with filtered data
+      _gerarExcelComDados(pedidosFiltrados, dataIni, dataFim);
+    }
+
+    async function _gerarExcelComDados(pedidosFiltrados, dataIni, dataFim) {
+      if(!window.ExcelJS){ mostrarToast('A biblioteca de exportação Excel não carregou. Verifique a conexão e tente novamente.','alerta'); return; }
+      const ordemColunas=[0,22,1,2,3,5,6,7,31,30,8,32,9,21,4,10,18,19,20,11,16,17,15,12,13,14,27,28,29,23,24,25,26];
+      const headersOriginais=['ID da Carga','Data de Criação','Data Disponível','Limite de Entrega','Modal','Fornecedor','CNPJ Origem','Endereço de Origem','Endereço de Destino','UF Destino','Tipo de Frete','Volumes','Comprimento (cm)','Largura (cm)','Altura (cm)','Cubagem (m³)','Peso Real (kg)','Peso Cubado (kg)','Valor da Mercadoria (R$)','NFs','Quantidade de NFs','Transportadora','Status','Causa do Cancelamento','Ocorrido no Cancelamento','Solicitado por','Data do Cancelamento','Coleta Realizada','Data/Hora da Coleta','POD','CNPJ Destino','Destinatário','Complemento Destino'];
+      const headers=ordemColunas.map(i=>headersOriginais[i]);
+      const workbook=new ExcelJS.Workbook(); workbook.creator='Logistix360'; workbook.subject='Relatório de coletas'; workbook.title='Relatório de Coletas Logistix360'; workbook.created=new Date();
+      const ws=workbook.addWorksheet('Relatório de Coletas',{views:[{state:'frozen',ySplit:1,xSplit:0,showGridLines:false}]});
+      ws.columns=headers.map((header,i)=>({header,key:`c${i}`,width:[14,15,14,14,14,32,20,38,30,20,38,30,12,28,13,14,22,28,16,12,15,16,14,15,13,13,16,24,18,24,38,25,22][i]||18}));
+      const fmtData=v=>{if(!v)return ''; if(/^\d{4}-\d{2}-\d{2}$/.test(String(v))){const [a,m,d]=String(v).split('-');return `${d}/${m}/${a}`;} return String(v);};
+      const valorCancelamento=p=>{const c=p.cancelamento||{};const cancelado=p.status==='Cancelado'||(c.status==='aceito'); if(!cancelado&&!c.dataSolicitacao&&!c.dataConclusao)return ['Não cancelado','Não cancelado','Não cancelado','Não cancelado']; return [obterResponsabilidadeCancelamento(p)||'Não informado',c.ocorrido||c.motivo||'Não informado',c.solicitante||'Não informado',c.dataConclusao||c.dataSolicitacao||'Não informado'];};
+      const linhas=[];
+      pedidosFiltrados.forEach(p=>{
+        const nfs=[...new Set(obterNumerosNF(p).map(v=>String(v).trim()).filter(Boolean))];
+        const cancel=valorCancelamento(p);
+        const cubagem=Number(p.cubagemM3)||obterCubagemM3(p.volumes,p.comprimento,p.largura,p.altura);
+        const valoresOriginais=[p.id||'',fmtData(p.dataCriacao||''),fmtData(p.disponivelData||''),fmtData(p.dataLimiteEntrega||''),p.modal||'Rodoviário',p.fornecedor||'',p.cnpj||'',p.origem||'',p.destino||'',p.ufDestino||'',p.frete||p.tipoFrete||'',Number(p.volumes)||0,Number(p.comprimento)||0,Number(p.largura)||0,Number(p.altura)||0,cubagem,Number(p.peso)||0,Number(obterPesoCubado(p))||0,Number(p.valorMercadoria)||0,nfs.length?nfs.join(', '):'Não informado',nfs.length,p.transportadoraVencedoraNome||'Não atribuída',p.status||'Não informado',cancel[0],cancel[1],cancel[2],cancel[3],p.coletaRealizada?'Sim':'Não',p.dataColetaRealizada||p.dataHoraColeta||'',p.comprovantePOD||'N/A',p.cnpjDestino||'',p.razaoDestino||'',p.complementoDestino||''];
+        linhas.push(ordemColunas.map(i=>valoresOriginais[i]));
+      });
+      linhas.forEach(row=>ws.addRow(row));
+      const header=ws.getRow(1); header.height=34; header.eachCell(cell=>{cell.font={name:'Aptos',bold:true,color:{argb:'FFFFFFFF'},size:10};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0A2540'}};cell.alignment={vertical:'middle',horizontal:'center',wrapText:true};cell.border={bottom:{style:'medium',color:{argb:'FF0284C7'}}};});
+      ws.autoFilter={from:{row:1,column:1},to:{row:Math.max(1,ws.rowCount),column:headers.length}};
+      ws.eachRow((row,rowNumber)=>{if(rowNumber===1)return; row.height=27; row.eachCell((cell,colNumber)=>{cell.font={name:'Aptos',size:10,color:{argb:'FF243447'}};cell.alignment={vertical:'middle',wrapText:[6,8,9,11,12,14,18,29,30,31,32,33].includes(colNumber)};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFFFFF'}};cell.border={bottom:{style:'hair',color:{argb:'FFD7E2EC'}}};});
+        row.getCell(23).numFmt='#,##0.000'; [21,22].forEach(c=>{row.getCell(c).numFmt='#,##0.00';row.getCell(c).alignment={horizontal:'right',vertical:'middle'};}); row.getCell(17).numFmt='"R$" #,##0.00'; row.getCell(20).numFmt='#,##0'; row.getCell(19).numFmt='0';
+        const status=String(row.getCell(2).value||'').toLowerCase(); const statusCell=row.getCell(2); let fill='FFE2E8F0',font='FF334155';
+        if(status.includes('cancel')){fill='FFFFEDD5';font='FF9A3412';} else if(status.includes('ocorr')){fill='FFFEE2E2';font='FFB91C1C';} else if(status.includes('atras')){fill='FFFFF3C4';font='FF92400E';} else if(status.includes('entreg')){fill='FFD1FAE5';font='FF065F46';} else if(status.includes('trânsito')||status.includes('rota')){fill='FFDBEAFE';font='FF1D4ED8';} else if(status.includes('aguardando')){fill='FFEDE9FE';font='FF5B21B6';} else if(status.includes('separado')||status.includes('colet')){fill='FFCCFBF1';font='FF115E59';}
+        statusCell.fill={type:'pattern',pattern:'solid',fgColor:{argb:fill}};statusCell.font={name:'Aptos',bold:true,size:10,color:{argb:font}};statusCell.alignment={vertical:'middle',wrapText:true};
+        if(String(row.getCell(30).value)==='Não cancelado'){[30,31,32,33].forEach(c=>{row.getCell(c).font={name:'Aptos',size:10,color:{argb:'FF64748B'},italic:true};});}
+      });
+      ws.getRow(1).commit?.();
+      const ultimaLinhaDados=ws.rowCount; const totalRow=ws.addRow([]); totalRow.getCell(1).value='TOTAL DO RELATÓRIO'; totalRow.getCell(20).value={formula:`SUM(T2:T${ultimaLinhaDados})`}; totalRow.getCell(17).value={formula:`SUM(Q2:Q${ultimaLinhaDados})`}; totalRow.getCell(19).value={formula:`SUM(S2:S${ultimaLinhaDados})`};
+      totalRow.eachCell(cell=>{cell.font={name:'Aptos',bold:true,color:{argb:'FFFFFFFF'}};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF1E3A8A'}};cell.alignment={vertical:'middle'};}); totalRow.height=26; totalRow.getCell(19).numFmt='"R$" #,##0.00';
+      const buffer=await workbook.xlsx.writeBuffer(); const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}); const url=URL.createObjectURL(blob); const link=document.createElement('a'); link.href=url; link.download=`Relatorio_Coletas_${dataIni}_a_${dataFim}_Logistix360.xlsx`; document.body.appendChild(link); link.click(); document.body.removeChild(link); setTimeout(()=>URL.revokeObjectURL(url),1500); mostrarToast(`Excel exportado! (${pedidosFiltrados.length} coletas / ${pedidosFiltrados.reduce((s,p)=>s+new Set(obterNumerosNF(p).map(v=>String(v).trim()).filter(Boolean)).size,0)} NFs únicas)`, 'sucesso');
     }
 
     function obterPedidosRelatorioDoPerfil() {
