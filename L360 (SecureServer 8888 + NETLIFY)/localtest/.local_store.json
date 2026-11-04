@@ -538,6 +538,17 @@
             "fornecedor"
           ],
           "timestamp": "03/11/2026, 15:44:50"
+        },
+        {
+          "canal": "admin_fornecedor",
+          "autor": "Raony Borges (Admin Reserva)",
+          "tipo": "admin",
+          "texto": "Ol� Adriano,\nEstamos acompanhando a sua carga da Farm Rio.\nTudo alinhado para a sa�da!",
+          "timestamp": "04/11/2026, 14:12:07",
+          "lidaPor": [
+            "admin"
+          ],
+          "arquivo": null
         }
       ],
       "numeroDestino": "3255",
@@ -726,8 +737,8 @@
     }
   ],
   "meta": {
-    "version": 49,
-    "updatedAt": 1793811685649
+    "version": 50,
+    "updatedAt": 1793812328712
   },
   "session:7oNv6PXj-Mld08wrKtS1OGMKaxrqPuQ5VCqzxuwAc8E": {
     "userId": "admin01",
@@ -868,5 +879,13 @@
   "session:qqLkj9T45urlfeD3Gg5DBFXkaJn3vBlbe1W4zfiJ9H8": {
     "userId": "admin01",
     "exp": 1793840534325
+  },
+  "session:YwhWezWgwb1A2Qjn2SiJjyQ0wzE6z-0OUJM1wob0CVI": {
+    "userId": "admin01",
+    "exp": 1793840854270
+  },
+  "session:8B1uDje39OTWSkJhwJvZ9H3f29NlW3vQACGCczoFZDI": {
+    "userId": "admin01",
+    "exp": 1793841124858
   }
 }

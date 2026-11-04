@@ -622,6 +622,547 @@
       box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18), 0 6px 18px rgba(2, 132, 199, 0.08) !important;
       transform: translateY(-1px);
     }
+  
+    /* ==============================================================================
+       LOGISTIX360 CHAT — INTERFACE MODERNA, DIDATICA E MOBILE-FIRST
+       ============================================================================== */
+    .chat-card-container {
+      padding: 22px !important;
+      position: relative;
+    }
+    .chat-main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      padding-bottom: 14px;
+    }
+    .canal-segmented-control {
+      display: inline-flex;
+      background: #F1F5F9;
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      gap: 4px;
+    }
+    .btn-canal {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      color: #64748B;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-canal:hover:not(:disabled) {
+      color: var(--cor-primaria);
+      background: rgba(255, 255, 255, 0.6);
+    }
+    .btn-canal.ativo {
+      background: #FFFFFF;
+      color: var(--cor-destaque);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+    .btn-canal:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* Grid do Chat: 340px Lista + 1fr Conversa */
+    .chat-layout-grid {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 20px;
+      min-height: 560px;
+    }
+    .chat-col-lista {
+      border-right: 1px solid rgba(226, 232, 240, 0.9);
+      padding-right: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-filtro-box {
+      background: #F8FAFC;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .chat-lista-pedidos-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    
+    /* Item de Carga na Lista Lateral */
+    .chat-card-item {
+      background: #FFFFFF;
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .chat-card-item:hover {
+      border-color: rgba(2, 132, 199, 0.4);
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
+    }
+    .chat-card-item.ativo {
+      border-color: var(--cor-destaque) !important;
+      background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%) !important;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.16) !important;
+    }
+    .chat-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .chat-item-id {
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--cor-primaria);
+    }
+    .chat-item-entities {
+      font-size: 11px;
+      color: #475569;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+    .chat-item-entity-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .chat-item-route {
+      font-size: 11px;
+      color: #64748B;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-item-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(226, 232, 240, 0.7);
+    }
+
+    /* Coluna de Mensagens */
+    .chat-col-mensagens {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .chat-conversation-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .chat-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-chat-voltar-mobile {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      color: #334155;
+      cursor: pointer;
+    }
+    .chat-header-details {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #64748B;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .chat-header-sep {
+      color: #CBD5E1;
+    }
+
+    /* Banners Didaticos de Canal */
+    .chat-canal-aviso {
+      font-size: 11.5px;
+      line-height: 1.45;
+      padding: 8px 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .chat-canal-aviso.forn {
+      background: #EFF6FF;
+      color: #1E40AF;
+      border: 1px solid #BFDBFE;
+    }
+    .chat-canal-aviso.transp {
+      background: #F0FDF4;
+      color: #166534;
+      border: 1px solid #BBF7D0;
+    }
+    .chat-canal-aviso.seguro {
+      background: #F8FAFC;
+      color: #475569;
+      border: 1px solid #E2E8F0;
+    }
+
+    /* Caixa de Rolagem das Mensagens */
+    .chat-box {
+      height: 420px;
+      overflow-y: auto;
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      border-radius: 16px;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: inset 0 2px 8px rgba(15, 23, 42, 0.025);
+    }
+
+    /* Linha de Mensagem */
+    .chat-row-msg {
+      display: flex;
+      width: 100%;
+    }
+    .chat-row-msg.row-minha {
+      justify-content: flex-end;
+    }
+    .chat-row-msg.row-outra {
+      justify-content: flex-start;
+    }
+    .chat-row-sistema {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin: 4px 0;
+    }
+
+    /* Balao de Mensagem */
+    .chat-bubble {
+      max-width: 82%;
+      width: fit-content;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      position: relative;
+      word-wrap: break-word;
+      transition: transform 0.2s;
+    }
+    .chat-bubble:hover {
+      transform: translateY(-1px);
+    }
+    .chat-bubble.bubble-minha {
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+      color: #FFFFFF;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.22);
+    }
+    .chat-bubble.bubble-outra {
+      background: #FFFFFF;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      color: #1E293B;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    }
+    .chat-bubble-sistema {
+      background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%);
+      border: 1px solid #FDE68A;
+      color: #92400E;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-size: 11.5px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.08);
+    }
+
+    /* Meta e Autores */
+    .chat-bubble-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+    .chat-autor-nome {
+      font-size: 11px;
+      font-weight: 700;
+      opacity: 0.92;
+    }
+    .chat-role-pill {
+      font-size: 9.5px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .bubble-minha .chat-role-pill {
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+    }
+    .bubble-outra .role-admin {
+      background: #EFF6FF;
+      color: #1E40AF;
+    }
+    .bubble-outra .role-forn {
+      background: #FEF3C7;
+      color: #B45309;
+    }
+    .bubble-outra .role-transp {
+      background: #DCFCE7;
+      color: #166534;
+    }
+    .bubble-outra .role-outro {
+      background: #F1F5F9;
+      color: #475569;
+    }
+
+    /* Corpo do Texto (Preserva quebras de linha com Enter!) */
+    .chat-bubble-texto {
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    /* Hora Visivel */
+    .chat-bubble-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 5px;
+    }
+    .chat-hora-visivel {
+      font-size: 10px;
+      opacity: 0.72;
+      display: inline-block;
+    }
+
+    /* Card de Anexo Estilizado */
+    .chat-anexo-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .bubble-minha .chat-anexo-card {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .bubble-minha .chat-anexo-card:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .bubble-outra .chat-anexo-card {
+      background: #F8FAFC;
+      color: #0369A1;
+      border: 1px solid #E2E8F0;
+    }
+    .bubble-outra .chat-anexo-card:hover {
+      background: #F0F9FF;
+      border-color: #BAE6FD;
+    }
+    .anexo-icon {
+      font-size: 18px;
+    }
+    .anexo-dados {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+    .anexo-nome {
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .anexo-sub {
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    .anexo-btn-dl {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* Caixa de Composicao / Envio */
+    .chat-composer-box {
+      background: #FFFFFF;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 14px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    }
+    .chat-status-arquivo {
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+    .chat-composer-controls {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .btn-chat-anexo {
+      padding: 10px 13px !important;
+      border-radius: 10px !important;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-color: #CBD5E1 !important;
+      color: #475569 !important;
+    }
+    .chat-textarea-container {
+      flex: 1;
+      min-width: 0;
+    }
+    #input-chat-texto {
+      width: 100% !important;
+      min-height: 44px;
+      max-height: 120px;
+      resize: vertical;
+      padding: 10px 14px !important;
+      border-radius: 10px !important;
+      border: 1px solid #CBD5E1 !important;
+      font-family: inherit;
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: var(--cor-texto);
+      box-sizing: border-box;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    #input-chat-texto:focus {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15) !important;
+    }
+    .btn-chat-enviar {
+      padding: 11px 18px !important;
+      border-radius: 10px !important;
+      font-weight: 700 !important;
+      font-size: 13px !important;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .chat-composer-hint {
+      margin-top: 6px;
+      font-size: 10.5px;
+      color: #94A3B8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #64748B;
+    }
+    .chat-empty-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    /* ADAPTACOES MOBILE (< 768px) */
+    @media (max-width: 768px) {
+      .chat-layout-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        min-height: auto;
+      }
+      .chat-col-lista {
+        border-right: none !important;
+        padding-right: 0 !important;
+      }
+      .chat-col-lista.mobile-oculto {
+        display: none !important;
+      }
+      .chat-col-mensagens.mobile-oculto {
+        display: none !important;
+      }
+      .btn-chat-voltar-mobile {
+        display: inline-flex !important;
+      }
+      .chat-box {
+        height: 50vh !important;
+        padding: 12px 14px !important;
+      }
+      .chat-bubble {
+        max-width: 90% !important;
+        font-size: 13px !important;
+      }
+      .chat-main-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+      }
+      .canal-segmented-control {
+        width: 100% !important;
+        display: flex;
+      }
+      .btn-canal {
+        flex: 1;
+        justify-content: center;
+      }
+      .btn-enviar-texto {
+        display: none;
+      }
+      .btn-chat-enviar {
+        padding: 11px 14px !important;
+      }
+      .chat-composer-hint {
+        font-size: 9.5px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1260,21 +1801,57 @@
         </div>
       </div>
 
+      
       <div id="painel-chat-compartilhado" class="secao-aba escondido">
-        <div class="card">
-          <h3 style="margin-top:0; color: var(--cor-primaria);">💬 Central de Comunicação (Cargas)</h3>
-          <p style="color:#64748B; font-size:13px; margin-bottom:16px;">Selecione o pedido na lista abaixo para conversar e enviar anexos. Chats são restritos às partes da carga.</p>
-          <!-- Seletor de canal: visível apenas para admin -->
-          <div id="chat-canal-abas" style="display:none; margin-bottom:16px; border-bottom:2px solid var(--cor-borda); padding-bottom:8px;">
-            <button id="btn-canal-forn" class="btn btn-outline" style="margin-right:8px; font-size:12px;" onclick="selecionarCanalChat('admin_fornecedor')">👥 Canal Fornecedor</button>
-            <button id="btn-canal-transp" class="btn btn-outline" style="font-size:12px;" onclick="selecionarCanalChat('admin_transportadora')">🚚 Canal Transportadora</button>
-          </div>
-          <div style="display:grid; grid-template-columns: 320px 1fr; gap: 20px;">
-            <div style="border-right: 1px solid var(--cor-borda); padding-right: 16px;">
-              <div id="chat-lista-pedidos-unificado" style="display:flex; flex-direction:column; gap:8px;"></div>
-            </div>
+        <div class="card chat-card-container">
+          <div class="chat-main-header">
             <div>
-              <div id="chat-painel-mensagens"><p style="color:#64748B; text-align:center; padding-top:40px;">Selecione um pedido ao lado para abrir o chat.</p></div>
+              <h3 style="margin:0; color: var(--cor-primaria); display:flex; align-items:center; gap:8px;">
+                <span>💬</span> Central de Comunicação Operacional
+              </h3>
+              <p style="color:#64748B; font-size:13px; margin:4px 0 0;">Mensagens segregadas e rastreáveis vinculadas a cada carga.</p>
+            </div>
+            <!-- Seletor de canal estilizado para Admin -->
+            <div id="chat-canal-abas" style="display:none;">
+              <div class="canal-segmented-control">
+                <button id="btn-canal-forn" type="button" class="btn-canal ativo" onclick="selecionarCanalChat('admin_fornecedor')">
+                  <span>👥</span> Canal Fornecedor
+                </button>
+                <button id="btn-canal-transp" type="button" class="btn-canal" onclick="selecionarCanalChat('admin_transportadora')">
+                  <span>🚚</span> Canal Transportadora
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-layout-grid" id="chat-layout-grid">
+            <!-- COLUNA ESQUERDA: LISTA DE CARGAS -->
+            <div class="chat-col-lista" id="chat-col-lista">
+              <div class="chat-filtro-box">
+                <div style="position:relative;">
+                  <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:13px; color:#94A3B8;">🔍</span>
+                  <input type="text" id="filtro-chat-busca" placeholder="Filtrar ID, Cidade, Parceiro..." onkeyup="renderPainelChatLista()" style="padding-left:34px; font-size:12px; height:36px; border-radius:10px;">
+                </div>
+                <div style="display:flex; gap:6px; margin-top:8px;">
+                  <select id="filtro-chat-visao" onchange="renderPainelChatLista()" style="font-size:12px; height:34px; border-radius:8px; padding:4px 10px; flex:1;">
+                    <option value="ATIVOS" selected>Cargas em Aberto / Trânsito</option>
+                    <option value="ARQUIVADOS">Finalizadas / Canceladas</option>
+                    <option value="TODOS">Todas as Cargas</option>
+                  </select>
+                </div>
+              </div>
+              <div id="chat-lista-pedidos-unificado" class="chat-lista-pedidos-scroll"></div>
+            </div>
+
+            <!-- COLUNA DIREITA: CONVERSA DA CARGA -->
+            <div class="chat-col-mensagens" id="chat-col-mensagens">
+              <div id="chat-painel-mensagens">
+                <div class="chat-empty-state">
+                  <div class="chat-empty-icon">💬</div>
+                  <h4 style="margin:0 0 6px 0; color:var(--cor-primaria); font-size:16px;">Nenhuma carga selecionada</h4>
+                  <p style="margin:0; font-size:13px;">Selecione uma carga na lista ao lado para abrir a conversa e trocar mensagens ou anexos.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -4025,7 +4602,6 @@ STATUS: ${p.status || 'Pendente'}`;
     }
 
     function renderPainelChat() {
-      // Mostrar abas de canal apenas para admin
       const abasCanal = document.getElementById('chat-canal-abas');
       if (abasCanal) {
         abasCanal.style.display = estado.usuarioAtual === 'admin' ? 'block' : 'none';
@@ -4035,7 +4611,17 @@ STATUS: ${p.status || 'Pendente'}`;
       if (estado.pedidoSelecionadoChat) {
         carregarConversaChat(estado.pedidoSelecionadoChat);
       } else {
-        document.getElementById('chat-painel-mensagens').innerHTML = '<p style="color:#64748B; text-align:center; padding-top:40px;">Selecione um pedido ao lado para abrir o chat.</p>';
+        const colLista = document.getElementById('chat-col-lista');
+        const colMsgs = document.getElementById('chat-col-mensagens');
+        if (colLista) colLista.classList.remove('mobile-oculto');
+        if (colMsgs) colMsgs.classList.add('mobile-oculto');
+        document.getElementById('chat-painel-mensagens').innerHTML = `
+          <div class="chat-empty-state">
+            <div class="chat-empty-icon">💬</div>
+            <h4 style="margin:0 0 6px 0; color:var(--cor-primaria); font-size:16px;">Nenhuma carga selecionada</h4>
+            <p style="margin:0; font-size:13px;">Selecione uma carga na lista para visualizar as mensagens.</p>
+          </div>
+        `;
       }
     }
 
@@ -4047,10 +4633,13 @@ STATUS: ${p.status || 'Pendente'}`;
       if (!btnF || !btnT) return;
       const p = estado.pedidoSelecionadoChat ? estado.pedidos.find(x => x.id === estado.pedidoSelecionadoChat) : null;
       const temTransp = p && p.transportadoraVencedoraID;
-      btnF.style.fontWeight = estado.canalChatAtual === 'admin_fornecedor' ? 'bold' : 'normal';
-      btnF.style.borderColor = estado.canalChatAtual === 'admin_fornecedor' ? 'var(--cor-primaria)' : '';
-      btnT.style.fontWeight = estado.canalChatAtual === 'admin_transportadora' ? 'bold' : 'normal';
-      btnT.style.borderColor = estado.canalChatAtual === 'admin_transportadora' ? 'var(--cor-primaria)' : '';
+      if (estado.canalChatAtual === 'admin_fornecedor') {
+        btnF.classList.add('ativo');
+        btnT.classList.remove('ativo');
+      } else {
+        btnT.classList.add('ativo');
+        btnF.classList.remove('ativo');
+      }
       btnT.disabled = !temTransp;
       btnT.title = !temTransp ? 'Canal indisponível: carga sem transportadora atribuída' : '';
     }
@@ -4061,26 +4650,30 @@ STATUS: ${p.status || 'Pendente'}`;
       if (estado.pedidoSelecionadoChat) carregarConversaChat(estado.pedidoSelecionadoChat);
     }
 
+    function voltarParaListaChatMobile() {
+      estado.pedidoSelecionadoChat = null;
+      const colLista = document.getElementById('chat-col-lista');
+      const colMsgs = document.getElementById('chat-col-mensagens');
+      if (colLista) colLista.classList.remove('mobile-oculto');
+      if (colMsgs) colMsgs.classList.add('mobile-oculto');
+      renderPainelChatLista();
+    }
+
+    function tratarKeydownChat(event, idPedido) {
+      // ENTER sozinho = PULA LINHA (comportamento nativo de paragrafo do textarea!)
+      // CTRL+ENTER ou CMD+ENTER = Envia a mensagem como atalho opcional
+      if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        enviarMensagemChat(idPedido);
+      }
+    }
+
     function renderPainelChatLista() {
       const container = document.getElementById('chat-lista-pedidos-unificado');
       if (!container) return;
 
-      let divFiltro = document.getElementById('box-filtro-chat-lista');
-      if (!divFiltro) {
-        const filtroHtml = `
-          <div id="box-filtro-chat-lista" style="margin-bottom: 12px;">
-            <label style="font-size:11px; font-weight:bold;">Filtro do Chat:</label>
-            <select id="filtro-chat-visao" onchange="renderPainelChatLista()" style="padding:6px; font-size:12px; border-radius:6px; width:100%;">
-              <option value="ATIVOS" selected>Cargas Ativas (Em Andamento)</option>
-              <option value="ARQUIVADOS">Cargas Concluídas / Arquivadas</option>
-              <option value="TODOS">Todas as Conversas</option>
-            </select>
-          </div>
-        `;
-        container.insertAdjacentHTML('beforebegin', filtroHtml);
-      }
-
       const visao = document.getElementById('filtro-chat-visao')?.value || 'ATIVOS';
+      const busca = (document.getElementById('filtro-chat-busca')?.value || '').trim().toLowerCase();
       container.innerHTML = '';
 
       let listaFiltrada = estado.pedidos.filter(p => {
@@ -4090,28 +4683,56 @@ STATUS: ${p.status || 'Pendente'}`;
         const ehFinalizado = p.status === 'Entregue' || p.status === 'Cancelado';
         if (visao === 'ATIVOS' && ehFinalizado) return false;
         if (visao === 'ARQUIVADOS' && !ehFinalizado) return false;
+
+        if (busca) {
+          const matchTxt = `${p.id} ${p.fornecedor||''} ${p.transportadoraVencedoraNome||''} ${p.cidadeOrigem||''} ${p.cidadeDestino||''} ${p.origem||''} ${p.destino||''}`.toLowerCase();
+          if (!matchTxt.includes(busca)) return false;
+        }
         return true;
       });
 
       if (listaFiltrada.length === 0) {
-        container.innerHTML = '<p style="font-size:12px; color:#64748B; text-align:center; padding: 10px;">Nenhum chat nesta visão.</p>';
+        container.innerHTML = '<div style="font-size:12px; color:#64748B; text-align:center; padding: 24px 10px;">Nenhuma carga encontrada.</div>';
         return;
       }
 
       listaFiltrada.forEach(p => {
         const ativoClass = estado.pedidoSelecionadoChat === p.id ? 'ativo' : '';
         const naoLidas = contarNaoLidasParaUsuario(p);
-        const badgeNaoLida = naoLidas > 0 ? `<span class="badge badge-ocorrencia" style="font-size:9px;">${naoLidas} novas</span>` : '';
+        const badgeNaoLida = naoLidas > 0 ? `<span class="badge badge-ocorrencia" style="font-size:10px; font-weight:bold;">${naoLidas} nova${naoLidas > 1 ? 's' : ''}</span>` : '';
         const ehFinalizado = p.status === 'Entregue' || p.status === 'Cancelado';
-        const tagStatus = ehFinalizado ? '<small style="color:#64748B;">[Arquivado]</small>' : '';
+        const tagStatus = ehFinalizado ? '<span style="color:#64748B; font-size:10px; font-weight:bold;">[Concluída]</span>' : '';
+
+        // Ultima mensagem
+        let ultMsg = 'Nenhuma mensagem recente';
+        if (p.mensagensChat && p.mensagensChat.length > 0) {
+          const m = p.mensagensChat[p.mensagensChat.length - 1];
+          ultMsg = (m.texto || (m.arquivo ? '📎 ' + m.arquivo.nome : 'Mensagem')).substring(0, 28) + '...';
+        }
+
+        const rotaStr = (p.cidadeOrigem || p.ufOrigem || 'Origem') + ' ➔ ' + (p.cidadeDestino || p.ufDestino || 'Destino');
 
         container.innerHTML += `
-          <div class="item-selecionavel ${ativoClass}" onclick="carregarConversaChat('${p.id}')">
-            <div>
-              <strong>${p.id}</strong> ${tagStatus}<br>
-              <small style="color:#64748B;">${(p.destino || '').substring(0, 22)}...</small>
+          <div class="chat-card-item ${ativoClass}" onclick="carregarConversaChat('${p.id}')">
+            <div class="chat-item-top">
+              <span class="chat-item-id">${p.id} ${tagStatus}</span>
+              ${obterBadge(p)}
             </div>
-            ${badgeNaoLida}
+            <div class="chat-item-entities">
+              <div class="chat-item-entity-row" title="Fornecedor">
+                <span>🏭</span> <strong style="color:var(--cor-primaria);">${p.fornecedor || 'Fornecedor'}</strong>
+              </div>
+              <div class="chat-item-entity-row" title="Transportadora">
+                <span>🚚</span> <span>${p.transportadoraVencedoraNome || 'Aguardando aceite'}</span>
+              </div>
+              <div class="chat-item-route" title="Trajeto">
+                <span>📍 ${rotaStr}</span>
+              </div>
+            </div>
+            <div class="chat-item-bottom">
+              <span style="font-size:10.5px; color:#94A3B8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:65%;">${ultMsg}</span>
+              ${badgeNaoLida}
+            </div>
           </div>
         `;
       });
@@ -4140,20 +4761,32 @@ STATUS: ${p.status || 'Pendente'}`;
       if (estado.usuarioAtual === 'transportadora' && (!pedidoChat || pedidoChat.transportadoraVencedoraID !== estado.dadosUsuario.id)) {
         estado.pedidoSelecionadoChat = null;
         const painelSeguro = document.getElementById('chat-painel-mensagens');
-        if (painelSeguro) painelSeguro.innerHTML = '<p style="color:#64748B;text-align:center;padding-top:40px;">🔒 Chat indisponível. A conversa só é liberada para a transportadora que assumiu a carga.</p>';
+        if (painelSeguro) painelSeguro.innerHTML = '<div style="color:#64748B;text-align:center;padding:40px 20px;">🔒 Chat indisponível. A conversa só é liberada para a transportadora que assumiu a carga.</div>';
         renderPainelChatLista();
         mostrarToast('Acesso negado: esta carga ainda não foi assumida por sua transportadora.', 'erro');
         return;
       }
       estado.pedidoSelecionadoChat = idPedido;
+
+      // Responsividade Mobile: Alterna visualizacao da lista para o chat
+      const colLista = document.getElementById('chat-col-lista');
+      const colMsgs = document.getElementById('chat-col-mensagens');
+      if (window.innerWidth <= 768) {
+        if (colLista) colLista.classList.add('mobile-oculto');
+        if (colMsgs) colMsgs.classList.remove('mobile-oculto');
+      }
+
       // Canal: deduz pelo perfil ou usa o selecionado (admin)
       if (estado.usuarioAtual === 'fornecedor') estado.canalChatAtual = 'admin_fornecedor';
       else if (estado.usuarioAtual === 'transportadora') estado.canalChatAtual = 'admin_transportadora';
       atualizarBotoesCanal();
       renderPainelChatLista();
 
-      const inputAnterior=document.getElementById('input-chat-texto');
-      const rascunhoChat=inputAnterior?.value||''; const focoChat=document.activeElement===inputAnterior; const cursorChat=inputAnterior?.selectionStart ?? rascunhoChat.length;
+      const inputAnterior = document.getElementById('input-chat-texto');
+      const rascunhoChat = inputAnterior?.value || '';
+      const focoChat = document.activeElement === inputAnterior;
+      const cursorChat = inputAnterior?.selectionStart ?? rascunhoChat.length;
+
       const p = obterPedidoAutorizado(idPedido);
       const painel = document.getElementById('chat-painel-mensagens');
       if (!p || !painel) return;
@@ -4164,11 +4797,11 @@ STATUS: ${p.status || 'Pendente'}`;
 
       let alterouLida = false;
       msgsFiltradas.forEach(m => {
-          if (!m.lidaPor) m.lidaPor = [];
-          if (!m.lidaPor.includes(estado.usuarioAtual)) {
-            m.lidaPor.push(estado.usuarioAtual);
-            alterouLida = true;
-          }
+        if (!m.lidaPor) m.lidaPor = [];
+        if (!m.lidaPor.includes(estado.usuarioAtual)) {
+          m.lidaPor.push(estado.usuarioAtual);
+          alterouLida = true;
+        }
       });
       if (alterouLida) sincronizarNuvem();
 
@@ -4176,73 +4809,209 @@ STATUS: ${p.status || 'Pendente'}`;
       const finalizado = p.status === 'Entregue' || p.status === 'Cancelado';
 
       let msgsHtml = '';
-      msgsFiltradas.forEach(m => {
-        let cls = 'outra-msg';
-        if (m.tipo === estado.usuarioAtual) cls = 'minha-msg';
-        if (m.tipo === 'sistema-alerta') cls = 'admin-msg';
-
-        let anexoHtml = '';
-        if (m.arquivo) {
-          anexoHtml = `<br><a href="${m.arquivo.dados}" download="${m.arquivo.nome}" style="color:inherit; text-decoration:underline; font-weight:bold; display:inline-block; margin-top:4px;">📎 ${m.arquivo.nome}</a>`;
-        }
-
-        msgsHtml += `
-          <div class="chat-msg ${cls}" style="${m.tipo === 'sistema-alerta' ? 'align-self:center; background:#FEF3C7; color:#92400E; width:90%; text-align:center;' : ''}">
-            <span class="chat-autor">${m.autor}</span>
-            ${m.texto}
-            ${anexoHtml}
-            <span class="chat-hora">${m.timestamp || ''}</span>
-          </div>
-        `;
-      });
-
-      let areaInput = '';
-
-      if (!assumido) {
-        areaInput = `
-          <div style="background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; padding:12px; border-radius:8px; text-align:center; font-size:12px; font-weight:bold;">
-            🔒 Chat Bloqueado: A conversa só é liberada assim que uma transportadora assumir esta carga.
-          </div>
-        `;
-      } else if (finalizado) {
-        areaInput = `
-          <div style="background:#F1F5F9; color:#475569; border:1px solid #CBD5E1; padding:12px; border-radius:8px; text-align:center; font-size:12px; font-weight:bold;">
-            📁 Atendimento Encerrado: Esta carga foi marcada como <u>${p.status}</u>. O chat foi encerrado e arquivado para consulta.
+      if (msgsFiltradas.length === 0) {
+        msgsHtml = `
+          <div style="text-align:center; padding:30px 10px; color:#94A3B8; font-size:12.5px;">
+            <span style="font-size:24px; display:block; margin-bottom:6px;">✨</span>
+            Nenhuma mensagem neste canal ainda.<br>
+            Digite uma mensagem abaixo para iniciar a conversa sobre a carga <b>${p.id}</b>.
           </div>
         `;
       } else {
-        areaInput = `
-          <div style="font-size:11px; margin-bottom:4px;" id="status-arquivo-chat"></div>
-          <div style="display:flex; gap:8px;">
-            <input type="file" id="input-chat-file" style="display:none" onchange="prepararArquivoChat(this)">
-            <button class="btn btn-outline" style="padding:10px;" onclick="document.getElementById('input-chat-file').click()" title="Anexar arquivo">📎</button>
-            <textarea id="input-chat-texto" rows="1" placeholder="Escreva sua mensagem aqui... (Enter envia, Shift+Enter pula linha)" style="flex:1; resize:none; padding:8px 12px; border-radius:8px; border:1px solid var(--cor-borda); font-family:inherit; font-size:13px; line-height:1.4;" onkeydown="tratarKeydownChat(event, '${p.id}')"></textarea>
-            <button class="btn" onclick="enviarMensagemChat('${p.id}')">Enviar</button>
+        msgsFiltradas.forEach(m => {
+          const isMinha = (m.tipo === estado.usuarioAtual);
+          const isSistema = (m.tipo === 'sistema-alerta');
+
+          if (isSistema) {
+            msgsHtml += `
+              <div class="chat-row-sistema">
+                <div class="chat-bubble-sistema">
+                  <strong>ℹ️ SISTEMA</strong>: ${m.texto}
+                  <div style="font-size:9.5px; opacity:0.8; margin-top:3px;">${m.timestamp || ''}</div>
+                </div>
+              </div>
+            `;
+            return;
+          }
+
+          let roleClass = 'role-outro';
+          let roleLabel = 'Participante';
+          if (m.tipo === 'admin') { roleClass = 'role-admin'; roleLabel = 'Administrador'; }
+          else if (m.tipo === 'fornecedor') { roleClass = 'role-forn'; roleLabel = 'Fornecedor'; }
+          else if (m.tipo === 'transportadora') { roleClass = 'role-transp'; roleLabel = 'Transportadora'; }
+
+          let anexoHtml = '';
+          if (m.arquivo && m.arquivo.dados) {
+            anexoHtml = `
+              <a href="${m.arquivo.dados}" download="${m.arquivo.nome}" class="chat-anexo-card">
+                <span class="anexo-icon">📎</span>
+                <div class="anexo-dados">
+                  <strong class="anexo-nome">${m.arquivo.nome}</strong>
+                  <small class="anexo-sub">Clique para baixar</small>
+                </div>
+                <span class="anexo-btn-dl">⬇</span>
+              </a>
+            `;
+          }
+
+          // Formatacao de texto preservando quebras de linha com Enter
+          const textoFormatado = (m.texto || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\n/g, '<br>');
+
+          msgsHtml += `
+            <div class="chat-row-msg ${isMinha ? 'row-minha' : 'row-outra'}">
+              <div class="chat-bubble ${isMinha ? 'bubble-minha' : 'bubble-outra'}">
+                <div class="chat-bubble-meta">
+                  <span class="chat-autor-nome">${m.autor || 'Usuário'}</span>
+                  <span class="chat-role-pill ${roleClass}">${roleLabel}</span>
+                </div>
+                <div class="chat-bubble-texto">${textoFormatado}</div>
+                ${anexoHtml}
+                <div class="chat-bubble-footer">
+                  <span class="chat-hora-visivel">🕒 ${m.timestamp || ''}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // Banner didatico do canal
+      let bannerCanal = '';
+      if (estado.usuarioAtual === 'admin') {
+        if (estado.canalChatAtual === 'admin_fornecedor') {
+          bannerCanal = `
+            <div class="chat-canal-aviso forn">
+              <span>👥</span>
+              <div><b>Canal Fornecedor:</b> Você está conversando diretamente com <b>${p.fornecedor || 'o Fornecedor'}</b>. A Transportadora não visualiza estas mensagens.</div>
+            </div>
+          `;
+        } else {
+          bannerCanal = `
+            <div class="chat-canal-aviso transp">
+              <span>🚚</span>
+              <div><b>Canal Transportadora:</b> Você está conversando diretamente com <b>${p.transportadoraVencedoraNome || 'a Transportadora'}</b>. O Fornecedor não visualiza estas mensagens.</div>
+            </div>
+          `;
+        }
+      } else if (estado.usuarioAtual === 'fornecedor') {
+        bannerCanal = `
+          <div class="chat-canal-aviso seguro">
+            <span>🔒</span>
+            <div>Canal restrito entre sua empresa e a Administração Logística.</div>
+          </div>
+        `;
+      } else if (estado.usuarioAtual === 'transportadora') {
+        bannerCanal = `
+          <div class="chat-canal-aviso seguro">
+            <span>🚚</span>
+            <div>Canal operacional restrito entre sua transportadora e a Administração Logística.</div>
           </div>
         `;
       }
 
-      painel.innerHTML = `
-        <div style="border-bottom:1px solid var(--cor-borda); padding-bottom:10px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <h4 style="margin:0; color:var(--cor-primaria);">Pedido: ${p.id}</h4>
-            <small style="color:#64748B;">Transportadora: ${p.transportadoraVencedoraNome || 'Pendente'} | Status: ${p.status}</small>
+      let areaInput = '';
+      if (!assumido) {
+        areaInput = `
+          <div style="background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; padding:14px; border-radius:12px; text-align:center; font-size:12.5px; font-weight:600;">
+            🔒 Chat Bloqueado: A conversa com a transportadora será liberada assim que uma transportadora aceitar a carga.
           </div>
-          <div>${obterBadge(p)}</div>
+        `;
+      } else if (finalizado) {
+        areaInput = `
+          <div style="background:#F1F5F9; color:#475569; border:1px solid #CBD5E1; padding:14px; border-radius:12px; text-align:center; font-size:12.5px; font-weight:600;">
+            📁 Atendimento Encerrado: Esta carga foi concluída (${p.status}). O chat está arquivado para histórico e auditoria.
+          </div>
+        `;
+      } else {
+        areaInput = `
+          <div class="chat-composer-box">
+            <div id="status-arquivo-chat" class="chat-status-arquivo"></div>
+            <div class="chat-composer-controls">
+              <input type="file" id="input-chat-file" style="display:none" onchange="prepararArquivoChat(this)">
+              <button type="button" class="btn btn-outline btn-chat-anexo" onclick="document.getElementById('input-chat-file').click()" title="Anexar arquivo, PDF ou foto">
+                <span>📎</span>
+              </button>
+              <div class="chat-textarea-container">
+                <textarea id="input-chat-texto" rows="2" 
+                  placeholder="Escreva sua mensagem... (Enter pula linha)" 
+                  onkeydown="tratarKeydownChat(event, '${p.id}')"></textarea>
+              </div>
+              <button type="button" class="btn btn-sucesso btn-chat-enviar" onclick="enviarMensagemChat('${p.id}')" title="Enviar mensagem (Ctrl+Enter)">
+                <span class="btn-enviar-texto">Enviar</span>
+                <span class="btn-enviar-icone">➤</span>
+              </button>
+            </div>
+            <div class="chat-composer-hint">
+              <span>💡 <b>Enter</b> pula de linha | <b>Ctrl+Enter</b> atalho para enviar</span>
+              <span style="opacity:0.8;">Canal seguro</span>
+            </div>
+          </div>
+        `;
+      }
+
+      const rotaStr = (p.cidadeOrigem || p.ufOrigem || '') + ' ➔ ' + (p.cidadeDestino || p.ufDestino || '');
+
+      painel.innerHTML = `
+        <div class="chat-conversation-wrapper">
+          <div class="chat-header-bar">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <button type="button" class="btn-chat-voltar-mobile" onclick="voltarParaListaChatMobile()">
+                ← Cargas
+              </button>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <h4 style="margin:0; font-size:16px; color:var(--cor-primaria); font-weight:800;">${p.id}</h4>
+                  ${obterBadge(p)}
+                </div>
+                <div class="chat-header-details">
+                  <span>🏭 <b>${p.fornecedor || 'Fornecedor'}</b></span>
+                  <span class="chat-header-sep">•</span>
+                  <span>🚚 <b>${p.transportadoraVencedoraNome || 'Pendente'}</b></span>
+                  <span class="chat-header-sep">•</span>
+                  <span>📍 ${rotaStr}</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-outline" style="padding:6px 11px; font-size:11px;" onclick="verRastreio('${p.id}')">📍 Rastreio</button>
+            </div>
+          </div>
+
+          ${bannerCanal}
+
+          <div class="chat-box" id="box-chat-scroll">${msgsHtml}</div>
+
+          ${areaInput}
         </div>
-        <div class="chat-box" id="box-chat-scroll">${msgsHtml}</div>
-        ${areaInput}
       `;
 
-      const novoInputChat=document.getElementById('input-chat-texto'); if(novoInputChat){novoInputChat.value=rascunhoChat;if(focoChat){novoInputChat.focus();try{novoInputChat.setSelectionRange(cursorChat,cursorChat);}catch(e){}}}
+      const novoInputChat = document.getElementById('input-chat-texto');
+      if (novoInputChat) {
+        novoInputChat.value = rascunhoChat;
+        if (focoChat) {
+          novoInputChat.focus();
+          try { novoInputChat.setSelectionRange(cursorChat, cursorChat); } catch(e){}
+        }
+      }
       const box = document.getElementById('box-chat-scroll');
       if (box && !manterScroll) box.scrollTop = box.scrollHeight;
     }
 
     async function prepararArquivoChat(el) {
       if (el.files && el.files.length > 0) {
-        const f = el.files[0]; const d = await lerArquivoParaDataURL(f); arquivoChatPendente = { nome: f.name, dados: d };
-        document.getElementById('status-arquivo-chat').innerHTML = `<span style="color:var(--cor-sucesso); font-weight:bold;">📎 Anexo: ${f.name}</span> <button style="background:none;border:none;color:red;cursor:pointer;" onclick="arquivoChatPendente=null; document.getElementById('status-arquivo-chat').innerHTML='';">✕</button>`;
+        const f = el.files[0];
+        const d = await lerArquivoParaDataURL(f);
+        arquivoChatPendente = { nome: f.name, dados: d };
+        document.getElementById('status-arquivo-chat').innerHTML = `
+          <span style="color:var(--cor-sucesso); font-weight:bold; background:#DCFCE7; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+            📎 Anexo: ${f.name}
+            <button style="background:none; border:none; color:#DC2626; cursor:pointer; font-weight:bold; padding:0 3px;" onclick="arquivoChatPendente=null; document.getElementById('status-arquivo-chat').innerHTML='';" title="Remover anexo">✕</button>
+          </span>
+        `;
       }
     }
 
@@ -4270,6 +5039,7 @@ STATUS: ${p.status || 'Pendente'}`;
         }
       });
     }
+  
   </script>
 </body>
 </html>
