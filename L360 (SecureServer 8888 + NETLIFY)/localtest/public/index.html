@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -414,6 +414,214 @@
     @media(max-width:520px){.analytics-kpi-wall{grid-template-columns:1fr 1fr;gap:9px}.analytics-kpi{padding:14px;min-height:143px}.analytics-kpi>strong{font-size:20px}.analytics-kpi-top{font-size:9px}.analytics-secondary-grid,.analytics-carrier-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-visual-card{padding:15px}.analytics-donut-layout{grid-template-columns:1fr}.analytics-donut{width:150px}.analytics-donut-legend{width:100%}.analytics-filter-shell{padding:15px}.analytics-table-wrap{padding:0 10px 12px}.analytics-data-drawer>summary{padding:13px}}
     @media(prefers-reduced-motion:reduce){.analytics-command-center *,.analytics-command-center *:before,.analytics-command-center *:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 
+  
+    /* ==============================================================================
+       LOGISTIX360 ABSTRACT & DYNAMIC LIVING UI ANIMATIONS
+       ============================================================================== */
+
+    /* Fundo Atmosferico Fluido com Orbs Abstratos Flutuantes */
+    .ambient-glow-wrapper {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.65;
+    }
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(85px);
+      will-change: transform;
+    }
+    .orb-1 {
+      width: 580px;
+      height: 580px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(2, 132, 199, 0.05) 65%, transparent 100%);
+      top: -140px;
+      right: -80px;
+      animation: orbFloat1 26s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(139, 92, 246, 0.04) 65%, transparent 100%);
+      bottom: 2%;
+      left: -120px;
+      animation: orbFloat2 32s ease-in-out infinite alternate;
+    }
+    .orb-3 {
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(5, 150, 105, 0.03) 65%, transparent 100%);
+      top: 42%;
+      right: 18%;
+      animation: orbFloat3 24s ease-in-out infinite alternate;
+    }
+    @keyframes orbFloat1 {
+      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+      50% { transform: translate3d(-70px, 50px, 0) scale(1.1) rotate(12deg); }
+      100% { transform: translate3d(-35px, 105px, 0) scale(0.94) rotate(-8deg); }
+    }
+    @keyframes orbFloat2 {
+      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+      50% { transform: translate3d(90px, -60px, 0) scale(1.15) rotate(-14deg); }
+      100% { transform: translate3d(45px, -110px, 0) scale(0.96) rotate(10deg); }
+    }
+    @keyframes orbFloat3 {
+      0% { transform: translate3d(0, 0, 0) scale(0.95); }
+      50% { transform: translate3d(-80px, -45px, 0) scale(1.08); }
+      100% { transform: translate3d(-45px, 35px, 0) scale(1.02); }
+    }
+
+    /* Cards com Design Unico Abstrato e Elevacao Fluida */
+    .card {
+      position: relative !important;
+      isolation: isolate !important;
+      overflow: hidden !important;
+      border: 1px solid rgba(161, 188, 215, 0.45) !important;
+      border-radius: 20px !important;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 251, 255, 0.96) 60%, rgba(239, 247, 255, 0.94) 100%) !important;
+      box-shadow: 0 8px 24px rgba(10, 37, 64, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, border-color 0.3s !important;
+      animation: cardLiftIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      left: 20px;
+      right: 20px;
+      top: 0;
+      height: 3px;
+      border-radius: 0 0 8px 8px;
+      background: linear-gradient(90deg, #38d7f5, #4285ff, #8b5cf6, #31e6b1);
+      background-size: 220% 100%;
+      opacity: 0.85;
+      animation: signatureFlow 9s linear infinite;
+      pointer-events: none;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      right: -60px;
+      top: -70px;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.12), rgba(139, 92, 246, 0.05) 50%, transparent 72%);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .card:hover {
+      transform: translateY(-4px) !important;
+      border-color: rgba(56, 153, 214, 0.45) !important;
+      box-shadow: 0 18px 40px rgba(10, 37, 64, 0.1), 0 0 0 1px rgba(56, 189, 248, 0.1) !important;
+    }
+    .card:hover::after {
+      transform: scale(1.3) translate(-8px, 10px);
+      opacity: 1;
+    }
+
+    /* Tabelas com Hover Vivo e Entrada Escalonada */
+    .tabela tbody tr {
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      position: relative;
+    }
+    .tabela tbody tr:hover {
+      background: linear-gradient(90deg, #EFF8FF 0%, #F8FAFC 100%) !important;
+      transform: translateX(3px);
+      box-shadow: inset 3px 0 0 var(--cor-destaque), 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .tabela td {
+      transition: color 0.2s;
+    }
+
+    /* Botoes com Shimmer de Luz e Micro-Interacoes */
+    .btn {
+      position: relative !important;
+      overflow: hidden !important;
+      transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.65s ease;
+      pointer-events: none;
+    }
+    .btn:hover::after {
+      left: 160%;
+    }
+    .btn:hover {
+      transform: translateY(-2px) scale(1.015);
+      box-shadow: 0 8px 20px rgba(10, 37, 64, 0.18), 0 0 0 2px rgba(56, 189, 248, 0.15) !important;
+    }
+    .btn:active {
+      transform: scale(0.97) translateY(0) !important;
+    }
+
+    /* Badges com Pulso Organico em Status Ativos */
+    .badge {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+    .badge:hover {
+      transform: scale(1.05);
+    }
+    .badge-transito, .badge-rota, .badge-aceito, .badge-pendente {
+      position: relative;
+    }
+    .badge-transito::before, .badge-rota::before, .badge-aceito::before, .badge-pendente::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 0 currentColor;
+      animation: badgePulseDot 2s infinite ease-in-out;
+    }
+    @keyframes badgePulseDot {
+      0%, 100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 0 0 currentColor; }
+      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 4px transparent; }
+    }
+
+    /* Modais com Glassmorphism e Entrada Elastica */
+    .modal-overlay {
+      background: rgba(6, 20, 38, 0.72) !important;
+      backdrop-filter: blur(12px) saturate(160%) !important;
+      animation: fadeIn 0.25s ease-out both !important;
+    }
+    .modal {
+      border: 1px solid rgba(255, 255, 255, 0.85) !important;
+      border-radius: 24px !important;
+      box-shadow: 0 35px 95px rgba(2, 12, 24, 0.45), 0 0 0 1px rgba(56, 189, 248, 0.15) !important;
+      animation: modalUnfold 0.38s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+    }
+
+    /* Transicoes de Abas Fluidas */
+    .secao-aba {
+      animation: tabFadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes tabFadeIn {
+      from { opacity: 0.3; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Inputs e Selects com Brilho Elegante */
+    input:focus, select:focus, textarea:focus, .ms-button:focus {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18), 0 6px 18px rgba(2, 132, 199, 0.08) !important;
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body>
@@ -450,11 +658,16 @@
       <div style="margin-top:8px;"><button class="btn btn-outline" style="width:100%;" onclick="preencherAcessoAdmin()">🔐 Usar acesso de administrador</button></div>
       <div style="margin-top:10px; font-size:11px; color:#64748B;">O login é o ID do perfil (CNPJ para parceiros). E-mail de perfil é opcional; não há validação por código.</div>
 
-      <div style="margin-top: 24px; padding: 12px; background: #F8FAFC; border-radius: 8px; border: 1px solid var(--cor-borda); text-align: left; font-size: 11px; color: #475569;">
-        <strong>Perfis de teste:</strong><br>
-        • Admin: <code>admin01</code> / <code>Admin@123</code><br>
-        • Fornecedor: <code>forn01</code> / <code>Forn@123</code><br>
-        • Brasspress: <code>brasspress01</code> / <code>Brass@123</code>
+      <div style="margin-top: 24px; padding: 14px 16px; background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%); border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.28); text-align: left; font-size: 11px; color: #334155; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);">
+        <div style="font-weight: 700; color: var(--cor-primaria); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+          <span>✨</span> <strong>Acesso Unificado por E-mail:</strong>
+        </div>
+        <div style="color: #64748B; font-size: 10px; margin-bottom: 8px;">A senha digitada seleciona o perfil desejado:</div>
+        <div style="display: grid; gap: 4px; font-size: 11px;">
+          <div>👑 <b>Admin:</b> senha <code>portaladm1</code></div>
+          <div>🏭 <b>Fornecedor:</b> senha <code>portalforn1</code></div>
+          <div>🚛 <b>Transportadora:</b> senha <code>portaltransp1</code></div>
+        </div>
       </div>
     </div>
   </div>
@@ -560,6 +773,12 @@
 
   <!-- SISTEMA PRINCIPAL -->
   <div id="tela-sistema" class="escondido">
+    <!-- AMBIENT ABSTRACT BACKGROUND ORBS -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-orb orb-1"></div>
+      <div class="ambient-orb orb-2"></div>
+      <div class="ambient-orb orb-3"></div>
+    </div>
     <nav class="navbar">
       <div class="navbar-brand">Logistix<span>360</span> <small style="font-size:10px; color:#94A3B8; font-weight:normal; letter-spacing:0;">v3.5.8</small></div>
       <div style="display: flex; align-items: center; gap: 16px;">

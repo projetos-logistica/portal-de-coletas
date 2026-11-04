@@ -250,17 +250,35 @@ const envPasswordFingerprint = password => password ? crypto.createHash('sha256'
 
 const sharedEmail = () => String(process.env.LOGISTIX_SHARED_EMAIL || '').trim().toLowerCase();
 
-// Usuarios adicionais com acesso a todos os perfis (admin + fornecedor + transportadora)
+// Perfis individualizados por usuario (Fornecedores e Transportadoras distintas e independentes)
 const EXTRA_SHARED_USERS = [
-  { prefix: 'samuel',  nome: 'Samuel Fragoso',  email: 'samuel.fragoso@farmrio.com.br' },
-  { prefix: 'natalia', nome: 'Natalia Alves',    email: 'natalia.alves@usereserva.com' },
-  { prefix: 'adriano', nome: 'Adriano Soares',   email: 'adriano.soares@farmrio.com.br' }
+  {
+    prefix: 'samuel',
+    nomeAdmin: 'Samuel Fragoso (Admin)',
+    nomeForn: 'Malharia Farm Rio',
+    nomeTransp: 'Total Express Cargas',
+    email: 'samuel.fragoso@farmrio.com.br'
+  },
+  {
+    prefix: 'natalia',
+    nomeAdmin: 'Natalia Alves (Admin)',
+    nomeForn: 'Oficina Carioca Reserva',
+    nomeTransp: 'Jadlog Express',
+    email: 'natalia.alves@usereserva.com'
+  },
+  {
+    prefix: 'adriano',
+    nomeAdmin: 'Adriano Soares (Admin)',
+    nomeForn: 'Farm Rio Confeccoes',
+    nomeTransp: 'Rodonaves Transportes',
+    email: 'adriano.soares@farmrio.com.br'
+  }
 ];
 
-// IDs gerenciados pelo sistema (senhas vem do .env)
+// IDs gerenciados pelo sistema
 const MANAGED_IDS = [
   'admin01', 'forn01', 'brasspress01',
-  ...EXTRA_SHARED_USERS.flatMap(u => [u.prefix+'_admin', u.prefix+'_forn', u.prefix+'_transp'])
+  ...EXTRA_SHARED_USERS.flatMap(u => [u.prefix + '_admin', u.prefix + '_forn', u.prefix + '_transp'])
 ];
 
 async function ensureUsers() {
@@ -284,70 +302,76 @@ async function ensureUsers() {
     };
   };
 
-  const extraProfiles = (eu, a, f, t) => [
-    make(eu.prefix+'_admin',  eu.nome, 'admin',          eu.email, a, ['TODAS']),
-    make(eu.prefix+'_forn',   eu.nome, 'fornecedor',     eu.email, f, []),
-    make(eu.prefix+'_transp', eu.nome, 'transportadora', eu.email, t, ['SP','RJ','MG','ES'])
-  ];
+  const a = adminPass || 'Admin@123', f = fornPass || 'Forn@123', t = transpPass || 'Brass@123';
 
   if (!Array.isArray(users) || !users.length) {
-    const a = adminPass || 'Admin@123', f = fornPass || 'Forn@123', t = transpPass || 'Brass@123';
     users = [
-      make('admin01', 'Administrador Master', 'admin', shared || 'admin@logistix.com', a, ['TODAS']),
-      make('forn01', 'Industria ABC', 'fornecedor', shared || 'fornecedor@empresa.com', f, []),
-      make('brasspress01', 'Brasspress', 'transportadora', shared || 'brasspress@logistix.com', t, ['SP','RJ','MG','ES'])
+      make('admin01', 'Raony Borges (Admin Reserva)', 'admin', shared || 'admin@logistix.com', a, ['TODAS']),
+      make('forn01', 'Reserva Confeccoes & Industria', 'fornecedor', shared || 'fornecedor@empresa.com', f, []),
+      make('brasspress01', 'Braspress Logistica', 'transportadora', shared || 'brasspress@logistix.com', t, ['TODAS'])
     ];
-    for (const eu of EXTRA_SHARED_USERS) users.push(...extraProfiles(eu, a, f, t));
+    for (const eu of EXTRA_SHARED_USERS) {
+      users.push(
+        make(eu.prefix + '_admin', eu.nomeAdmin, 'admin', eu.email, a, ['TODAS']),
+        make(eu.prefix + '_forn', eu.nomeForn, 'fornecedor', eu.email, f, []),
+        make(eu.prefix + '_transp', eu.nomeTransp, 'transportadora', eu.email, t, ['SP', 'RJ', 'MG', 'ES'])
+      );
+    }
     await write('users', users);
     return users;
   }
 
-  // --- Sincronizar perfis primarios (admin01 / forn01 / brasspress01) ---
-  const configured = [
-    ['admin01', adminPass],
-    ['forn01', fornPass],
-    ['brasspress01', transpPass]
+  // Sincronizar perfis base (Raony)
+  const baseConfig = [
+    { id: 'admin01', nome: 'Raony Borges (Admin Reserva)', pass: a },
+    { id: 'forn01', nome: 'Reserva Confeccoes & Industria', pass: f },
+    { id: 'brasspress01', nome: 'Braspress Logistica', pass: t }
   ];
   let changed = false;
-  for (const [id, pass] of configured) {
-    const i = users.findIndex(x => x.id === id);
+  for (const b of baseConfig) {
+    const i = users.findIndex(x => x.id === b.id);
     if (i < 0) continue;
+    if (users[i].nome !== b.nome) { users[i].nome = b.nome; changed = true; }
     if (shared && String(users[i].email || '').toLowerCase() !== shared) {
       users[i] = { ...users[i], email: shared };
       changed = true;
     }
-    if (!pass) continue;
-    const fp = envPasswordFingerprint(pass);
-    if ((shared || !users[i].customPassword) && users[i].managedPasswordFingerprint !== fp) {
-      const h = hashPassword(pass);
-      users[i] = {
-        ...users[i],
-        passwordSalt: h.salt,
-        passwordHash: h.hash,
-        passwordIterations: 210000,
-        managedPasswordFingerprint: fp,
-        customPassword: false
-      };
-      delete users[i].plainPassword;
-      delete users[i].senha;
-      changed = true;
+    if (b.pass) {
+      const fp = envPasswordFingerprint(b.pass);
+      if (users[i].managedPasswordFingerprint !== fp) {
+        const h = hashPassword(b.pass);
+        users[i] = {
+          ...users[i],
+          passwordSalt: h.salt,
+          passwordHash: h.hash,
+          passwordIterations: 210000,
+          managedPasswordFingerprint: fp,
+          customPassword: false
+        };
+        delete users[i].plainPassword;
+        delete users[i].senha;
+        changed = true;
+      }
     }
   }
 
-  // --- Provisionar / sincronizar usuarios extras ---
-  const a = adminPass || 'Admin@123', f = fornPass || 'Forn@123', t = transpPass || 'Brass@123';
+  // Provisionar e sincronizar perfis individuais dos demais usuarios
   for (const eu of EXTRA_SHARED_USERS) {
     const profs = [
-      { id: eu.prefix+'_admin',  tipo: 'admin',          pass: a, cob: ['TODAS'] },
-      { id: eu.prefix+'_forn',   tipo: 'fornecedor',     pass: f, cob: [] },
-      { id: eu.prefix+'_transp', tipo: 'transportadora', pass: t, cob: ['SP','RJ','MG','ES'] }
+      { id: eu.prefix + '_admin', nome: eu.nomeAdmin, tipo: 'admin', pass: a, cob: ['TODAS'] },
+      { id: eu.prefix + '_forn', nome: eu.nomeForn, tipo: 'fornecedor', pass: f, cob: [] },
+      { id: eu.prefix + '_transp', nome: eu.nomeTransp, tipo: 'transportadora', pass: t, cob: ['SP', 'RJ', 'MG', 'ES'] }
     ];
     for (const p of profs) {
       const idx = users.findIndex(x => x.id === p.id);
       if (idx < 0) {
-        users.push(make(p.id, eu.nome, p.tipo, eu.email, p.pass, p.cob));
+        users.push(make(p.id, p.nome, p.tipo, eu.email, p.pass, p.cob));
         changed = true;
       } else {
+        if (users[idx].nome !== p.nome) {
+          users[idx].nome = p.nome;
+          changed = true;
+        }
         if (String(users[idx].email || '').toLowerCase() !== eu.email.toLowerCase()) {
           users[idx] = { ...users[idx], email: eu.email };
           changed = true;
@@ -355,7 +379,14 @@ async function ensureUsers() {
         const fp = envPasswordFingerprint(p.pass);
         if (users[idx].managedPasswordFingerprint !== fp) {
           const h = hashPassword(p.pass);
-          users[idx] = { ...users[idx], passwordSalt: h.salt, passwordHash: h.hash, passwordIterations: 210000, managedPasswordFingerprint: fp, customPassword: false };
+          users[idx] = {
+            ...users[idx],
+            passwordSalt: h.salt,
+            passwordHash: h.hash,
+            passwordIterations: 210000,
+            managedPasswordFingerprint: fp,
+            customPassword: false
+          };
           delete users[idx].plainPassword;
           delete users[idx].senha;
           changed = true;
