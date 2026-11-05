@@ -4468,7 +4468,7 @@ STATUS: ${p.status || 'Pendente'}`;
       const inputAnterior=document.getElementById('ticket-resposta');
       const rascunho=inputAnterior?.value||''; const estavaFocado=document.activeElement===inputAnterior;
       const cursor=inputAnterior?.selectionStart ?? rascunho.length;
-      box.innerHTML=`<div style="border:1px solid var(--cor-borda);border-radius:10px;padding:14px;"><div style="display:flex;justify-content:space-between;gap:10px;"><strong>${t.assunto}</strong><span class="badge">${t.status}</span></div><div style="margin-top:12px;max-height:260px;overflow:auto;">${mensagensTicketHtml(t)}</div>${t.status==='Aberto'?`<div style="display:flex;gap:8px;margin-top:10px;"><input id="ticket-resposta" placeholder="Responder ao chamado..."><button class="btn" onclick="responderTicket('${t.id}')">Enviar</button></div>`:'<p style="font-size:12px;color:#64748B;">Chamado encerrado.</p>'}</div>`;
+      box.innerHTML=`<div style="border:1px solid var(--cor-borda);border-radius:10px;padding:14px;"><div style="display:flex;justify-content:space-between;gap:10px;"><strong>${t.assunto}</strong><span class="badge">${t.status}</span></div><div style="margin-top:12px;max-height:260px;overflow:auto;">${mensagensTicketHtml(t)}</div>${t.status==='Aberto'?`<div style="display:flex;gap:8px;margin-top:10px;"><input id="ticket-resposta" placeholder="Responder ao chamado..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();responderTicket('${t.id}');}"><button class="btn" onclick="responderTicket('${t.id}')">Enviar</button></div>`:'<p style="font-size:12px;color:#64748B;">Chamado encerrado.</p>'}</div>`;
       const novoInput=document.getElementById('ticket-resposta'); if(novoInput){novoInput.value=rascunho;if(estavaFocado){novoInput.focus();try{novoInput.setSelectionRange(cursor,cursor);}catch(e){}}}
     }
 
@@ -4480,7 +4480,7 @@ STATUS: ${p.status || 'Pendente'}`;
       const cursor=inputAnterior?.selectionStart ?? rascunho.length;
       box.innerHTML=`<div style="border:1px solid var(--cor-borda);border-radius:10px;padding:14px;"><div style="display:flex;justify-content:space-between;gap:10px;"><div><strong>${t.assunto}</strong><br><small>${t.criadoPorNome||t.criadoPorId}</small></div><span class="badge">${t.status}</span></div><div style="margin-top:12px;max-height:260px;overflow:auto;">${mensagensTicketHtml(t)}</div><div style="margin-top:10px;"><small style="display:block;color:#64748B;font-weight:700;margin-bottom:6px;">Respostas rápidas do suporte</small><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">${[
         'Olá! Recebemos sua solicitação e vamos verificar.','Por favor, envie o ID da carga e os documentos relacionados.','Estamos analisando o caso com a equipe responsável.','A ocorrência foi registrada e está em acompanhamento.','O atendimento foi concluído. Se precisar, estamos à disposição.'
-      ].map((msg,i)=>`<button type="button" class="btn btn-outline" style="padding:6px 8px;font-size:11px;" onclick="usarRespostaRapida(${i}, '${t.id}')">${['Recebido','Solicitar dados','Em análise','Ocorrência registrada','Concluído'][i]}</button>`).join('')}</div></div><div style="display:flex;gap:8px;margin-top:10px;"><input id="ticket-resposta" placeholder="Responder ao parceiro..."><button class="btn" onclick="responderTicket('${t.id}')">Enviar</button>${t.status==='Aberto'?`<button class="btn btn-sucesso" onclick="resolverTicket('${t.id}')">Resolver</button>`:''}</div></div>`;
+      ].map((msg,i)=>`<button type="button" class="btn btn-outline" style="padding:6px 8px;font-size:11px;" onclick="usarRespostaRapida(${i}, '${t.id}')">${['Recebido','Solicitar dados','Em análise','Ocorrência registrada','Concluído'][i]}</button>`).join('')}</div></div><div style="display:flex;gap:8px;margin-top:10px;"><input id="ticket-resposta" placeholder="Responder ao parceiro..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();responderTicket('${t.id}');}"><button class="btn" onclick="responderTicket('${t.id}')">Enviar</button>${t.status==='Aberto'?`<button class="btn btn-sucesso" onclick="resolverTicket('${t.id}')">Resolver</button>`:''}</div></div>`;
       const novoInput=document.getElementById('ticket-resposta'); if(novoInput){novoInput.value=rascunho;if(estavaFocado){novoInput.focus();try{novoInput.setSelectionRange(cursor,cursor);}catch(e){}}}
     }
 
@@ -4561,9 +4561,12 @@ STATUS: ${p.status || 'Pendente'}`;
     }
 
     function tratarKeydownChat(event, idPedido) {
-      // ENTER sozinho = PULA LINHA (comportamento nativo de paragrafo do textarea!)
-      // CTRL+ENTER ou CMD+ENTER = Envia a mensagem como atalho opcional
-      if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+      if (event.key === 'Enter') {
+        if (event.shiftKey) {
+          // SHIFT+ENTER: desce para a linha de baixo (quebra de linha nativa)
+          return;
+        }
+        // ENTER sozinho: envia a mensagem imediatamente
         event.preventDefault();
         enviarMensagemChat(idPedido);
       }
@@ -4838,16 +4841,16 @@ STATUS: ${p.status || 'Pendente'}`;
               </button>
               <div class="chat-textarea-container">
                 <textarea id="input-chat-texto" rows="2" 
-                  placeholder="Escreva sua mensagem... (Enter pula linha)" 
+                  placeholder="Escreva sua mensagem... (Enter envia, Shift+Enter pula linha)" 
                   onkeydown="tratarKeydownChat(event, '${p.id}')"></textarea>
               </div>
-              <button type="button" class="btn btn-sucesso btn-chat-enviar" onclick="enviarMensagemChat('${p.id}')" title="Enviar mensagem (Ctrl+Enter)">
+              <button type="button" class="btn btn-sucesso btn-chat-enviar" onclick="enviarMensagemChat('${p.id}')" title="Enviar mensagem (Enter)">
                 <span class="btn-enviar-texto">Enviar</span>
                 <span class="btn-enviar-icone">➤</span>
               </button>
             </div>
             <div class="chat-composer-hint">
-              <span>💡 <b>Enter</b> pula de linha | <b>Ctrl+Enter</b> atalho para enviar</span>
+              <span>💡 <b>Enter</b> envia | <b>Shift+Enter</b> pula linha</span>
               <span style="opacity:0.8;">Canal seguro</span>
             </div>
           </div>
