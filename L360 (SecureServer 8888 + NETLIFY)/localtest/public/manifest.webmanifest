@@ -1,0 +1,50 @@
+{
+  "name": "Logistix360 - Torre de Controle de Coletas",
+  "short_name": "Logistix360",
+  "description": "Torre de controle logística: coletas, transportadoras, fornecedores e chamados em tempo real.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0A2540",
+  "theme_color": "#0284C7",
+  "lang": "pt-BR",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nova Solicitação",
+      "short_name": "Nova Coleta",
+      "description": "Solicitar nova coleta de carga",
+      "url": "/#nova-coleta",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Coletas Disponíveis",
+      "short_name": "Mural",
+      "description": "Ver coletas disponíveis na região",
+      "url": "/#mural",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
